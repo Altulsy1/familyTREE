@@ -1980,6 +1980,9 @@
                         <button class="btn btn-info" onclick="backupToCloud()" title="نسخة احتياطية على السحابة">
                             <i class="fas fa-cloud-upload-alt"></i> <span>نسخ سحابي</span>
                         </button>
+                        <button class="btn btn-info" onclick="loadDataFromCloud()" title="تحميل البيانات من السحابة">
+                            <i class="fas fa-cloud-download-alt"></i> <span>تحميل من السحابة</span>
+                        </button>
                     </div>
                 </div>
                 
@@ -2965,20 +2968,69 @@
             cloudSyncEnabled = true;
             
             // محاولة تحميل البيانات من السحابة أولاً
-            loadDataFromCloud();
+            setTimeout(() => {
+                loadDataFromCloud();
+            }, 1000);
             
             // مراقبة التغييرات في السحابة (للتبديل بين المستخدمين)
             database.ref('familyData').on('value', (snapshot) => {
                 if (snapshot.exists()) {
                     const cloudData = snapshot.val();
-                    const localDataString = localStorage.getItem('familyData');
                     
-                    // تحديث البيانات المحلية إذا كانت مختلفة
-                    if (JSON.stringify(cloudData) !== localDataString) {
+                    // تصحيح: التحقق من أن البيانات هي مصفوفة
+                    let dataFromCloud;
+                    if (Array.isArray(cloudData)) {
+                        dataFromCloud = cloudData;
+                    } else {
+                        // إذا كانت البيانات كائن مع خصائص
+                        dataFromCloud = Object.values(cloudData).filter(item => item && typeof item === 'object');
+                        
+                        // تصفية الخاصية _lastUpdated إذا كانت موجودة
+                        dataFromCloud = dataFromCloud.filter(item => !item._lastUpdated);
+                    }
+                    
+                    const localDataString = localStorage.getItem('familyData');
+                    let localData = [];
+                    
+                    if (localDataString) {
+                        try {
+                            const parsedData = JSON.parse(localDataString);
+                            if (Array.isArray(parsedData)) {
+                                localData = parsedData;
+                            }
+                        } catch (error) {
+                            console.error('Error parsing local data:', error);
+                        }
+                    }
+                    
+                    // التحقق مما إذا كانت البيانات على السحابة مختلفة
+                    const localDataJSON = JSON.stringify(localData.sort((a, b) => a.PersonID - b.PersonID));
+                    const cloudDataJSON = JSON.stringify(dataFromCloud.sort((a, b) => a.PersonID - b.PersonID));
+                    
+                    if (cloudDataJSON !== localDataJSON) {
+                        // سؤال المستخدم عن التحديث
                         if (confirm('تم تحديث البيانات على السحابة. هل تريد تحميل التحديثات؟')) {
-                            familyData = cloudData;
+                            familyData = dataFromCloud;
+                            
+                            // تحديث nextPersonId
+                            if (familyData.length > 0) {
+                                const maxId = Math.max(...familyData.map(p => p.PersonID));
+                                nextPersonId = maxId + 1;
+                            } else {
+                                nextPersonId = 1;
+                            }
+                            
+                            // حفظ محلياً
                             saveDataLocally();
+                            
+                            // تحديث الواجهة
                             loadDashboard();
+                            
+                            // إذا كانت شجرة العائلة مفتوحة، قم بتحديثها
+                            if (document.getElementById('treeView').classList.contains('active')) {
+                                renderTree();
+                            }
+                            
                             showSuccess('تم تحديث البيانات من السحابة');
                         }
                     }
@@ -3002,28 +3054,73 @@
                     if (snapshot.exists()) {
                         const cloudData = snapshot.val();
                         
-                        // مقارنة التاريخ مع البيانات المحلية
-                        const localDataString = localStorage.getItem('familyData');
-                        const localTimestamp = localStorage.getItem('lastSyncTimestamp');
-                        const cloudTimestamp = snapshot.child('_lastUpdated').val();
+                        // تصحيح: التحقق من أن البيانات هي مصفوفة
+                        let dataFromCloud;
+                        if (Array.isArray(cloudData)) {
+                            dataFromCloud = cloudData;
+                        } else {
+                            // إذا كانت البيانات كائن مع خصائص
+                            dataFromCloud = Object.values(cloudData).filter(item => item && typeof item === 'object');
+                            
+                            // تصفية الخاصية _lastUpdated إذا كانت موجودة
+                            dataFromCloud = dataFromCloud.filter(item => !item._lastUpdated);
+                        }
                         
-                        if (localTimestamp && cloudTimestamp && cloudTimestamp > localTimestamp) {
-                            // البيانات على السحابة أحدث
+                        // مقارنة البيانات المحلية
+                        const localDataString = localStorage.getItem('familyData');
+                        let localData = [];
+                        
+                        if (localDataString) {
+                            try {
+                                const parsedData = JSON.parse(localDataString);
+                                if (Array.isArray(parsedData)) {
+                                    localData = parsedData;
+                                }
+                            } catch (error) {
+                                console.error('Error parsing local data:', error);
+                            }
+                        }
+                        
+                        // التحقق مما إذا كانت البيانات على السحابة مختلفة
+                        const localDataJSON = JSON.stringify(localData.sort((a, b) => a.PersonID - b.PersonID));
+                        const cloudDataJSON = JSON.stringify(dataFromCloud.sort((a, b) => a.PersonID - b.PersonID));
+                        
+                        if (cloudDataJSON !== localDataJSON) {
+                            // سؤال المستخدم عن التحديث
                             if (confirm('توجد بيانات أحدث على السحابة. هل تريد تحميلها؟')) {
-                                familyData = cloudData;
+                                familyData = dataFromCloud;
+                                
+                                // تحديث nextPersonId
+                                if (familyData.length > 0) {
+                                    const maxId = Math.max(...familyData.map(p => p.PersonID));
+                                    nextPersonId = maxId + 1;
+                                } else {
+                                    nextPersonId = 1;
+                                }
+                                
+                                // حفظ محلياً
                                 saveDataLocally();
-                                lastSyncTime = new Date(cloudTimestamp);
+                                
+                                // تحديث الوقت
+                                lastSyncTime = new Date();
+                                
+                                // تصحيح: تحديث واجهة المستخدم
+                                loadDashboard();
+                                
+                                // إذا كانت شجرة العائلة مفتوحة، قم بتحديثها
+                                if (document.getElementById('treeView').classList.contains('active')) {
+                                    renderTree();
+                                }
+                                
                                 showSuccess('تم تحميل البيانات من السحابة بنجاح');
                             }
-                        } else if (!localDataString) {
-                            // لا توجد بيانات محلية
-                            familyData = cloudData;
-                            saveDataLocally();
-                            lastSyncTime = new Date();
-                            showSuccess('تم تحميل البيانات من السحابة بنجاح');
+                        } else {
+                            showInfo('البيانات على السحابة مطابقة للبيانات المحلية');
                         }
                         
                         updateSyncStatus();
+                    } else {
+                        showInfo('لا توجد بيانات على السحابة بعد');
                     }
                 })
                 .catch((error) => {
@@ -3043,17 +3140,20 @@
             if (!database || !cloudSyncEnabled || isOffline) return Promise.resolve(false);
             
             try {
-                const dataToUpload = {
-                    ...familyData,
-                    _lastUpdated: Date.now(),
-                    _uploadedBy: currentUser,
-                    _uploadTime: new Date().toISOString()
-                };
+                const dataToUpload = familyData; // فقط البيانات نفسها
                 
                 return database.ref('familyData').set(dataToUpload)
                     .then(() => {
                         console.log('✅ Data saved to cloud successfully');
                         lastSyncTime = new Date();
+                        
+                        // حفظ طابع زمني منفصل
+                        database.ref('lastUpdated').set({
+                            timestamp: Date.now(),
+                            user: currentUser,
+                            totalPersons: familyData.length
+                        });
+                        
                         updateSyncStatus();
                         return true;
                     })
@@ -4341,7 +4441,12 @@
                 familyData = defaultFamilyData;
             } else if (savedData) {
                 try {
-                    familyData = JSON.parse(savedData);
+                    const parsedData = JSON.parse(savedData);
+                    if (Array.isArray(parsedData)) {
+                        familyData = parsedData;
+                    } else {
+                        familyData = defaultFamilyData;
+                    }
                     isDataEncrypted = false;
                 } catch (error) {
                     familyData = defaultFamilyData;
@@ -4363,6 +4468,13 @@
             
             // تهيئة Firebase
             cloudSyncEnabled = initializeFirebase();
+            
+            // تصحيح: تحميل البيانات من السحابة بعد التهيئة
+            if (cloudSyncEnabled) {
+                setTimeout(() => {
+                    loadDataFromCloud();
+                }, 1000);
+            }
             
             updateUIByPermissions();
             updateSidebarPermissions();
@@ -5880,33 +5992,29 @@
                     
                     if (confirm(`سيتم استيراد ${importedData.length} فرد. هل تريد المتابعة؟`)) {
                         familyData = importedData;
-                        saveData();
-                        nextPersonId = Math.max(...familyData.map(p => p.PersonID)) + 1;
-                        loadDashboard();
-                        showSuccess('تم استيراد البيانات بنجاح');
-                        event.target.value = '';
+                        
+                        if (familyData.length > 0) {
+                            nextPersonId = Math.max(...familyData.map(p => p.PersonID)) + 1;
+                        }
+                        
+                        if (saveData()) {
+                            loadDashboard();
+                            showSuccess(`تم استيراد ${importedData.length} فرد بنجاح`);
+                        }
                     }
                 } catch (error) {
-                    showError('خطأ في استيراد البيانات: ' + error.message);
-                    event.target.value = '';
+                    showError('فشل استيراد الملف: ' + error.message);
                 }
             };
+            
             reader.readAsText(file);
         }
 
-        function showDashboard() {
-            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-            document.querySelectorAll('.menu-item')[0].classList.add('active');
-            loadDashboard();
-        }
-
         // ============================================
-        // تهيئة النظام
+        // تهيئة النظام عند التحميل
         // ============================================
 
         window.onload = function() {
-            console.log('النظام جاهز للعمل');
-            document.getElementById('login-screen').style.display = 'flex';
             updateLanguage();
         };
     </script>
