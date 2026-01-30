@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>شجرة عائلة محمد عبدالرحمن ( أبا )</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -53,6 +53,7 @@
             background-color: #f8faf8; 
             direction: rtl; 
             min-height: 100vh;
+            overflow-x: hidden;
         }
         
         /* شاشة الدخول */
@@ -71,12 +72,13 @@
         
         .login-container {
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
+            padding: 30px 20px;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             width: 90%;
-            max-width: 450px;
+            max-width: 400px;
             text-align: center;
+            margin: 20px;
         }
         
         /* زر اللغة في شاشة الدخول */
@@ -104,22 +106,22 @@
         }
         
         .login-logo {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--header-bg);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .login-title {
             color: var(--header-bg);
             margin-bottom: 10px;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
         }
         
         .login-form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            margin-top: 30px;
+            gap: 15px;
+            margin-top: 25px;
         }
         
         .form-group {
@@ -185,39 +187,43 @@
         .top-bar {
             background: linear-gradient(135deg, var(--header-bg) 0%, #1B5E20 100%);
             color: white;
-            padding: 15px 30px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
         
         .logo h1 {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             margin: 0;
         }
         
         .user-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         
         /* أنماط حالة المزامنة */
         .sync-status {
-            padding: 8px 15px;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-left: 15px;
+            gap: 5px;
+            margin-left: 10px;
             transition: all 0.3s;
             cursor: pointer;
         }
@@ -245,9 +251,9 @@
             border: none;
             color: inherit;
             cursor: pointer;
-            font-size: 16px;
-            width: 30px;
-            height: 30px;
+            font-size: 14px;
+            width: 25px;
+            height: 25px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -263,77 +269,25 @@
         .sync-badge {
             background: #FF9800;
             color: white;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: bold;
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 10px;
             animation: pulse 1.5s infinite;
-        }
-        
-        /* زر تبديل السحابة */
-        .cloud-toggle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-left: 10px;
-        }
-        
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-        
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 24px;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .slider {
-            background-color: #4CAF50;
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(26px);
         }
         
         .logout-btn {
             background: var(--button-danger);
             color: white;
             border: none;
-            padding: 8px 20px;
+            padding: 6px 15px;
             border-radius: 5px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             transition: all 0.3s;
+            font-size: 14px;
         }
         
         .logout-btn:hover {
@@ -346,13 +300,13 @@
             background: transparent;
             border: 1px solid rgba(255,255,255,0.3);
             color: white;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 5px;
-            font-size: 14px;
+            font-size: 12px;
             transition: all 0.3s;
         }
         
@@ -372,6 +326,7 @@
             transition: right 0.3s;
             overflow-y: auto;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 999;
         }
         
         .sidebar-menu {
@@ -380,14 +335,15 @@
         }
         
         .menu-item {
-            padding: 15px 25px;
+            padding: 12px 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             transition: all 0.3s;
             border-right: 4px solid transparent;
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 14px;
         }
         
         .menu-item:hover, .menu-item.active {
@@ -399,49 +355,51 @@
             width: 20px;
             text-align: center;
             color: #C8E6C9;
+            font-size: 16px;
         }
         
         /* المحتوى الرئيسي */
         .main-content-area {
             margin-right: 250px;
-            padding: 30px;
+            padding: 20px;
             transition: margin-right 0.3s;
             min-height: calc(100vh - 70px);
+            width: calc(100% - 250px);
         }
         
         /* بطاقات الإحصائيات */
         .stats-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
         
         .stat-card {
             background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             transition: all 0.3s;
             border-top: 4px solid var(--accent-green);
         }
         
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
         
         .stat-icon {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             color: white;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
@@ -452,34 +410,37 @@
         .stat-icon.families { background: #8BC34A; }
         
         .stat-info h3 {
-            font-size: 2rem;
+            font-size: 1.5rem;
             margin-bottom: 5px;
             color: var(--header-bg);
         }
         
         .stat-info p {
             color: #689f38;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
         }
         
         /* لوحة التحكم */
         .control-panel {
             background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
             border: 1px solid #e8f5e9;
+            overflow: hidden;
         }
         
         .panel-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 2px solid #f1f8e9;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .panel-header h2 {
@@ -487,25 +448,26 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 1.2rem;
         }
         
         .action-buttons {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
         
         .btn {
-            padding: 10px 20px;
+            padding: 8px 15px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.3s;
-            font-size: 14px;
+            font-size: 13px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
@@ -533,33 +495,35 @@
         .btn:hover {
             opacity: 0.9;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
         
         /* الجدول */
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-            border-radius: 10px;
+            margin-top: 15px;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
         }
         
         .data-table th {
             background: #f1f8e9;
-            padding: 18px 15px;
+            padding: 15px 10px;
             text-align: right;
             color: var(--header-bg);
             border-bottom: 2px solid #c8e6c9;
             font-weight: 600;
             position: sticky;
             top: 0;
+            font-size: 14px;
         }
         
         .data-table td {
-            padding: 15px;
+            padding: 12px 10px;
             border-bottom: 1px solid #f1f8e9;
+            font-size: 14px;
         }
         
         .data-table tr:hover {
@@ -571,9 +535,9 @@
         }
         
         .gender-badge {
-            padding: 5px 15px;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             display: inline-block;
         }
@@ -592,13 +556,14 @@
         
         .table-actions {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             justify-content: center;
+            flex-wrap: wrap;
         }
         
         .action-btn {
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             border-radius: 8px;
             border: none;
             cursor: pointer;
@@ -607,6 +572,7 @@
             justify-content: center;
             transition: all 0.3s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 14px;
         }
         
         .action-btn.edit { 
@@ -624,7 +590,7 @@
         
         .action-btn:hover {
             transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
         }
         
         /* النموذج */
@@ -638,8 +604,9 @@
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 2000;
             backdrop-filter: blur(5px);
+            padding: 20px;
         }
         
         .form-modal.active {
@@ -648,19 +615,19 @@
         
         .form-container {
             background: white;
-            width: 90%;
+            width: 100%;
             max-width: 700px;
             max-height: 90vh;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             animation: formSlideIn 0.3s ease;
         }
         
         @keyframes formSlideIn {
             from {
                 opacity: 0;
-                transform: translateY(-30px);
+                transform: translateY(-20px);
             }
             to {
                 opacity: 1;
@@ -671,7 +638,7 @@
         .form-header {
             background: linear-gradient(135deg, var(--header-bg) 0%, #1B5E20 100%);
             color: white;
-            padding: 25px;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -682,17 +649,17 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
         }
         
         .close-form {
             background: none;
             border: none;
             color: white;
-            font-size: 28px;
+            font-size: 24px;
             cursor: pointer;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -706,27 +673,27 @@
         }
         
         .form-body {
-            padding: 30px;
+            padding: 20px;
             overflow-y: auto;
-            max-height: calc(90vh - 90px);
+            max-height: calc(90vh - 80px);
         }
         
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .form-label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 600;
             color: var(--header-bg);
-            font-size: 15px;
+            font-size: 14px;
         }
         
         .form-label.required::after {
@@ -736,10 +703,10 @@
         
         .form-input, .form-select, .form-textarea {
             width: 100%;
-            padding: 12px 15px;
+            padding: 10px 12px;
             border: 2px solid #e0f2e0;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 14px;
             transition: all 0.3s;
             background-color: #f8fcf8;
         }
@@ -752,30 +719,32 @@
         }
         
         .form-textarea {
-            min-height: 100px;
+            min-height: 80px;
             resize: vertical;
         }
         
         .form-actions {
             display: flex;
             justify-content: flex-end;
-            gap: 15px;
-            margin-top: 30px;
-            padding-top: 25px;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
             border-top: 2px solid #f1f8e9;
+            flex-wrap: wrap;
         }
         
         /* رسائل التنبيه */
         .alert {
-            padding: 18px 20px;
+            padding: 15px 18px;
             border-radius: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             display: none;
             animation: slideDown 0.5s ease;
             border-right: 5px solid transparent;
+            font-size: 14px;
         }
         
         @keyframes slideDown {
@@ -820,27 +789,27 @@
         /* زر عرض الشجرة */
         .tree-view-btn {
             position: fixed;
-            bottom: 30px;
-            left: 30px;
+            bottom: 20px;
+            left: 20px;
             background: linear-gradient(135deg, var(--button-success) 0%, #43A047 100%);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 100;
             transition: all 0.3s;
         }
         
         .tree-view-btn:hover {
-            transform: scale(1.15) rotate(15deg);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
         
         /* عرض الشجرة */
@@ -873,35 +842,39 @@
         .tree-header {
             background: linear-gradient(135deg, var(--header-bg) 0%, #1B5E20 100%);
             color: white;
-            padding: 20px 30px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .tree-header h2 {
             margin: 0;
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-size: 1.5rem;
+            gap: 12px;
+            font-size: 1.3rem;
         }
         
         .tree-toolbar {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
-            margin-top: 10px;
+            margin-top: 8px;
+            flex-wrap: wrap;
         }
         
         .tree-zoom {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             background: rgba(255,255,255,0.1);
-            padding: 8px 15px;
+            padding: 6px 12px;
             border-radius: 20px;
+            font-size: 14px;
         }
         
         .tree-zoom-btn {
@@ -909,9 +882,9 @@
             border: none;
             color: white;
             cursor: pointer;
-            font-size: 18px;
-            width: 30px;
-            height: 30px;
+            font-size: 16px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -925,10 +898,11 @@
         
         .tree-content {
             flex: 1;
-            padding: 30px;
+            padding: 15px;
             overflow: auto;
             position: relative;
             background: #f8faf8;
+            -webkit-overflow-scrolling: touch;
         }
         
         /* زر استيراد البيانات */
@@ -945,31 +919,31 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            padding: 20px;
+            padding: 15px;
         }
         
         .tree-generation {
             display: flex;
             flex-direction: column;
             width: 100%;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             position: relative;
         }
         
         .generation-label {
             background: linear-gradient(135deg, var(--sidebar-bg) 0%, #2E7D32 100%);
             color: white;
-            padding: 10px 25px;
-            border-radius: 25px;
+            padding: 8px 20px;
+            border-radius: 20px;
             font-weight: bold;
-            margin-bottom: 20px;
-            font-size: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 15px;
+            font-size: 14px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
             position: sticky;
             top: 10px;
             z-index: 100;
             align-self: flex-start;
-            margin-right: 20px;
+            margin-right: 15px;
         }
         
         .generation-1 .generation-label { background: linear-gradient(135deg, var(--generation-1) 0%, #1B5E20 100%); }
@@ -981,14 +955,14 @@
         .tree-level {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 12px;
             justify-content: flex-start;
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             background: rgba(255,255,255,0.7);
-            border-radius: 15px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            margin-bottom: 15px;
         }
         
         .tree-node-container {
@@ -997,17 +971,17 @@
             align-items: center;
             position: relative;
             margin: 5px;
-            min-width: 180px;
+            min-width: 150px;
         }
         
         .tree-node {
             background: white;
             border: 2px solid #e8f5e9;
-            border-radius: 12px;
-            padding: 15px;
-            width: 180px;
+            border-radius: 10px;
+            padding: 12px;
+            width: 150px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
@@ -1016,8 +990,8 @@
         }
         
         .tree-node:hover {
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
             z-index: 100;
         }
         
@@ -1040,37 +1014,37 @@
         .tree-node.married::before {
             content: "💍";
             position: absolute;
-            top: -12px;
+            top: -10px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 18px;
+            font-size: 16px;
             z-index: 3;
             background: white;
             border-radius: 50%;
             padding: 2px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
         .node-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         
         .node-id {
             background: #f1f8e9;
             color: #689f38;
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 10px;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
             font-weight: bold;
         }
         
         .node-name {
             font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 6px;
+            font-size: 14px;
+            margin-bottom: 5px;
             color: var(--header-bg);
             line-height: 1.3;
             height: 2.6em;
@@ -1082,16 +1056,16 @@
         }
         
         .node-details {
-            font-size: 12px;
+            font-size: 11px;
             color: #689f38;
-            line-height: 1.4;
-            max-height: 60px;
+            line-height: 1.3;
+            max-height: 50px;
             overflow: hidden;
         }
         
         .node-place {
-            margin-top: 4px;
-            font-size: 11px;
+            margin-top: 3px;
+            font-size: 10px;
             color: #7cb342;
             white-space: nowrap;
             overflow: hidden;
@@ -1102,10 +1076,10 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            margin-top: 15px;
+            margin-top: 12px;
             position: relative;
-            padding-top: 25px;
-            min-height: 50px;
+            padding-top: 20px;
+            min-height: 40px;
         }
         
         /* وصلات الشجرة */
@@ -1117,28 +1091,28 @@
         
         .vertical-connector {
             width: 2px;
-            height: 25px;
-            top: -25px;
+            height: 20px;
+            top: -20px;
             left: 50%;
             transform: translateX(-50%);
         }
         
         .horizontal-connector {
             height: 2px;
-            width: calc(100% - 20px);
-            top: -12px;
-            left: 10px;
+            width: calc(100% - 15px);
+            top: -10px;
+            left: 8px;
         }
         
         /* فلتر للبحث في الشجرة */
         .tree-filter {
             background: white;
-            padding: 15px 20px;
+            padding: 12px 15px;
             border-radius: 10px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
-            margin: 0 30px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            margin: 0 15px 15px;
             display: flex;
-            gap: 15px;
+            gap: 12px;
             align-items: center;
             flex-wrap: wrap;
             position: sticky;
@@ -1149,11 +1123,11 @@
         
         .tree-filter input {
             flex: 1;
-            min-width: 250px;
-            padding: 12px 15px;
+            min-width: 200px;
+            padding: 10px 12px;
             border: 2px solid #e0f2e0;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 14px;
             transition: all 0.3s;
             background-color: #f8fcf8;
         }
@@ -1166,7 +1140,7 @@
         }
         
         .tree-filter button {
-            padding: 12px 20px;
+            padding: 10px 15px;
             background: linear-gradient(135deg, var(--button-primary) 0%, #66BB6A 100%);
             color: white;
             border: none;
@@ -1174,46 +1148,48 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             font-weight: bold;
             transition: all 0.3s;
+            font-size: 13px;
         }
         
         .tree-filter button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
         }
         
         /* أدوات التحكم في الشجرة */
         .tree-controls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
             margin-right: auto;
+            flex-wrap: wrap;
         }
         
         .tree-count {
             background: rgba(255,255,255,0.1);
-            padding: 6px 15px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         
         /* رسالة فارغة */
         .empty-message {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 15px;
             color: #7cb342;
-            font-size: 18px;
+            font-size: 16px;
             width: 100%;
         }
         
         .empty-message i {
-            font-size: 48px;
-            margin-bottom: 20px;
+            font-size: 36px;
+            margin-bottom: 15px;
             color: #c8e6c9;
         }
         
@@ -1222,7 +1198,7 @@
             animation: pulse 1.5s infinite;
             background: #f1f8e9 !important;
             border-color: #8bc34a !important;
-            box-shadow: 0 4px 15px rgba(139, 195, 74, 0.3) !important;
+            box-shadow: 0 3px 12px rgba(139, 195, 74, 0.3) !important;
             z-index: 1000 !important;
         }
         
@@ -1236,20 +1212,20 @@
         
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(139, 195, 74, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(139, 195, 74, 0); }
+            70% { box-shadow: 0 0 0 8px rgba(139, 195, 74, 0); }
             100% { box-shadow: 0 0 0 0 rgba(139, 195, 74, 0); }
         }
         
         /* تصنيف الأجيال */
         .generation-badge {
             position: absolute;
-            top: 5px;
-            left: 5px;
+            top: 4px;
+            left: 4px;
             background: rgba(0,0,0,0.1);
             color: white;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 10px;
+            font-size: 9px;
+            padding: 2px 5px;
+            border-radius: 8px;
             font-weight: bold;
         }
         
@@ -1266,7 +1242,7 @@
             width: 40px;
             height: 40px;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             align-items: center;
             justify-content: center;
         }
@@ -1282,17 +1258,17 @@
             top: 100%;
             left: 0;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.25);
-            min-width: 220px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            min-width: 180px;
             z-index: 2000;
-            margin-top: 10px;
+            margin-top: 8px;
             border: 1px solid #e8f5e9;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
-            padding: 10px 0;
-            max-height: 400px;
+            padding: 8px 0;
+            max-height: 300px;
             overflow-y: auto;
         }
         
@@ -1303,17 +1279,17 @@
         }
         
         .export-option {
-            padding: 12px 20px;
+            padding: 10px 15px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             cursor: pointer;
             transition: background 0.3s;
             border-bottom: 1px solid #f1f8e9;
             color: #1b5e20;
             text-decoration: none;
-            font-size: 14px;
-            min-height: 44px;
+            font-size: 13px;
+            min-height: 40px;
         }
         
         .export-option:hover {
@@ -1326,14 +1302,68 @@
         }
         
         .export-option i {
-            width: 20px;
+            width: 18px;
             text-align: center;
             color: #7cb342;
-            font-size: 16px;
+            font-size: 15px;
         }
         
         /* تحديث الأنماط للشاشات الصغيرة */
-        @media (max-width: 480px) {
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(100%);
+                width: 280px;
+                right: -280px;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+                right: 0;
+            }
+            
+            .main-content-area {
+                margin-right: 0;
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1.1rem;
+            }
+            
+            .user-info {
+                gap: 8px;
+            }
+            
+            .logout-btn span {
+                display: none;
+            }
+            
+            .logout-btn {
+                padding: 8px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .panel-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .tree-node {
+                width: 140px;
+                padding: 10px;
+            }
+            
             .tree-filter {
                 margin: 0 10px 10px;
                 padding: 10px;
@@ -1344,13 +1374,13 @@
                 right: 0;
                 z-index: 999;
                 border-radius: 0;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                transform: translateY(0);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                transform: translateY(-100%);
                 transition: transform 0.3s ease;
             }
             
-            .tree-filter.hidden {
-                transform: translateY(-100%);
+            .tree-filter.active {
+                transform: translateY(0);
             }
             
             .mobile-search-toggle {
@@ -1358,13 +1388,74 @@
             }
             
             .sync-status {
-                font-size: 12px;
-                padding: 6px 10px;
+                font-size: 11px;
+                padding: 5px 8px;
                 margin-left: 5px;
             }
             
-            .cloud-toggle {
-                display: none;
+            .data-table {
+                font-size: 12px;
+            }
+            
+            .data-table th, .data-table td {
+                padding: 8px 6px;
+            }
+            
+            .tree-view-btn {
+                width: 50px;
+                height: 50px;
+                bottom: 15px;
+                left: 15px;
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .tree-node {
+                width: 130px;
+                font-size: 12px;
+            }
+            
+            .tree-node-container {
+                min-width: 130px;
+            }
+            
+            .tree-level {
+                justify-content: center;
+            }
+            
+            .btn {
+                padding: 7px 12px;
+                font-size: 12px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .top-bar {
+                padding: 12px 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1rem;
+            }
+            
+            .tree-controls {
+                justify-content: center;
+            }
+            
+            .tree-header h2 {
+                font-size: 1.1rem;
+            }
+            
+            .mobile-optimized .tree-node {
+                width: 120px;
+                padding: 8px;
             }
         }
         
@@ -1381,10 +1472,10 @@
             align-items: center;
             z-index: 3000;
             color: white;
-            font-size: 1.2rem;
+            font-size: 1rem;
             text-align: center;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
         
         .export-loading.active {
@@ -1392,7 +1483,7 @@
         }
         
         .export-loading i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             animation: spin 1s linear infinite;
         }
         
@@ -1403,75 +1494,77 @@
         
         /* أنماط صفحة الفرد التفصيلية */
         .person-detail-container {
-            padding: 20px;
+            padding: 15px;
         }
         
         .person-header {
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 2px solid #f1f8e9;
         }
         
         .person-avatar {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--button-primary) 0%, var(--button-success) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
+            margin: 0 auto 15px;
             color: white;
-            font-size: 48px;
+            font-size: 36px;
         }
         
         .person-name {
-            font-size: 28px;
+            font-size: 24px;
             color: var(--header-bg);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .person-id {
             background: #f1f8e9;
-            padding: 5px 15px;
+            padding: 4px 12px;
             border-radius: 20px;
             color: #689f38;
             display: inline-block;
+            font-size: 14px;
         }
         
         .detail-sections {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
         }
         
         .detail-section {
             background: #f8faf8;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 15px;
+            border-radius: 8px;
             border-right: 4px solid var(--button-primary);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         
         .section-title {
-            font-size: 18px;
+            font-size: 16px;
             color: var(--header-bg);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .detail-item {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: flex;
+            font-size: 14px;
         }
         
         .detail-label {
             font-weight: bold;
             color: #388e3c;
-            min-width: 140px;
+            min-width: 120px;
         }
         
         .detail-value {
@@ -1482,8 +1575,8 @@
         /* نافذة إدارة السحابة */
         .status-card {
             background: #f8faf8;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 15px;
+            border-radius: 8px;
             border: 1px solid #e8f5e9;
         }
         
@@ -1491,9 +1584,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
             border-bottom: 1px solid #f1f8e9;
+            font-size: 14px;
         }
         
         .status-item:last-child {
@@ -1503,9 +1597,9 @@
         }
         
         .status-badge {
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: bold;
         }
         
@@ -1525,15 +1619,15 @@
         }
         
         .backup-list {
-            max-height: 300px;
+            max-height: 250px;
             overflow-y: auto;
             border: 1px solid #e8f5e9;
-            border-radius: 8px;
-            margin-top: 10px;
+            border-radius: 6px;
+            margin-top: 8px;
         }
         
         .backup-item {
-            padding: 15px;
+            padding: 12px;
             border-bottom: 1px solid #f1f8e9;
             transition: all 0.3s;
         }
@@ -1546,38 +1640,40 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 5px;
         }
         
         .backup-user {
-            font-size: 12px;
+            font-size: 11px;
             color: #7cb342;
         }
         
         .backup-stats {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 11px;
         }
         
         .backup-stats span {
-            font-size: 12px;
             color: #689f38;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
         
         .backup-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: flex-end;
         }
         
         .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 5px 10px;
+            font-size: 11px;
         }
         
         /* زر العودة السريع */
@@ -1588,8 +1684,8 @@
             background: rgba(255,255,255,0.9);
             border: 1px solid #e8f5e9;
             color: var(--header-bg);
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1597,20 +1693,96 @@
             cursor: pointer;
             z-index: 1001;
             transition: all 0.3s;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         .quick-back-btn:hover {
             background: white;
             transform: scale(1.1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        /* زر القائمة للجوال */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: var(--button-primary);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            z-index: 1002;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            border: none;
+            font-size: 20px;
+        }
+        
+        @media (max-width: 992px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+        }
+        
+        /* تحسينات لعرض الموبايل */
+        .mobile-optimized .tree-node {
+            width: 120px;
+            padding: 8px;
+            margin: 3px;
+        }
+        
+        .mobile-optimized .tree-node-container {
+            min-width: 120px;
+        }
+        
+        .mobile-optimized .tree-level {
+            gap: 8px;
+            padding: 8px;
+        }
+        
+        .mobile-optimized .node-name {
+            font-size: 13px;
+            height: 2.4em;
+        }
+        
+        .mobile-optimized .node-details {
+            font-size: 10px;
+        }
+        
+        .mobile-optimized .generation-label {
+            padding: 6px 15px;
+            font-size: 13px;
+        }
+        
+        /* تنسيقات محسنة لجدول الموبايل */
+        @media (max-width: 768px) {
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .data-table {
+                min-width: 600px;
+            }
+        }
+        
+        /* تحسين أداء التمرير على الموبايل */
+        .tree-content, .form-body, .backup-list {
+            -webkit-overflow-scrolling: touch;
         }
     </style>
 </head>
 <body>
+    <!-- زر القائمة للجوال -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
     <!-- شاشة الدخول -->
     <div id="login-screen">
-        <!-- زر تبديل اللغة في شاشة الدخول -->
         <button class="login-language-toggle" onclick="toggleLanguage()">
             <i class="fas fa-globe"></i>
             <span id="loginLanguageText">English</span>
@@ -1657,7 +1829,7 @@
         <!-- الشريط العلوي -->
         <div class="top-bar">
             <div class="logo">
-                <i class="fas fa-tree" style="font-size: 28px;"></i>
+                <i class="fas fa-tree" style="font-size: 24px;"></i>
                 <h1 data-i18n="appTitle">شجرة عائلة محمد عبدالرحمن</h1>
             </div>
             
@@ -1807,14 +1979,14 @@
                             </div>
                         </div>
                         <button class="btn btn-info" onclick="toggleSortOrder()">
-                            <i class="fas fa-sort-numeric-down"></i> <span data-i18n="toggleSort">ترتيب تصاعدي / تنازلي</span>
+                            <i class="fas fa-sort-numeric-down"></i> <span data-i18n="toggleSort">ترتيب تصاعدي/تنازلي</span>
                         </button>
                         <!-- زر استيراد البيانات -->
                         <div class="file-input-container">
                             <button class="btn btn-info import-btn" onclick="document.getElementById('importFile').click()">
                                 <i class="fas fa-upload"></i> <span data-i18n="importData">استيراد البيانات</span>
                             </button>
-                            <input type="file" id="importFile" class="file-input" accept=".json" onchange="handleFileImport(event)">
+                            <input type="file" id="importFile" class="file-input" accept=".json" onchange="handleFileImport(event)" style="display: none;">
                         </div>
                         <!-- زر النسخ السحابي -->
                         <button class="btn btn-info" onclick="backupToCloud()" title="نسخة احتياطية على السحابة">
@@ -1835,7 +2007,7 @@
                 </div>
 
                 <!-- جدول البيانات -->
-                <div style="overflow-x: auto;">
+                <div class="table-responsive" style="overflow-x: auto;">
                     <table class="data-table" id="personsTable">
                         <thead>
                             <tr>
@@ -1968,14 +2140,6 @@
                                 <i class="fas fa-search-plus"></i>
                             </button>
                         </div>
-                        <div class="view-toggle">
-                            <button class="view-toggle-btn active" onclick="setTreeViewMode('vertical')" title="العرض العمودي">
-                                <i class="fas fa-align-justify"></i>
-                            </button>
-                            <button class="view-toggle-btn" onclick="setTreeViewMode('horizontal')" title="العرض الأفقي">
-                                <i class="fas fa-arrows-alt-h"></i>
-                            </button>
-                        </div>
                         <button class="btn btn-info" onclick="toggleCompactMode()">
                             <i class="fas fa-compress"></i> <span data-i18n="toggleView">تبديل العرض</span>
                         </button>
@@ -1995,10 +2159,6 @@
                                 <div class="export-option" onclick="exportCurrentSection()">
                                     <i class="fas fa-crop"></i>
                                     <span data-i18n="exportVisible">الجزء المرئي فقط</span>
-                                </div>
-                                <div class="export-option" onclick="exportTreeAsPDF()">
-                                    <i class="fas fa-file-pdf"></i>
-                                    <span data-i18n="exportPDF">PDF (تجريبي)</span>
                                 </div>
                             </div>
                         </div>
@@ -2031,12 +2191,8 @@
             <button class="btn btn-success" onclick="scrollToGeneration(1)">
                 <i class="fas fa-arrow-up"></i> <span data-i18n="firstGeneration">الجيل الأول</span>
             </button>
-            <div style="margin-right: auto; color: #689f38; font-size: 14px; display: flex; align-items: center; gap: 10px;">
+            <div style="color: #689f38; font-size: 12px; display: none;" class="tree-info-mobile">
                 <i class="fas fa-info-circle"></i> <span data-i18n="treeInfo">انقر على أي فرد لعرض معلوماته</span>
-                <span class="help-tooltip">
-                    <i class="fas fa-question-circle"></i>
-                    <span class="tooltip-text" data-i18n="treeTooltip">يمكنك التمرير أفقياً وعمودياً لعرض جميع الأفراد. استخدم التكبير لرؤية التفاصيل.</span>
-                </span>
             </div>
         </div>
         
@@ -2107,7 +2263,7 @@
                     </button>
                 </div>
                 
-                <div class="book-preview" id="bookPreview" style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+                <div class="book-preview" id="bookPreview" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
                     <!-- سيتم تعبئتها بالكتاب -->
                 </div>
             </div>
@@ -2159,19 +2315,21 @@
                 
                 <div class="form-group">
                     <label class="form-label" data-i18n="usersList">قائمة المستخدمين</label>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th data-i18n="username">اسم المستخدم</th>
-                                <th data-i18n="role">الصلاحية</th>
-                                <th data-i18n="lastLogin">آخر دخول</th>
-                                <th data-i18n="actions">الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersList">
-                            <!-- سيتم تعبئتها -->
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="username">اسم المستخدم</th>
+                                    <th data-i18n="role">الصلاحية</th>
+                                    <th data-i18n="lastLogin">آخر دخول</th>
+                                    <th data-i18n="actions">الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersList">
+                                <!-- سيتم تعبئتها -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 
                 <div class="form-actions">
@@ -2214,7 +2372,7 @@
                 <div class="form-group" id="excelPreview" style="display: none;">
                     <label class="form-label" data-i18n="dataPreview">معاينة البيانات</label>
                     
-                    <div class="import-preview">
+                    <div class="import-preview table-responsive">
                         <table class="data-table">
                             <thead id="excelTableHead"></thead>
                             <tbody id="excelTableBody"></tbody>
@@ -2428,6 +2586,33 @@
         let isOffline = false;
         let lastSyncTime = null;
         let syncQueue = [];
+
+        // تكوين Firebase - ضع معلومات مشروعك هنا
+        <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyB5kAQNtC6xP4zaS4Whjoy7ZG7bQTQ68iU",
+    authDomain: "familytree-2da8b.firebaseapp.com",
+    databaseURL: "https://familytree-2da8b-default-rtdb.firebaseio.com",
+    projectId: "familytree-2da8b",
+    storageBucket: "familytree-2da8b.firebasestorage.app",
+    messagingSenderId: "810651112343",
+    appId: "1:810651112343:web:268b54f5505f66885daad2",
+    measurementId: "G-0BT7ET24BK"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+
 
         // بيانات الترجمة
         const translations = {
@@ -2736,21 +2921,6 @@
         ];
 
         // ============================================
-        // تكوين Firebase (تغيير هذه البيانات بمشروعك)
-        // ============================================
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyB5kAQNtC6xP4zaS4Whjoy7ZG7bQTQ68iU",
-  authDomain: "familytree-2da8b.firebaseapp.com",
-  databaseURL: "https://familytree-2da8b-default-rtdb.firebaseio.com",
-  projectId: "familytree-2da8b",
-  storageBucket: "familytree-2da8b.firebasestorage.app",
-  messagingSenderId: "810651112343",
-  appId: "1:810651112343:web:268b54f5505f66885daad2",
-  measurementId: "G-0BT7ET24BK"
-};
-    
-        // ============================================
         // وظائف الترجمة
         // ============================================
 
@@ -2804,8 +2974,13 @@ const firebaseConfig = {
 
         function initializeFirebase() {
             try {
-                // تهيئة Firebase
-                firebaseApp = firebase.initializeApp(firebaseConfig);
+                // التحقق من عدم تهيئة Firebase مسبقاً
+                if (!firebase.apps.length) {
+                    firebaseApp = firebase.initializeApp(firebaseConfig);
+                } else {
+                    firebaseApp = firebase.app();
+                }
+                
                 database = firebase.database();
                 
                 // تفعيل المزامنة مع السحابة
@@ -2815,6 +2990,7 @@ const firebaseConfig = {
                 monitorConnection();
                 
                 console.log('✅ Firebase initialized successfully');
+                updateSyncStatus();
                 return true;
             } catch (error) {
                 console.error('❌ Firebase initialization failed:', error);
@@ -2908,7 +3084,7 @@ const firebaseConfig = {
         // ============================================
 
         function saveDataToCloud() {
-            if (!database || !cloudSyncEnabled || isOffline) return;
+            if (!database || !cloudSyncEnabled || isOffline) return Promise.resolve(false);
             
             try {
                 const dataToUpload = {
@@ -2927,12 +3103,13 @@ const firebaseConfig = {
                     })
                     .catch((error) => {
                         console.error('❌ Error saving to cloud:', error);
-                        showWarning('تعذر رفع البيانات إلى السحابة');
+                        queueForSync();
                         return false;
                     });
             } catch (error) {
                 console.error('❌ Exception in saveDataToCloud:', error);
-                return false;
+                queueForSync();
+                return Promise.resolve(false);
             }
         }
 
@@ -2948,16 +3125,13 @@ const firebaseConfig = {
             if (cloudSyncEnabled && database && !isOffline) {
                 if (localSaved) {
                     // محاولة الحفظ على السحابة في الخلفية
-                    setTimeout(() => {
-                        saveDataToCloud().then(success => {
-                            if (success) {
-                                console.log('✅ Data synced with cloud');
-                            } else {
-                                // تخزين في قائمة الانتظار للمزامنة لاحقاً
-                                queueForSync();
-                            }
-                        });
-                    }, 500);
+                    saveDataToCloud().then(success => {
+                        if (success) {
+                            console.log('✅ Data synced with cloud');
+                        } else {
+                            console.log('⚠ Data queued for sync');
+                        }
+                    });
                 }
                 return localSaved;
             }
@@ -3007,6 +3181,7 @@ const firebaseConfig = {
             
             syncQueue.push(syncItem);
             localStorage.setItem('syncQueue', JSON.stringify(syncQueue));
+            updateSyncStatus();
             
             // محاولة المزامنة عند استعادة الاتصال
             if (syncQueue.length > 0) {
@@ -3034,6 +3209,7 @@ const firebaseConfig = {
                 }
                 
                 hideExportLoading();
+                updateSyncStatus();
             });
         }
 
@@ -3070,7 +3246,10 @@ const firebaseConfig = {
         // ============================================
 
         function updateSyncStatus() {
-            const syncStatusElement = document.getElementById('syncStatus') || createSyncStatusElement();
+            let syncStatusElement = document.getElementById('syncStatus');
+            if (!syncStatusElement) {
+                syncStatusElement = createSyncStatusElement();
+            }
             
             let statusText = '';
             let statusClass = '';
@@ -3102,6 +3281,11 @@ const firebaseConfig = {
                 ${syncQueue.length > 0 ? `<span class="sync-badge">${syncQueue.length}</span>` : ''}
             `;
             syncStatusElement.className = `sync-status ${statusClass}`;
+            
+            // تحديث حالة المزامنة في نافذة إدارة السحابة
+            if (document.getElementById('cloudManagerModal').classList.contains('active')) {
+                updateCloudManagerStatus();
+            }
         }
 
         function createSyncStatusElement() {
@@ -3144,17 +3328,19 @@ const firebaseConfig = {
             
             showExportLoading('جاري المزامنة مع السحابة...');
             
-            Promise.all([
-                loadDataFromCloud(),
-                saveDataToCloud()
-            ]).then(() => {
-                hideExportLoading();
-                showSuccess('تمت المزامنة بنجاح');
-                updateSyncStatus();
-            }).catch(error => {
-                hideExportLoading();
-                showError('فشلت المزامنة: ' + error.message);
-            });
+            saveDataToCloud()
+                .then((success) => {
+                    if (success) {
+                        showSuccess('تمت المزامنة بنجاح');
+                    }
+                    updateSyncStatus();
+                })
+                .catch(error => {
+                    showError('فشلت المزامنة: ' + error.message);
+                })
+                .finally(() => {
+                    hideExportLoading();
+                });
         }
 
         // ============================================
@@ -3167,11 +3353,10 @@ const firebaseConfig = {
                 return;
             }
             
-            const confirmMessage = `سيتم إنشاء نسخة احتياطية على السحابة باسم:
+            const confirmMessage = `سيتم إنشاء نسخة احتياطية على السحابة:
             
-اسم الملف: family-tree-backup-${new Date().toISOString().split('T')[0]}
-حجم البيانات: ${JSON.stringify(familyData).length} بايت
 عدد الأفراد: ${familyData.length}
+حجم البيانات: ${JSON.stringify(familyData).length} بايت
             
 هل تريد المتابعة؟`;
             
@@ -3219,15 +3404,17 @@ const firebaseConfig = {
         }
 
         function updateCloudManagerStatus() {
-            document.getElementById('cloudStatus').textContent = cloudSyncEnabled ? '✓ نشطة' : '✗ معطلة';
-            document.getElementById('cloudStatus').className = cloudSyncEnabled ? 'status-badge success' : 'status-badge error';
-            
-            document.getElementById('lastSyncTime').textContent = lastSyncTime ? lastSyncTime.toLocaleString('ar-EG') : 'لم تتم المزامنة بعد';
-            document.getElementById('pendingSync').textContent = syncQueue.length;
-            document.getElementById('pendingSync').className = syncQueue.length > 0 ? 'status-badge warning' : 'status-badge';
-            
-            document.getElementById('internetStatus').textContent = isOffline ? '✗ غير متصل' : '✓ متصل';
-            document.getElementById('internetStatus').className = isOffline ? 'status-badge error' : 'status-badge success';
+            if (document.getElementById('cloudStatus')) {
+                document.getElementById('cloudStatus').textContent = cloudSyncEnabled ? '✓ نشطة' : '✗ معطلة';
+                document.getElementById('cloudStatus').className = cloudSyncEnabled ? 'status-badge success' : 'status-badge error';
+                
+                document.getElementById('lastSyncTime').textContent = lastSyncTime ? lastSyncTime.toLocaleString('ar-EG') : 'لم تتم المزامنة بعد';
+                document.getElementById('pendingSync').textContent = syncQueue.length;
+                document.getElementById('pendingSync').className = syncQueue.length > 0 ? 'status-badge warning' : 'status-badge';
+                
+                document.getElementById('internetStatus').textContent = isOffline ? '✗ غير متصل' : '✓ متصل';
+                document.getElementById('internetStatus').className = isOffline ? 'status-badge error' : 'status-badge success';
+            }
         }
 
         function loadBackupList() {
@@ -3337,6 +3524,7 @@ const firebaseConfig = {
                 localStorage.removeItem('syncQueue');
                 showSuccess('تم مسح قائمة الانتظار بنجاح');
                 updateCloudManagerStatus();
+                updateSyncStatus();
             }
         }
 
@@ -3359,8 +3547,7 @@ const firebaseConfig = {
                             snapshot.forEach(child => {
                                 const backup = child.val();
                                 totalSize += JSON.stringify(backup).length;
-                                
-                                const backupDate = new Date(backup.backupDate);
+                                                                const backupDate = new Date(backup.backupDate);
                                 if (!lastBackup || backupDate > lastBackup) {
                                     lastBackup = backupDate;
                                 }
@@ -4215,6 +4402,27 @@ const firebaseConfig = {
             updateUIByPermissions();
             updateSidebarPermissions();
             updateSyncStatus();
+            
+            // تهيئة القائمة الجوالية
+            initMobileMenu();
+        }
+
+        function initMobileMenu() {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const sidebar = document.getElementById('sidebar');
+            
+            if (mobileMenuToggle && sidebar) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                });
+                
+                // إغلاق القائمة عند النقر خارجها
+                document.addEventListener('click', function(event) {
+                    if (!sidebar.contains(event.target) && !mobileMenuToggle.contains(event.target) && sidebar.classList.contains('active')) {
+                        sidebar.classList.remove('active');
+                    }
+                });
+            }
         }
 
         function handleLogin() {
@@ -5327,24 +5535,18 @@ const firebaseConfig = {
             if (!mobileToggle || !treeFilter || !treeContainer) return;
             
             mobileToggle.addEventListener('click', function() {
-                treeFilter.classList.toggle('hidden');
+                treeFilter.classList.toggle('active');
                 searchBarVisible = !searchBarVisible;
-                
-                if (treeFilter.classList.contains('hidden')) {
-                    treeFilter.style.transform = 'translateY(-100%)';
-                } else {
-                    treeFilter.style.transform = 'translateY(0)';
-                }
             });
             
-            if (window.innerWidth <= 480) {
-                treeFilter.classList.add('hidden');
+            if (window.innerWidth <= 768) {
+                treeFilter.classList.remove('active');
                 searchBarVisible = false;
             }
             
             window.addEventListener('resize', function() {
-                if (window.innerWidth <= 480 && searchBarVisible) {
-                    treeFilter.classList.add('hidden');
+                if (window.innerWidth <= 768 && searchBarVisible) {
+                    treeFilter.classList.remove('active');
                     searchBarVisible = false;
                 }
             });
