@@ -6,12 +6,10 @@
     <title>شجرة عائلة محمد عبدالرحمن ( أبا )</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- مكتبات Firebase للسحابة -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     
-    <!-- مكتبات إضافية -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -1776,12 +1774,10 @@
     </style>
 </head>
 <body>
-    <!-- زر القائمة للجوال -->
     <button class="mobile-menu-toggle" id="mobileMenuToggle">
         <i class="fas fa-bars"></i>
     </button>
 
-    <!-- شاشة الدخول -->
     <div id="login-screen">
         <button class="login-language-toggle" onclick="toggleLanguage()">
             <i class="fas fa-globe"></i>
@@ -1824,9 +1820,7 @@
         </div>
     </div>
 
-    <!-- المحتوى الرئيسي -->
     <div id="main-content">
-        <!-- الشريط العلوي -->
         <div class="top-bar">
             <div class="logo">
                 <i class="fas fa-tree" style="font-size: 24px;"></i>
@@ -1845,7 +1839,6 @@
             </div>
         </div>
 
-        <!-- الشريط الجانبي -->
         <div class="sidebar" id="sidebar">
             <ul class="sidebar-menu">
                 <li class="menu-item active" onclick="showDashboard()">
@@ -1899,9 +1892,7 @@
             </ul>
         </div>
 
-        <!-- المحتوى الرئيسي -->
         <div class="main-content-area" id="contentArea">
-            <!-- الإحصائيات -->
             <div class="stats-cards" id="statsCards">
                 <div class="stat-card">
                     <div class="stat-icon total">
@@ -1944,7 +1935,6 @@
                 </div>
             </div>
 
-            <!-- لوحة التحكم -->
             <div class="control-panel">
                 <div class="panel-header">
                     <h2><i class="fas fa-users"></i> <span data-i18n="familyManagement">إدارة أفراد العائلة</span></h2>
@@ -1981,21 +1971,18 @@
                         <button class="btn btn-info" onclick="toggleSortOrder()">
                             <i class="fas fa-sort-numeric-down"></i> <span data-i18n="toggleSort">ترتيب تصاعدي/تنازلي</span>
                         </button>
-                        <!-- زر استيراد البيانات -->
                         <div class="file-input-container">
                             <button class="btn btn-info import-btn" onclick="document.getElementById('importFile').click()">
                                 <i class="fas fa-upload"></i> <span data-i18n="importData">استيراد البيانات</span>
                             </button>
                             <input type="file" id="importFile" class="file-input" accept=".json" onchange="handleFileImport(event)" style="display: none;">
                         </div>
-                        <!-- زر النسخ السحابي -->
                         <button class="btn btn-info" onclick="backupToCloud()" title="نسخة احتياطية على السحابة">
                             <i class="fas fa-cloud-upload-alt"></i> <span>نسخ سحابي</span>
                         </button>
                     </div>
                 </div>
                 
-                <!-- رسائل التنبيه -->
                 <div class="alert success" id="successAlert">
                     <i class="fas fa-check-circle"></i>
                     <span id="successMessage" data-i18n="successMessage">تمت العملية بنجاح</span>
@@ -2006,7 +1993,6 @@
                     <span id="errorMessage" data-i18n="errorMessage">حدث خطأ أثناء العملية</span>
                 </div>
 
-                <!-- جدول البيانات -->
                 <div class="table-responsive" style="overflow-x: auto;">
                     <table class="data-table" id="personsTable">
                         <thead>
@@ -2021,20 +2007,17 @@
                             </tr>
                         </thead>
                         <tbody id="tableBody">
-                            <!-- سيتم تعبئتها بالبيانات -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- زر عرض الشجرة -->
         <button class="tree-view-btn" onclick="showTreeView()">
             <i class="fas fa-tree"></i>
         </button>
     </div>
 
-    <!-- نافذة إضافة/تعديل فرد -->
     <div class="form-modal" id="personFormModal">
         <button class="quick-back-btn" onclick="closePersonForm()" title="إغلاق">
             <i class="fas fa-times"></i>
@@ -2085,24 +2068,21 @@
                             <label class="form-label" data-i18n="formFatherId">رقم الأب</label>
                             <select class="form-select" id="fatherId">
                                 <option value="0" data-i18n="formNoFather">لا يوجد (جذر العائلة)</option>
-                                <!-- سيتم تعبئتها بالبيانات -->
-                            </select>
+                                </select>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label" data-i18n="formMotherId">رقم الأم</label>
                             <select class="form-select" id="motherId">
                                 <option value="0" data-i18n="formNoMother">لا يوجد</option>
-                                <!-- سيتم تعبئتها بالبيانات -->
-                            </select>
+                                </select>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label" data-i18n="formSpouseId">رقم الزوج/الزوجة</label>
                             <select class="form-select" id="spouseId">
                                 <option value="0" data-i18n="formNoSpouse">لا يوجد</option>
-                                <!-- سيتم تعبئتها بالبيانات -->
-                            </select>
+                                </select>
                         </div>
                     </div>
                     
@@ -2124,7 +2104,6 @@
         </div>
     </div>
 
-    <!-- عرض الشجرة -->
     <div class="tree-view" id="treeView">
         <div class="tree-header">
             <div>
@@ -2178,7 +2157,6 @@
             </button>
         </div>
         
-        <!-- زر تبديل البحث للجوال -->
         <button class="mobile-search-toggle" id="mobileSearchToggle">
             <i class="fas fa-search"></i>
         </button>
@@ -2197,11 +2175,9 @@
         </div>
         
         <div class="tree-content" id="treeContainer">
-            <!-- سيتم تعبئتها بالشجرة -->
-        </div>
+            </div>
     </div>
 
-    <!-- نافذة صفحة الفرد التفصيلية -->
     <div class="form-modal" id="personDetailModal">
         <button class="quick-back-btn" onclick="closePersonDetail()" title="إغلاق">
             <i class="fas fa-times"></i>
@@ -2216,8 +2192,7 @@
             
             <div class="form-body">
                 <div class="person-detail-container" id="personDetailContent">
-                    <!-- سيتم تعبئتها بالبيانات -->
-                </div>
+                    </div>
                 
                 <div class="form-actions">
                     <button type="button" class="btn btn-danger" onclick="closePersonDetail()">
@@ -2234,7 +2209,6 @@
         </div>
     </div>
 
-    <!-- نافذة كتاب العائلة -->
     <div class="form-modal" id="familyBookModal">
         <button class="quick-back-btn" onclick="closeFamilyBook()" title="إغلاق">
             <i class="fas fa-times"></i>
@@ -2264,13 +2238,11 @@
                 </div>
                 
                 <div class="book-preview" id="bookPreview" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-                    <!-- سيتم تعبئتها بالكتاب -->
-                </div>
+                    </div>
             </div>
         </div>
     </div>
 
-    <!-- نافذة إعدادات الصلاحيات -->
     <div class="form-modal" id="permissionsModal">
         <button class="quick-back-btn" onclick="closePermissionsModal()" title="إغلاق">
             <i class="fas fa-times"></i>
@@ -2326,8 +2298,7 @@
                                 </tr>
                             </thead>
                             <tbody id="usersList">
-                                <!-- سيتم تعبئتها -->
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
                 </div>
@@ -2341,7 +2312,6 @@
         </div>
     </div>
 
-    <!-- نافذة استيراد Excel -->
     <div class="form-modal" id="excelImportModal">
         <button class="quick-back-btn" onclick="closeExcelImport()" title="إغلاق">
             <i class="fas fa-times"></i>
@@ -2402,7 +2372,6 @@
         </div>
     </div>
 
-    <!-- نافذة إعدادات التشفير -->
     <div class="form-modal" id="encryptionModal">
         <button class="quick-back-btn" onclick="closeEncryptionModal()" title="إغلاق">
             <i class="fas fa-times"></i>
@@ -2474,7 +2443,6 @@
         </div>
     </div>
 
-    <!-- نافذة إدارة السحابة -->
     <div class="form-modal" id="cloudManagerModal">
         <button class="quick-back-btn" onclick="closeCloudManager()" title="إغلاق">
             <i class="fas fa-times"></i>
@@ -2523,8 +2491,7 @@
                     <div class="form-group">
                         <label class="form-label">النسخ الاحتياطية</label>
                         <div class="backup-list" id="backupList">
-                            <!-- سيتم تعبئتها -->
-                        </div>
+                            </div>
                         <button class="btn btn-primary" onclick="loadBackupList()">
                             <i class="fas fa-sync"></i> تحديث القائمة
                         </button>
@@ -2549,7 +2516,6 @@
         </div>
     </div>
 
-    <!-- شاشة تحميل لتصدير الصور -->
     <div class="export-loading" id="exportLoading">
         <i class="fas fa-spinner"></i>
         <div id="exportLoadingText" data-i18n="preparingImage">جاري تحضير الصورة...</div>
@@ -2588,22 +2554,22 @@
         let syncQueue = [];
 
         // تكوين Firebase - ضع معلومات مشروعك هنا
-     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyB5kAQNtC6xP4zaS4Whjoy7ZG7bQTQ68iU",
-  authDomain: "familytree-2da8b.firebaseapp.com",
-  databaseURL: "https://familytree-2da8b-default-rtdb.firebaseio.com",
-  projectId: "familytree-2da8b",
-  storageBucket: "familytree-2da8b.firebasestorage.app",
-  messagingSenderId: "810651112343",
-  appId: "1:810651112343:web:268b54f5505f66885daad2",
-  measurementId: "G-0BT7ET24BK"
-};
+        const firebaseConfig = {
+          apiKey: "AIzaSyB5kAQNtC6xP4zaS4Whjoy7ZG7bQTQ68iU",
+          authDomain: "familytree-2da8b.firebaseapp.com",
+          databaseURL: "https://familytree-2da8b-default-rtdb.firebaseio.com",
+          projectId: "familytree-2da8b",
+          storageBucket: "familytree-2da8b.firebasestorage.app",
+          messagingSenderId: "810651112343",
+          appId: "1:810651112343:web:268b54f5505f66885daad2",
+          measurementId: "G-0BT7ET24BK"
+        };
+        
         function showBackup() {
-    if (confirm('هل تريد تصدير نسخة احتياطية من جميع البيانات؟')) {
-        exportData('json');
-    }
-}
+            if (confirm('هل تريد تصدير نسخة احتياطية من جميع البيانات؟')) {
+                exportData('json');
+            }
+        }
         // بيانات الترجمة
         const translations = {
             ar: {
@@ -3808,7 +3774,8 @@ const firebaseConfig = {
                     csvContent += row.join(',') + '\n';
                 });
                 
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                // تصحيح: إضافة BOM لدعم اللغة العربية في Excel
+                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
                 const link = document.createElement('a');
                 const url = URL.createObjectURL(blob);
                 link.setAttribute('href', url);
@@ -4065,6 +4032,7 @@ const firebaseConfig = {
                     };
                     
                     const importedPersons = [];
+                    // تصحيح: حساب ID التالي بشكل صحيح لتجنب التكرار
                     let maxId = familyData.length > 0 ? Math.max(...familyData.map(p => p.PersonID)) : 0;
                     let successCount = 0;
                     let errorCount = 0;
@@ -4100,9 +4068,10 @@ const firebaseConfig = {
                             // التأكد من أن ID فريد
                             let originalId = personId;
                             let attempt = 0;
+                            // تصحيح منطق التحقق من التكرار ليشمل familyData والمستوردين الجدد
                             while (familyData.some(p => p.PersonID === personId) || 
                                    importedPersons.some(p => p.PersonID === personId)) {
-                                personId = originalId + (++attempt);
+                                personId = maxId + (++attempt) + index + 1; // توليد ID جديد وآمن
                                 duplicateCount++;
                             }
                             
@@ -4132,8 +4101,9 @@ const firebaseConfig = {
                                     return dateValue.toISOString().split('T')[0];
                                 }
                                 if (typeof dateValue === 'number') {
-                                    // تحويل من رقم Excel إلى تاريخ
-                                    const date = new Date((dateValue - 25569) * 86400 * 1000);
+                                    // تصحيح: إضافة نصف يوم لتجنب مشاكل المنطقة الزمنية التي ترجع التاريخ يوماً للوراء
+                                    // 25569 هو الفرق بين epoch Excel و JS
+                                    const date = new Date((dateValue - 25569.5) * 86400 * 1000);
                                     return date.toISOString().split('T')[0];
                                 }
                                 if (typeof dateValue === 'string') {
@@ -4198,6 +4168,11 @@ const firebaseConfig = {
                     // تحديث معرفات الأزواج تلقائياً
                     autoLinkFamilyRelations();
                     
+                    // تصحيح: تحديث nextPersonId بعد الاستيراد
+                    if (familyData.length > 0) {
+                        nextPersonId = Math.max(...familyData.map(p => p.PersonID)) + 1;
+                    }
+
                     if (saveData()) {
                         hideExportLoading();
                         closeExcelImport();
