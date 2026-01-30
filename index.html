@@ -2589,6 +2589,7 @@
 
         // تكوين Firebase - ضع معلومات مشروعك هنا
        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// تكوين Firebase - ضع معلومات مشروعك هنا
 const firebaseConfig = {
   apiKey: "AIzaSyB5kAQNtC6xP4zaS4Whjoy7ZG7bQTQ68iU",
   authDomain: "familytree-2da8b.firebaseapp.com",
@@ -2599,6 +2600,11 @@ const firebaseConfig = {
   appId: "1:810651112343:web:268b54f5505f66885daad2",
   measurementId: "G-0BT7ET24BK"
 };
+        function showBackup() {
+    if (confirm('هل تريد تصدير نسخة احتياطية من جميع البيانات؟')) {
+        exportData('json');
+    }
+}
         // بيانات الترجمة
         const translations = {
             ar: {
