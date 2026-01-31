@@ -972,44 +972,16 @@
             min-width: 150px;
         }
         
-        .tree-node {
-            background: white;
-            border: 2px solid #e8f5e9;
-            border-radius: 10px;
-            padding: 12px;
-            width: 150px;
-            text-align: center;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: all 0.3s;
+        .married-couple {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: flex-start;
             position: relative;
-            z-index: 2;
-            overflow: hidden;
+            margin-bottom: 10px;
         }
         
-        .tree-node:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-            z-index: 100;
-        }
-        
-        .tree-node.male {
-            border-top: 4px solid var(--male-color);
-            background: linear-gradient(0deg, white 90%, rgba(33, 150, 243, 0.1) 100%);
-        }
-        
-        .tree-node.female {
-            border-top: 4px solid var(--female-color);
-            background: linear-gradient(0deg, white 90%, rgba(233, 30, 99, 0.1) 100%);
-        }
-        
-        .tree-node.gen-1 { border-color: var(--generation-1); }
-        .tree-node.gen-2 { border-color: var(--generation-2); }
-        .tree-node.gen-3 { border-color: var(--generation-3); }
-        .tree-node.gen-4 { border-color: var(--generation-4); }
-        .tree-node.gen-5 { border-color: var(--generation-5); }
-        
-        .tree-node.married::before {
+        .married-couple::before {
             content: "💍";
             position: absolute;
             top: -10px;
@@ -1019,9 +991,46 @@
             z-index: 3;
             background: white;
             border-radius: 50%;
-            padding: 2px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            padding: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
+        
+        .tree-node {
+            background: white;
+            border: 2px solid #e8f5e9;
+            border-radius: 10px;
+            padding: 12px;
+            width: 150px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+        
+        .tree-node:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        
+        .tree-node.male {
+            border-top: 4px solid var(--male-color);
+            background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+        }
+        
+        .tree-node.female {
+            border-top: 4px solid var(--female-color);
+            background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
+        }
+        
+        .tree-node.gen-1 { border-color: var(--generation-1); }
+        .tree-node.gen-2 { border-color: var(--generation-2); }
+        .tree-node.gen-3 { border-color: var(--generation-3); }
+        .tree-node.gen-4 { border-color: var(--generation-4); }
+        .tree-node.gen-5 { border-color: var(--generation-5); }
         
         .node-header {
             display: flex;
@@ -1042,7 +1051,7 @@
         .node-name {
             font-weight: bold;
             font-size: 14px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: var(--header-bg);
             line-height: 1.3;
             height: 2.6em;
@@ -5295,8 +5304,8 @@
                     </div>
                     <div class="node-name" id="node-name-${person.PersonID}">${person.FullName}</div>
                     <div class="node-details">
-                        ${person.BirthDate ? `<div><i class="fas fa-birthday-cake"></i> ${formatDate(person.BirthDate)}</div>` : ''}
-                        ${person.DeathDate ? `<div><i class="fas fa-cross"></i> ${formatDate(person.DeathDate)}</div>` : ''}
+                        ${person.BirthDate ? `<div>👶 مولد: ${formatDate(person.BirthDate)}</div>` : ''}
+                        ${person.DeathDate ? `<div>☪️ وفاة: ${formatDate(person.DeathDate)}</div>` : ''}
                     </div>
                     ${person.PlaceOfBirth ? `<div class="node-place"><i class="fas fa-map-marker-alt"></i> ${person.PlaceOfBirth}</div>` : ''}
                     ${spouse ? `<div style="margin-top: 5px; font-size: 10px; color: #E91E63;"><i class="fas fa-heart"></i> متزوج</div>` : ''}
