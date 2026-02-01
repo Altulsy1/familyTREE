@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>شجرة عائلة محمد عبدالرحمن ( أبا )</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -1015,6 +1016,54 @@
             z-index: 2;
             overflow: hidden;
         }
+
+        
+        /* =========================
+           Book Lineage Highlight (في كتاب العائلة)
+           ========================= */
+        .book-member-card.book-card-dimmed{
+            opacity: 0.25;
+            filter: grayscale(80%);
+        }
+        .book-member-card.book-card-selected{
+            opacity: 1;
+            filter: none;
+            outline: 3px solid rgba(76,175,80,0.55);
+            box-shadow: 0 12px 26px rgba(0,0,0,0.15);
+        }
+        .book-member-card.book-card-ancestor{
+            outline: 3px solid rgba(33,150,243,0.55);
+        }
+        .book-member-card.book-card-descendant{
+            outline: 3px solid rgba(233,30,99,0.45);
+        }
+
+/* =========================
+           Lineage Highlight (تمييز السلالة)
+           ========================= */
+        .tree-node.lineage-dimmed{
+            opacity: 0.22;
+            filter: grayscale(85%);
+            transform: none !important;
+        }
+        .tree-node.lineage-selected{
+            opacity: 1;
+            filter: none;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+            border-width: 3px;
+        }
+        .tree-node.lineage-ancestor{
+            opacity: 1;
+            filter: none;
+            outline: 3px dashed rgba(33,150,243,0.55);
+            outline-offset: 3px;
+        }
+        .tree-node.lineage-descendant{
+            opacity: 1;
+            filter: none;
+            outline: 3px dashed rgba(76,175,80,0.55);
+            outline-offset: 3px;
+        }
         
         .tree-node:hover {
             transform: translateY(-5px) scale(1.03);
@@ -1818,7 +1867,245 @@
         .tree-content, .form-body, .backup-list {
             -webkit-overflow-scrolling: touch;
         }
-    </style>
+    
+        /* =========================
+           تحسينات الهوية + الخطوط + الخلفية
+           ========================= */
+        :root{
+            --brand-family-name: "محمد عبدالرحمن";
+            --brand-mark: "🌳";
+            --paper-bg: rgba(255,255,255,0.92);
+            --paper-border: rgba(27,94,32,0.12);
+            --shadow-soft: 0 10px 30px rgba(0,0,0,0.10);
+        }
+
+        *{
+            font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
+        }
+
+        /* عناوين عربية كلاسيكية */
+        .book-title, .book-generation-title, .person-name, .logo h1, .panel-header h2, .tree-header h2{
+            font-family: "Amiri", "Cairo", serif;
+        }
+
+        /* خلفية شفافة خفيفة جداً (SVG مضمّن) */
+        body::before{
+            content:"";
+            position:fixed;
+            inset:0;
+            background:
+              linear-gradient(rgba(248,250,248,0.80), rgba(248,250,248,0.80)),
+              url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><text x='18' y='160' font-size='92' opacity='0.06'>%F0%9F%8C%B3</text><text x='140' y='245' font-size='24' opacity='0.06'>%D8%B9%D8%A7%D8%A6%D9%84%D8%A9</text></svg>");
+            z-index:-1;
+            pointer-events:none;
+        }
+
+        /* =========================
+           Book Preview (كتاب العائلة)
+           ========================= */
+        .book-preview{
+            background: transparent !important;
+            padding: 12px !important;
+        }
+
+        .book-shell{
+            display:flex;
+            flex-direction:column;
+            gap: 14px;
+        }
+
+        .book-page{
+            background: var(--paper-bg);
+            border: 1px solid var(--paper-border);
+            border-radius: 18px;
+            box-shadow: var(--shadow-soft);
+            padding: 34px 36px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-page::after{
+            content: var(--brand-mark);
+            position:absolute;
+            bottom: 14px;
+            left: 18px;
+            font-size: 22px;
+            opacity: 0.25;
+        }
+
+        .book-watermark{
+            position:absolute;
+            top: 16px;
+            left: 18px;
+            font-size: 12px;
+            color: rgba(27,94,32,0.55);
+            display:flex;
+            gap: 8px;
+            align-items:center;
+            user-select:none;
+        }
+
+        .book-cover{
+            text-align:center;
+            padding: 60px 20px;
+        }
+
+        .book-cover .book-title{
+            font-size: 38px;
+            color: var(--header-bg);
+            margin-bottom: 10px;
+        }
+
+        .book-cover .book-subtitle{
+            color: #2E7D32;
+            font-size: 16px;
+            margin-bottom: 26px;
+        }
+
+        .book-cover .book-badge{
+            display:inline-flex;
+            align-items:center;
+            gap:10px;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(76,175,80,0.12);
+            border: 1px solid rgba(76,175,80,0.25);
+            color: #1B5E20;
+            font-weight: 700;
+        }
+
+        .book-generation-title{
+            font-size: 24px;
+            color: var(--header-bg);
+            border-bottom: 3px solid rgba(76,175,80,0.35);
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .book-grid{
+            display:grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+        }
+
+        .book-card{
+            background: rgba(255,255,255,0.85);
+            border: 1px solid rgba(27,94,32,0.10);
+            border-radius: 14px;
+            padding: 14px 14px 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            position:relative;
+        }
+
+        .book-card .name{
+            font-family: "Amiri", serif;
+            font-size: 18px;
+            color: #1B5E20;
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+
+        .book-card .meta{
+            font-size: 13px;
+            color: #2E7D32;
+            display:flex;
+            flex-direction:column;
+            gap: 6px;
+        }
+
+        .book-card .meta span{
+            display:flex;
+            gap: 8px;
+            align-items:center;
+        }
+
+        .book-card .tag{
+            position:absolute;
+            top: 12px;
+            left: 12px;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(0,151,167,0.10);
+            border: 1px solid rgba(0,151,167,0.18);
+            color: #006064;
+            font-weight: 700;
+        }
+
+        /* طباعة الكتاب */
+        @media print{
+            body::before{ display:none; }
+            .book-page{
+                box-shadow:none !important;
+                border: 1px solid #ddd !important;
+                border-radius: 0 !important;
+                page-break-after: always;
+                break-after: page;
+            }
+            .book-controls, .close-form, .quick-back-btn { display:none !important; }
+        }
+
+        /* =========================
+           ذكاء اقتراح العلاقات
+           ========================= */
+        .smart-suggest{
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(0,151,167,0.06);
+            border: 1px solid rgba(0,151,167,0.12);
+            display:flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items:center;
+        }
+        .smart-suggest .hint{
+            font-size: 12px;
+            color: #006064;
+            display:flex;
+            align-items:center;
+            gap: 8px;
+        }
+        .smart-suggest .hint b{ color:#004d40; }
+        .smart-suggest .suggest-actions{
+            display:flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-right:auto;
+        }
+        .chip{
+            border: 1px solid rgba(27,94,32,0.18);
+            background: rgba(76,175,80,0.10);
+            color:#1B5E20;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px;
+            cursor:pointer;
+            transition: all .2s;
+            user-select:none;
+        }
+        .chip:hover{ transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,0.08); }
+
+    
+        /* =========================
+           Book Quick Search (بحث داخل الكتاب)
+           ========================= */
+        .book-member-card.book-hidden{
+            display: none !important;
+        }
+        .book-member-card.book-match{
+            outline: 3px solid rgba(255,193,7,0.65);
+            outline-offset: 2px;
+        }
+        mark.book-mark{
+            background: rgba(255,193,7,0.45);
+            padding: 0 3px;
+            border-radius: 6px;
+        }
+</style>
 </head>
 <body>
     <button class="mobile-menu-toggle" id="mobileMenuToggle">
@@ -1830,6 +2117,9 @@
             <i class="fas fa-globe"></i>
             <span id="loginLanguageText">English</span>
         </button>
+                        <button class="btn btn-secondary" style="padding: 8px 12px;" onclick="clearBookLineage()" title="إلغاء تمييز السلالة">
+                            <i class="fas fa-highlighter"></i>
+                        </button>
         
         <div class="login-container">
             <div class="login-logo">
@@ -2134,10 +2424,24 @@
                                 <option value="0" data-i18n="formNoSpouse">لا يوجد</option>
                                 </select>
                         </div>
-                    </div>
                     
+                    </div>
+
+                    <div class="smart-suggest" id="relationSuggestBox">
+                        <div class="hint">
+                            <i class="fas fa-magic"></i>
+                            <span>اقتراحات ذكية: <b id="suggestSummary">—</b></span>
+                        </div>
+                        <div class="suggest-actions">
+                            <span class="chip" onclick="applySmartSuggestions()">تطبيق الاقتراحات</span>
+                            <span class="chip" onclick="showWhySuggestion()">لماذا هذا الاقتراح؟</span>
+                            <span class="chip" onclick="clearSmartSuggestions()">مسح الاقتراح</span>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="form-label" data-i18n="formNotes">ملاحظات إضافية</label>
+
                         <textarea class="form-textarea" id="notes" rows="3"></textarea>
                     </div>
                     
@@ -2272,7 +2576,8 @@
             </div>
             
             <div class="form-body">
-                <div class="book-controls" style="margin-bottom: 20px;">
+                
+                <div class="book-controls" style="margin-bottom: 16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
                     <button class="btn btn-primary" onclick="generateFamilyBook()">
                         <i class="fas fa-sync"></i> <span data-i18n="generateBook">توليد كتاب جديد</span>
                     </button>
@@ -2282,11 +2587,34 @@
                     <button class="btn btn-info" onclick="printFamilyBook()">
                         <i class="fas fa-print"></i> <span data-i18n="print">طباعة</span>
                     </button>
+
+                    <div class="book-search" style="display:flex; gap:8px; align-items:center; background: rgba(255,255,255,0.15); padding: 8px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.20);">
+                        <i class="fas fa-search"></i>
+                        <input id="bookSearchInput" class="form-input" style="width: 260px; padding: 8px 10px; border-radius: 999px;" placeholder="بحث سريع داخل كتاب العائلة (اسم/رقم/مكان)..." oninput="searchFamilyBook()" />
+                        <button class="btn btn-secondary" style="padding: 8px 12px;" onclick="clearBookSearch()" title="مسح البحث">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+
+                    <div id="bookOptions" style="margin-right:auto; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                        <div style="display:flex; gap:8px; align-items:center; background: rgba(255,255,255,0.15); padding: 8px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.20);">
+                            <i class="fas fa-palette"></i>
+                            <input id="familyBrandNameInput" class="form-input" style="width: 220px; padding: 8px 10px; border-radius: 999px;" placeholder="اسم العائلة للهوية (مثال: آل عبدالرحمن)" />
+                        </div>
+                        <button class="btn btn-warning" onclick="applyBrandingFromInput()" title="تطبيق هوية بصرية">
+                            <i class="fas fa-feather-alt"></i> تطبيق الهوية
+                        </button>
+                        <button class="btn btn-info" onclick="toggleBookCompact()" title="عرض مضغوط/موسع">
+                            <i class="fas fa-columns"></i> تخطيط
+                        </button>
+                    </div>
+
                     <button class="btn btn-danger" onclick="closeFamilyBook()" style="margin-right: auto;">
                         <i class="fas fa-times"></i> <span data-i18n="close">إغلاق</span>
                     </button>
                 </div>
-                
+
                 <div class="book-preview" id="bookPreview" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
                     </div>
             </div>
@@ -4901,6 +5229,16 @@ const detailHTML = `
                                 </a>
                             </div>
                         `).join('')}
+                        <div style="margin-top:14px; font-size: 16px;">
+                            <a href="#all-people" style="color: #00BCD4; text-decoration: none;">
+                                <i class="fas fa-address-book"></i> قسم: جميع أفراد العائلة (حسب الاسم)
+                            </a>
+                        </div>
+                        <div style="margin-top:14px; font-size: 16px;">
+                            <a href="#appendix-all" style="color: #FF9800; text-decoration: none;">
+                                <i class="fas fa-users"></i> ملحق: جميع أفراد العائلة (ترتيب أبجدي)
+                            </a>
+                        </div>
                     </div>
                     <div style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #eee;">
                         <h3>إحصائيات العائلة</h3>
@@ -4911,7 +5249,45 @@ const detailHTML = `
                 </div>
             `;
             
-            Object.keys(generations).forEach(gen => {
+            
+            // ============================================
+            // قسم: جميع أفراد العائلة (حسب الاسم) — يظهر في بداية الكتاب
+            // ============================================
+            const allPeopleByName = [...familyData].sort((a,b) => (a.FullName||'').localeCompare(b.FullName||'', 'ar'));
+            const perPageAll = 24; // تقسيم تلقائي لصفحات لطباعة أفضل
+            const totalPagesAll = Math.max(1, Math.ceil(allPeopleByName.length / perPageAll));
+
+            for (let pg = 0; pg < totalPagesAll; pg++) {
+                const slice = allPeopleByName.slice(pg * perPageAll, (pg + 1) * perPageAll);
+                bookHTML += `
+                    <div class="book-page">
+                        <h2 ${pg===0 ? 'id="all-people"' : ''} class="generation-title" style="color:#00BCD4;">
+                            <i class="fas fa-address-book"></i> جميع أفراد العائلة (ترتيب أبجدي)
+                            <span style="font-size:14px; color:#777;">— صفحة ${pg+1} من ${totalPagesAll}</span>
+                        </h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px;">
+                            ${slice.map(person => `
+                                <div class="family-member-card book-member-card" onclick="onBookPersonClick(event, ${person.PersonID})"
+                                     data-book-person-id="${person.PersonID}"
+                                     data-book-search="${(person.FullName||'') + ' ' + person.PersonID + ' ' + (person.PlaceOfBirth||'') + ' ' + (person.Notes||'') + ' ' + (person.BirthDate||'') + ' ' + (person.DeathDate||'') }">
+                                    <h4 style="color: ${person.Gender === 'ذكر' ? '#2196F3' : '#E91E63'}; margin-bottom: 10px;">
+                                        <i class="fas fa-${person.Gender === 'ذكر' ? 'male' : 'female'}"></i>
+                                        ${person.FullName}
+                                    </h4>
+                                    <p><strong>رقم:</strong> ${person.PersonID}</p>
+                                    ${person.BirthDate ? `<p><strong><i class="fas fa-star-and-crescent" title="الميلاد"></i> الميلاد:</strong> ${formatDate(person.BirthDate)}</p>` : ''}
+                                    ${person.DeathDate ? `<p><strong><i class="fas fa-kaaba" title="الوفاة"></i> الوفاة:</strong> ${formatDate(person.DeathDate)}</p>` : ''}
+                                    ${person.PlaceOfBirth ? `<p><strong><i class="fas fa-map-marker-alt"></i> المكان:</strong> ${person.PlaceOfBirth}</p>` : ''}
+                                    ${person.SpouseID ? `<p><strong><i class="fas fa-heart"></i> متزوج:</strong> نعم</p>` : ''}
+                                    ${person.Notes ? `<p><strong><i class="fas fa-sticky-note"></i> ملاحظات:</strong> ${person.Notes}</p>` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+Object.keys(generations).forEach(gen => {
                 bookHTML += `
                     <div class="book-page">
                         <h2 id="gen-${gen}" class="generation-title">
@@ -4919,13 +5295,14 @@ const detailHTML = `
                         </h2>
                         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
                             ${generations[gen].map(person => `
-                                <div class="family-member-card">
+                                <div class="family-member-card book-member-card" onclick="onBookPersonClick(event, ${person.PersonID})" data-book-person-id="${person.PersonID}" data-book-search="${(person.FullName||'') + ' ' + person.PersonID + ' ' + (person.PlaceOfBirth||'') + ' ' + (person.Notes||'') + ' ' + (person.BirthDate||'') + ' ' + (person.DeathDate||'') }">
                                     <h4 style="color: ${person.Gender === 'ذكر' ? '#2196F3' : '#E91E63'}; margin-bottom: 10px;">
                                         <i class="fas fa-${person.Gender === 'ذكر' ? 'male' : 'female'}"></i>
                                         ${person.FullName}
                                     </h4>
                                     <p><strong>رقم:</strong> ${person.PersonID}</p>
-                                    ${person.BirthDate ? `<p><strong>الميلاد:</strong> ${formatDate(person.BirthDate)}</p>` : ''}
+                                    ${person.BirthDate ? `<p><strong><i class=\"fas fa-star-and-crescent\" title=\"الميلاد\"></i> الميلاد:</strong> ${formatDate(person.BirthDate)}</p>` : ''}
+                                    ${person.DeathDate ? `<p><strong><i class=\"fas fa-kaaba\" title=\"الوفاة\"></i> الوفاة:</strong> ${formatDate(person.DeathDate)}</p>` : ''}
                                     ${person.PlaceOfBirth ? `<p><strong>المكان:</strong> ${person.PlaceOfBirth}</p>` : ''}
                                     ${person.SpouseID ? `<p><strong>متزوج:</strong> نعم</p>` : ''}
                                     ${person.Notes ? `<p><strong>ملاحظات:</strong> ${person.Notes}</p>` : ''}
@@ -4934,10 +5311,194 @@ const detailHTML = `
                         </div>
                     </div>
                 `;
+            
+
+            // ============================================
+            // ملحق: عرض جميع أفراد العائلة (لضمان الشمول)
+            // ============================================
+            const allPeopleSorted = [...familyData].sort((a,b) => {
+                const an = (a.FullName || '').localeCompare(b.FullName || '', 'ar');
+                if (an !== 0) return an;
+                return a.PersonID - b.PersonID;
             });
+
+            const chunkSize = 42; // مناسب لصفحات A4
+            const totalPages = Math.ceil(allPeopleSorted.length / chunkSize);
+
+            for (let i = 0; i < totalPages; i++) {
+                const chunk = allPeopleSorted.slice(i * chunkSize, (i + 1) * chunkSize);
+                bookHTML += `
+                    <div class="book-page">
+                        <h2 id="appendix-all" class="generation-title">
+                            <i class="fas fa-users"></i> ملحق: جميع أفراد العائلة
+                        </h2>
+                        <p style="margin-top:-8px; color:#666;">صفحة ${i + 1} من ${totalPages} — ترتيب أبجدي</p>
+                        <div style="border:1px solid #eee; border-radius:14px; overflow:hidden;">
+                            <div style="display:grid; grid-template-columns: 70px 1fr 140px 1fr; gap:0; background:#f7f7f7; padding:10px 12px; font-weight:700;">
+                                <div>الرقم</div><div>الاسم</div><div>الميلاد</div><div>المكان</div>
+                            </div>
+                            ${chunk.map(p => `
+                                <div class="book-member-card" data-book-person-id="${p.PersonID}" data-book-search="${(p.FullName||'') + ' ' + p.PersonID + ' ' + (p.PlaceOfBirth||'') + ' ' + (p.Notes||'') + ' ' + (p.BirthDate||'') + ' ' + (p.DeathDate||'') }"
+                                     style="display:grid; grid-template-columns: 70px 1fr 140px 1fr; gap:0; padding:10px 12px; border-top:1px solid #eee;">
+                                    <div style="font-weight:700; color:#2e7d32;">${p.PersonID}</div>
+                                    <div style="font-family:'Amiri',serif; font-size:16px;">${p.FullName || ''}</div>
+                                    <div>${p.BirthDate ? formatDate(p.BirthDate) : '-'}</div>
+                                    <div>${p.PlaceOfBirth || '-'}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+});
             
             document.getElementById('bookPreview').innerHTML = bookHTML;
         }
+
+        // ============================================
+        // بحث سريع داخل كتاب العائلة (اسم/رقم/مكان/ملاحظات)
+        // ============================================
+
+        function normalizeArabic(str) {
+            if (!str) return '';
+            return String(str)
+                .toLowerCase()
+                .replace(/[إأآا]/g, 'ا')
+                .replace(/[ى]/g, 'ي')
+                .replace(/[ؤ]/g, 'و')
+                .replace(/[ئ]/g, 'ي')
+                .replace(/[ة]/g, 'ه')
+                .replace(/[ً-ٰٟ]/g, '') // تشكيل
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        
+        // ============================================
+        // التفاعل داخل كتاب العائلة: تمييز السلالة + الانتقال للشجرة
+        // ============================================
+        function onBookPersonClick(evt, personId) {
+            if (evt) evt.stopPropagation();
+            highlightBookLineage(personId);
+            highlightLineage(personId);
+            const node = document.querySelector(`.tree-node[data-person-id="${personId}"]`);
+            if (node) node.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        }
+
+        function clearBookLineage() {
+            document.querySelectorAll('.book-member-card').forEach(card => {
+                card.classList.remove('book-card-dimmed','book-card-selected','book-card-ancestor','book-card-descendant');
+            });
+        }
+
+        function highlightBookLineage(personId) {
+            clearBookLineage();
+            const cards = Array.from(document.querySelectorAll('.book-member-card'));
+            if (!cards.length) return;
+
+            const ancestors = getAncestors(personId);
+            const descendants = getDescendants(personId);
+
+            cards.forEach(c => c.classList.add('book-card-dimmed'));
+
+            const sel = document.querySelector(`.book-member-card[data-book-person-id="${personId}"]`);
+            if (sel) {
+                sel.classList.remove('book-card-dimmed');
+                sel.classList.add('book-card-selected');
+                sel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            ancestors.forEach(id => {
+                const el = document.querySelector(`.book-member-card[data-book-person-id="${id}"]`);
+                if (el) {
+                    el.classList.remove('book-card-dimmed');
+                    el.classList.add('book-card-ancestor');
+                }
+            });
+
+            descendants.forEach(id => {
+                const el = document.querySelector(`.book-member-card[data-book-person-id="${id}"]`);
+                if (el) {
+                    el.classList.remove('book-card-dimmed');
+                    el.classList.add('book-card-descendant');
+                }
+            });
+        }
+
+
+function clearBookSearch() {
+            const input = document.getElementById('bookSearchInput');
+            if (input) input.value = '';
+            // إزالة الإخفاء والتظليل وإزالة <mark>
+            document.querySelectorAll('.book-member-card').forEach(card => {
+                card.classList.remove('book-hidden', 'book-match');
+                unmarkElement(card);
+            });
+        }
+
+        function unmarkElement(root) {
+            if (!root) return;
+            const marks = root.querySelectorAll('mark.book-mark');
+            marks.forEach(m => {
+                const text = document.createTextNode(m.textContent);
+                m.parentNode.replaceChild(text, m);
+                m.parentNode.normalize();
+            });
+        }
+
+        function markMatchesInElement(root, query) {
+            // تظليل بسيط داخل عنوان الاسم فقط لتجنب تغيير البنية
+            const nameEl = root.querySelector('h4');
+            if (!nameEl) return;
+            unmarkElement(nameEl);
+
+            const text = nameEl.textContent;
+            const normText = normalizeArabic(text);
+            const normQ = normalizeArabic(query);
+            if (!normQ) return;
+
+            // تظليل حسب الموضع في النص الأصلي (تقريبياً)
+            const idx = normText.indexOf(normQ);
+            if (idx === -1) return;
+
+            // fallback: تظليل حرفي (case-insensitive) بدون تعريب كامل
+            const safeQ = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const rx = new RegExp(safeQ, 'gi');
+            nameEl.innerHTML = nameEl.innerHTML.replace(rx, (m) => `<mark class="book-mark">${m}</mark>`);
+        }
+
+        function searchFamilyBook() {
+            const input = document.getElementById('bookSearchInput');
+            const q = input ? input.value : '';
+            const nq = normalizeArabic(q);
+
+            const cards = document.querySelectorAll('.book-member-card');
+            if (!nq) {
+                cards.forEach(card => {
+                    card.classList.remove('book-hidden', 'book-match');
+                    unmarkElement(card);
+                });
+                return;
+            }
+
+            let firstMatch = null;
+            cards.forEach(card => {
+                const hay = normalizeArabic(card.getAttribute('data-book-search') || '');
+                const isMatch = hay.includes(nq);
+                card.classList.toggle('book-hidden', !isMatch);
+                card.classList.toggle('book-match', isMatch);
+
+                if (isMatch && !firstMatch) firstMatch = card;
+                if (isMatch) markMatchesInElement(card, q);
+                else unmarkElement(card);
+            });
+
+            if (firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
 
         function exportFamilyBook() {
             const element = document.getElementById('bookPreview');
@@ -5393,7 +5954,7 @@ const detailHTML = `
             
             return `
                 <div class="tree-node ${person.Gender === 'ذكر' ? 'male' : 'female'} ${isMarried} ${genClass} ${outsiderClass}" 
-                     id="${nodeId}" onclick="viewPerson(${person.PersonID})" data-person-id="${person.PersonID}">
+                     id="${nodeId}" onclick="onTreeNodeClick(event, ${person.PersonID})" data-person-id="${person.PersonID}">
                     ${outsiderBadge}
                     <div class="generation-badge">الجيل ${generation}</div>
                     <div class="node-header">
@@ -5412,6 +5973,118 @@ const detailHTML = `
                 </div>
             `;
         }
+
+        // ============================================
+        // تمييز السلالة (الأسلاف/الأحفاد) عند الضغط
+        // ============================================
+
+        function onTreeNodeClick(evt, personId) {
+            // منع فتح بطاقة الشخص عند الضغط للتظليل فقط
+            if (evt) evt.stopPropagation();
+
+            highlightLineage(personId);
+
+            // فتح تفاصيل الشخص عند الضغط المزدوج أو مع ALT
+            if (evt && (evt.detail >= 2 || evt.altKey)) {
+                viewPerson(personId);
+            }
+        }
+
+        function buildChildrenMap() {
+            const map = new Map();
+            familyData.forEach(p => {
+                const father = p.FatherID || 0;
+                const mother = p.MotherID || 0;
+                if (father) {
+                    if (!map.has(father)) map.set(father, []);
+                    map.get(father).push(p.PersonID);
+                }
+                if (mother) {
+                    if (!map.has(mother)) map.set(mother, []);
+                    map.get(mother).push(p.PersonID);
+                }
+            });
+            return map;
+        }
+
+        function getAncestors(personId, maxDepth = 50) {
+            const ancestors = new Set();
+            const queue = [{ id: personId, depth: 0 }];
+            while (queue.length) {
+                const { id, depth } = queue.shift();
+                if (depth >= maxDepth) continue;
+                const p = familyData.find(x => x.PersonID === id);
+                if (!p) continue;
+                [p.FatherID, p.MotherID].forEach(pid => {
+                    if (pid && pid !== 0 && !ancestors.has(pid)) {
+                        ancestors.add(pid);
+                        queue.push({ id: pid, depth: depth + 1 });
+                    }
+                });
+            }
+            return Array.from(ancestors);
+        }
+
+        function getDescendants(personId, maxDepth = 50) {
+            const descendants = new Set();
+            const childrenMap = buildChildrenMap();
+            const queue = [{ id: personId, depth: 0 }];
+            while (queue.length) {
+                const { id, depth } = queue.shift();
+                if (depth >= maxDepth) continue;
+                const kids = childrenMap.get(id) || [];
+                kids.forEach(kidId => {
+                    if (!descendants.has(kidId)) {
+                        descendants.add(kidId);
+                        queue.push({ id: kidId, depth: depth + 1 });
+                    }
+                });
+            }
+            return Array.from(descendants);
+        }
+
+        function clearLineageHighlight() {
+            document.querySelectorAll('.tree-node').forEach(node => {
+                node.classList.remove('lineage-dimmed', 'lineage-selected', 'lineage-ancestor', 'lineage-descendant');
+            });
+        }
+
+        function highlightLineage(personId) {
+            clearLineageHighlight();
+
+            const selected = document.querySelector(`.tree-node[data-person-id="${personId}"]`);
+            if (!selected) return;
+
+            const ancestors = getAncestors(personId);
+            const descendants = getDescendants(personId);
+
+            // تعتيم الجميع
+            document.querySelectorAll('.tree-node').forEach(node => node.classList.add('lineage-dimmed'));
+
+            // إظهار السلالة
+            selected.classList.remove('lineage-dimmed');
+            selected.classList.add('lineage-selected');
+
+            ancestors.forEach(id => {
+                const el = document.querySelector(`.tree-node[data-person-id="${id}"]`);
+                if (el) {
+                    el.classList.remove('lineage-dimmed');
+                    el.classList.add('lineage-ancestor');
+                }
+            });
+
+            descendants.forEach(id => {
+                const el = document.querySelector(`.tree-node[data-person-id="${id}"]`);
+                if (el) {
+                    el.classList.remove('lineage-dimmed');
+                    el.classList.add('lineage-descendant');
+                }
+            });
+
+            // تمرير لطيف نحو الشخص المحدد
+            selected.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        }
+
 
         function renderChildren(children, nextGen) {
             if (children.length === 0) return '';
@@ -6126,6 +6799,378 @@ const detailHTML = `
         window.onload = function() {
             updateLanguage();
         };
+    
+        /* === Enhanced Book + Smart Suggestions (Injected) === */
+        let bookCompact = false;
+        let lastSmartSuggestion = null;
+
+        function setBrandFamilyName(name){
+            try{
+                const root = document.documentElement;
+                if(name && name.trim()){
+                    root.style.setProperty('--brand-family-name', `"${name.trim()}"`);
+                }
+            }catch(e){}
+        }
+
+        function applyBrandingFromInput(){
+            const inp = document.getElementById('familyBrandNameInput');
+            const val = inp ? inp.value : '';
+            if(val && val.trim()){
+                setBrandFamilyName(val.trim());
+                showSuccess('تم تطبيق الهوية البصرية');
+                // إعادة توليد الكتاب لتظهر الهوية فوراً
+                generateFamilyBook();
+            }else{
+                showWarning('اكتب اسم العائلة أولاً');
+            }
+        }
+
+        function toggleBookCompact(){
+            bookCompact = !bookCompact;
+            generateFamilyBook();
+            showInfo(bookCompact ? 'تم تفعيل التخطيط المضغوط' : 'تم تفعيل التخطيط الموسع');
+        }
+
+        function safeText(v){
+            return (v === null || v === undefined) ? '' : String(v);
+        }
+
+        function getPersonById(id){
+            return familyData.find(p => Number(p.PersonID) === Number(id)) || null;
+        }
+
+        function formatDateDisplay(d){
+            if(!d) return '';
+            try{
+                return new Date(d).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US');
+            }catch(e){ return d; }
+        }
+
+        function computeAge(birthDate){
+            if(!birthDate) return null;
+            try{
+                const bd = new Date(birthDate);
+                if(isNaN(bd.getTime())) return null;
+                const now = new Date();
+                let age = now.getFullYear() - bd.getFullYear();
+                const m = now.getMonth() - bd.getMonth();
+                if(m < 0 || (m === 0 && now.getDate() < bd.getDate())) age--;
+                return age;
+            }catch(e){ return null; }
+        }
+
+        function groupByGeneration(){
+            const map = new Map();
+            familyData.forEach(p=>{
+                const g = calculateGeneration(p.PersonID);
+                if(!map.has(g)) map.set(g, []);
+                map.get(g).push(p);
+            });
+            // sort by generation asc
+            return Array.from(map.entries()).sort((a,b)=>a[0]-b[0]);
+        }
+
+        // ====== Book Preview ======
+        function generateFamilyBook(){
+            const preview = document.getElementById('bookPreview');
+            if(!preview){
+                showError('لم يتم العثور على منطقة المعاينة');
+                return;
+            }
+
+            // هوية افتراضية من عنوان التطبيق إن لم يُكتب اسم عائلة
+            const h1 = document.querySelector('.logo h1');
+            const defaultBrand = h1 ? h1.textContent.trim() : 'كتاب العائلة';
+            const currentVar = getComputedStyle(document.documentElement).getPropertyValue('--brand-family-name') || '';
+            if(!currentVar.trim()){
+                setBrandFamilyName(defaultBrand);
+            }
+
+            // container
+            preview.innerHTML = '';
+            const shell = document.createElement('div');
+            shell.className = 'book-shell';
+            preview.appendChild(shell);
+
+            // Cover
+            const cover = document.createElement('section');
+            cover.className = 'book-page';
+            cover.innerHTML = `
+              <div class="book-watermark"><i class="fas fa-feather-alt"></i> <span>${safeText(getComputedStyle(document.documentElement).getPropertyValue('--brand-family-name')).replace(/"/g,'')}</span></div>
+              <div class="book-cover">
+                <div class="book-title">كتاب العائلة</div>
+                <div class="book-subtitle">نسخة تفاعلية قابلة للطباعة والتصدير</div>
+                <div class="book-badge">
+                  <span style="font-size:18px;">🌿</span>
+                  <span>${safeText(getComputedStyle(document.documentElement).getPropertyValue('--brand-family-name')).replace(/"/g,'')}</span>
+                  <span style="opacity:.75;">—</span>
+                  <span>${new Date().toLocaleDateString(currentLanguage==='ar'?'ar-EG':'en-US')}</span>
+                </div>
+                <div style="margin-top:26px; color:#1B5E20; opacity:.85; font-size:14px; line-height:1.8;">
+                  <div><i class="fas fa-users"></i> إجمالي الأفراد: <b>${familyData.length}</b></div>
+                  <div><i class="fas fa-male"></i> ذكور: <b>${familyData.filter(p=>p.Gender==='ذكر').length}</b> — <i class="fas fa-female"></i> إناث: <b>${familyData.filter(p=>p.Gender==='انثى').length}</b></div>
+                </div>
+              </div>
+            `;
+            shell.appendChild(cover);
+
+            // Pages by generation
+            const generations = groupByGeneration();
+            generations.forEach(([gen, persons])=>{
+                // sort persons by id
+                persons.sort((a,b)=>Number(a.PersonID)-Number(b.PersonID));
+
+                const page = document.createElement('section');
+                page.className = 'book-page';
+                page.innerHTML = `
+                  <div class="book-watermark"><i class="fas fa-tree"></i> <span>${safeText(getComputedStyle(document.documentElement).getPropertyValue('--brand-family-name')).replace(/"/g,'')}</span></div>
+                  <div class="book-generation-title"><i class="fas fa-layer-group"></i> الجيل ${gen}</div>
+                  <div class="book-grid ${bookCompact ? 'compact' : ''}" id="bookGenGrid_${gen}"></div>
+                `;
+                shell.appendChild(page);
+
+                const grid = page.querySelector(`#bookGenGrid_${gen}`);
+                const max = bookCompact ? 16 : 12; // حدّ لمنع ثقل المعاينة
+                persons.slice(0, max).forEach(p=>{
+                    const father = getPersonById(p.FatherID);
+                    const mother = getPersonById(p.MotherID);
+                    const spouse = getPersonById(p.SpouseID);
+
+                    const tag = (p.Gender === 'ذكر') ? 'ذكر' : (p.Gender === 'انثى' ? 'أنثى' : '—');
+                    const age = computeAge(p.BirthDate);
+                    const ageTxt = (age !== null) ? `العمر: ${age}` : '';
+
+                    const card = document.createElement('div');
+                    card.className = 'book-card';
+                    card.innerHTML = `
+                      <div class="tag">${tag} • #${p.PersonID}</div>
+                      <div class="name">${safeText(p.FullName)}</div>
+                      <div class="meta">
+                        ${p.PlaceOfBirth ? `<span><i class="fas fa-map-marker-alt"></i> ${safeText(p.PlaceOfBirth)}</span>` : ''}
+                        ${p.BirthDate ? `<span><i class="fas fa-star-and-crescent"></i> ${formatDateDisplay(p.BirthDate)} ${ageTxt ? `— ${ageTxt}` : ''}</span>` : ''}
+                        ${p.DeathDate ? `<span><i class="fas fa-kaaba"></i> وفاة: ${formatDateDisplay(p.DeathDate)}</span>` : ''}
+                        ${father ? `<span><i class="fas fa-male"></i> الأب: ${safeText(father.FullName)}</span>` : ''}
+                        ${mother ? `<span><i class="fas fa-female"></i> الأم: ${safeText(mother.FullName)}</span>` : ''}
+                        ${spouse ? `<span><i class="fas fa-heart"></i> الزوج/ة: ${safeText(spouse.FullName)}</span>` : ''}
+                        ${p.Notes ? `<span><i class="fas fa-sticky-note"></i> ${safeText(p.Notes)}</span>` : ''}
+                      </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+                if(persons.length > (bookCompact ? 16 : 12)){
+                    const more = document.createElement('div');
+                    more.className = 'book-card';
+                    more.style.textAlign = 'center';
+                    more.style.padding = '18px';
+                    more.innerHTML = `<div style="color:#2E7D32; font-weight:700;"><i class="fas fa-ellipsis-h"></i> يوجد ${persons.length - (bookCompact ? 16 : 12)} فرد إضافي في هذا الجيل</div>
+                                      <div style="margin-top:8px; font-size:12px; color:#689f38;">للعرض الكامل استخدم تصدير Excel أو عرض الشجرة</div>`;
+                    grid.appendChild(more);
+                }
+            });
+
+            showSuccess('تم توليد كتاب العائلة بنجاح');
+        }
+
+        
+        // (ملاحظة): تم توحيد دالة تصدير PDF في الأعلى.
+
+function printFamilyBook(){
+            const modal = document.getElementById('familyBookModal');
+            if(!modal) return;
+            window.print();
+        }
+
+        // ====== Smart Relationship Suggestions ======
+        function tokenizeName(name){
+            return safeText(name).trim().split(/\s+/).filter(Boolean);
+        }
+
+        function lastNameToken(name){
+            const t = tokenizeName(name);
+            return t.length ? t[t.length-1] : '';
+        }
+
+        function birthYear(dateStr){
+            if(!dateStr) return null;
+            const d = new Date(dateStr);
+            if(isNaN(d.getTime())) return null;
+            return d.getFullYear();
+        }
+
+        function scoreParentCandidate(child, cand, role){
+            // role: 'father'/'mother'
+            let score = 0;
+
+            // النوع
+            if(role === 'father' && cand.Gender === 'ذكر') score += 30;
+            if(role === 'mother' && cand.Gender === 'انثى') score += 30;
+
+            // نفس اللقب الأخير
+            const childLast = lastNameToken(child.FullName);
+            const candLast = lastNameToken(cand.FullName);
+            if(childLast && candLast && childLast === candLast) score += 18;
+
+            // فارق العمر (إن توفر)
+            const cy = birthYear(child.BirthDate);
+            const py = birthYear(cand.BirthDate);
+            if(cy && py){
+                const diff = cy - py;
+                if(diff >= 12 && diff <= 55) score += 22;
+                if(diff >= 20 && diff <= 45) score += 10;
+                if(diff < 10) score -= 40;
+            }
+
+            // قرب الجيل
+            try{
+                const cg = calculateGeneration(child.PersonID || 0) || 0;
+                const pg = calculateGeneration(cand.PersonID) || 0;
+                const gd = Math.abs((cg-1) - pg);
+                score += Math.max(0, 14 - gd*6);
+            }catch(e){}
+
+            // ملاحظة: جذور العائلة عادة الأعلى
+            if(cand.FatherID === 0 && cand.MotherID === 0) score += 6;
+
+            return score;
+        }
+
+        function computeSmartSuggestionsFromForm(){
+            const fullName = document.getElementById('fullName')?.value || '';
+            const birthDate = document.getElementById('birthDate')?.value || '';
+            const gender = document.getElementById('gender')?.value || '';
+            if(!fullName.trim() || familyData.length === 0){
+                lastSmartSuggestion = null;
+                updateSuggestSummary();
+                return null;
+            }
+
+            // child "virtual" object (قبل الحفظ)
+            const tempChild = {
+                PersonID: Number(document.getElementById('personId')?.value || 0) || 0,
+                FullName: fullName.trim(),
+                BirthDate: birthDate || '',
+                Gender: gender || ''
+            };
+
+            // أفضل الأب/الأم حسب السكور
+            const fatherCandidates = familyData.filter(p=>p.Gender==='ذكر' && Number(p.PersonID)!==tempChild.PersonID);
+            const motherCandidates = familyData.filter(p=>p.Gender==='انثى' && Number(p.PersonID)!==tempChild.PersonID);
+
+            let bestFather = null, bestFatherScore = -1e9;
+            fatherCandidates.forEach(c=>{
+                const sc = scoreParentCandidate(tempChild, c, 'father');
+                if(sc > bestFatherScore){
+                    bestFatherScore = sc;
+                    bestFather = c;
+                }
+            });
+
+            let bestMother = null, bestMotherScore = -1e9;
+            motherCandidates.forEach(c=>{
+                const sc = scoreParentCandidate(tempChild, c, 'mother');
+                if(sc > bestMotherScore){
+                    bestMotherScore = sc;
+                    bestMother = c;
+                }
+            });
+
+            // اقتراح الزوج/الزوجة: إذا تم اختيار الأب/الأم لاحقاً سنقترح شدةً أكثر
+            lastSmartSuggestion = {
+                father: bestFather && bestFatherScore > 25 ? { id: bestFather.PersonID, name: bestFather.FullName, score: bestFatherScore } : null,
+                mother: bestMother && bestMotherScore > 25 ? { id: bestMother.PersonID, name: bestMother.FullName, score: bestMotherScore } : null,
+                reasons: []
+            };
+
+            // أسباب مبسطة
+            const ln = lastNameToken(tempChild.FullName);
+            if(ln) lastSmartSuggestion.reasons.push(`تم استخدام تشابه الاسم الأخير: "${ln}"`);
+            if(birthDate) lastSmartSuggestion.reasons.push('تم استخدام تاريخ الميلاد لحساب ملاءمة فارق العمر');
+            lastSmartSuggestion.reasons.push('تم استخدام الجنس وقرب الجيل كعوامل إضافية');
+
+            updateSuggestSummary();
+            return lastSmartSuggestion;
+        }
+
+        function updateSuggestSummary(){
+            const el = document.getElementById('suggestSummary');
+            if(!el) return;
+            if(!lastSmartSuggestion){
+                el.textContent = '—';
+                return;
+            }
+            const parts = [];
+            if(lastSmartSuggestion.father) parts.push(`أب: ${lastSmartSuggestion.father.name} (#${lastSmartSuggestion.father.id})`);
+            if(lastSmartSuggestion.mother) parts.push(`أم: ${lastSmartSuggestion.mother.name} (#${lastSmartSuggestion.mother.id})`);
+            el.textContent = parts.length ? parts.join(' | ') : 'لا توجد اقتراحات قوية حالياً';
+        }
+
+        function applySmartSuggestions(){
+            if(!lastSmartSuggestion){
+                showInfo('لا توجد اقتراحات لتطبيقها');
+                return;
+            }
+            const fatherSel = document.getElementById('fatherId');
+            const motherSel = document.getElementById('motherId');
+
+            if(lastSmartSuggestion.father && fatherSel){
+                fatherSel.value = String(lastSmartSuggestion.father.id);
+            }
+            if(lastSmartSuggestion.mother && motherSel){
+                motherSel.value = String(lastSmartSuggestion.mother.id);
+            }
+
+            // لو تم اختيار الأب، اقترح الأم من زوجته إن وجدت
+            try{
+                if(fatherSel && Number(fatherSel.value) > 0){
+                    const f = getPersonById(Number(fatherSel.value));
+                    if(f && f.SpouseID && Number(f.SpouseID) > 0 && motherSel){
+                        const m = getPersonById(Number(f.SpouseID));
+                        if(m && m.Gender === 'انثى'){
+                            motherSel.value = String(m.PersonID);
+                        }
+                    }
+                }
+            }catch(e){}
+
+            showSuccess('تم تطبيق الاقتراحات');
+        }
+
+        function clearSmartSuggestions(){
+            lastSmartSuggestion = null;
+            updateSuggestSummary();
+            showInfo('تم مسح الاقتراحات');
+        }
+
+        function showWhySuggestion(){
+            if(!lastSmartSuggestion){
+                alert('لا توجد اقتراحات حالياً.');
+                return;
+            }
+            const lines = [];
+            if(lastSmartSuggestion.father) lines.push(`اقتراح الأب: ${lastSmartSuggestion.father.name} (Score: ${Math.round(lastSmartSuggestion.father.score)})`);
+            if(lastSmartSuggestion.mother) lines.push(`اقتراح الأم: ${lastSmartSuggestion.mother.name} (Score: ${Math.round(lastSmartSuggestion.mother.score)})`);
+            lines.push('');
+            lines.push('الأسباب:');
+            (lastSmartSuggestion.reasons || []).forEach(r=>lines.push('- ' + r));
+            alert(lines.join('\n'));
+        }
+
+        // Hook form inputs (بدون كسر أي منطق سابق)
+        (function attachSmartSuggestListeners(){
+            const safeBind = () => {
+                const fn = document.getElementById('fullName');
+                const bd = document.getElementById('birthDate');
+                const gen = document.getElementById('gender');
+                if(fn){ fn.addEventListener('input', ()=>computeSmartSuggestionsFromForm()); }
+                if(bd){ bd.addEventListener('change', ()=>computeSmartSuggestionsFromForm()); }
+                if(gen){ gen.addEventListener('change', ()=>computeSmartSuggestionsFromForm()); }
+            };
+            // تأخير بسيط لضمان وجود العناصر عند فتح المودال
+            setTimeout(safeBind, 500);
+        })();
+
     </script>
 </body>
 </html>
