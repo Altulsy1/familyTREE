@@ -34,6 +34,12 @@
             --generation-3: #43A047;
             --generation-4: #66BB6A;
             --generation-5: #81C784;
+            --generation-1-bg: #E8F5E9;
+            --generation-2-bg: #E3F2FD;
+            --generation-3-bg: #FFF8E1;
+            --generation-4-bg: #F3E5F5;
+            --generation-5-bg: #E0F7FA;
+            
             --light-green: #C8E6C9;
             --medium-green: #A5D6A7;
             --dark-green: #388E3C;
@@ -1026,13 +1032,45 @@
             background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
         }
         
-        .tree-node.gen-1 { border-color: var(--generation-1); }
-        .tree-node.gen-2 { border-color: var(--generation-2); }
-        .tree-node.gen-3 { border-color: var(--generation-3); }
-        .tree-node.gen-4 { border-color: var(--generation-4); }
-        .tree-node.gen-5 { border-color: var(--generation-5); }
         
-        .node-header {
+        .tree-node.outsider {
+            border: 2px dashed #6A1B9A;
+            border-top-width: 4px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f0ff 100%);
+        }
+
+        .tree-node.outsider .generation-badge {
+            background: #6A1B9A;
+        }
+
+        .outsider-badge {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            background: #6A1B9A;
+            color: white;
+            font-size: 10px;
+            padding: 3px 6px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 5;
+        }
+.tree-node.gen-1 { border-color: var(--generation-1); background: var(--generation-1-bg); }
+        .tree-node.gen-2 { border-color: var(--generation-2); background: var(--generation-2-bg); }
+        .tree-node.gen-3 { border-color: var(--generation-3); background: var(--generation-3-bg); }
+        .tree-node.gen-4 { border-color: var(--generation-4); background: var(--generation-4-bg); }
+        .tree-node.gen-5 { border-color: var(--generation-5); background: var(--generation-5-bg); }
+
+        /* تلوين بادج الجيل بحسب الجيل */
+        .tree-node.gen-1 .generation-badge { background: var(--generation-1); color: #fff; }
+        .tree-node.gen-2 .generation-badge { background: var(--generation-2); color: #fff; }
+        .tree-node.gen-3 .generation-badge { background: var(--generation-3); color: #fff; }
+        .tree-node.gen-4 .generation-badge { background: var(--generation-4); color: #fff; }
+        .tree-node.gen-5 .generation-badge { background: var(--generation-5); color: #fff; }
+.node-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -3436,7 +3474,7 @@
                         total: familyData.length,
                         males: familyData.filter(p => p.Gender === 'ذكر').length,
                         females: familyData.filter(p => p.Gender === 'انثى').length,
-                        families: familyData.filter(p => p.FatherID === 0).length
+                        families: familyData.filter(p => (p.FatherID === 0 && p.MotherID === 0 && !isOutsideFamily(p.PersonID))).length
                     }
                 };
                 
@@ -4708,11 +4746,12 @@
             const spouse = familyData.find(p => p.PersonID === person.SpouseID);
             const children = familyData.filter(p => p.FatherID === personId || p.MotherID === personId);
             const siblings = familyData.filter(p => 
-                (p.FatherID === person.FatherID || p.MotherID === person.MotherID) && 
-                p.PersonID !== personId
+                p.PersonID !== personId && (
+                    (person.FatherID && person.FatherID !== 0 && p.FatherID === person.FatherID) ||
+                    (person.MotherID && person.MotherID !== 0 && p.MotherID === person.MotherID)
+                )
             );
-            
-            const detailHTML = `
+const detailHTML = `
                 <div class="person-header">
                     <div class="person-avatar">
                         <i class="fas fa-${person.Gender === 'ذكر' ? 'male' : 'female'}"></i>
@@ -5241,18 +5280,74 @@
             if (currentTreeSearch) searchInTree();
         }
 
+        
+        // ============================================
+        // منطق محسن لحساب الأجيال + تمييز المنتمين بالنسب (من خارج العائلة)
+        // ============================================
+
+        function getSpouseById(personId) {
+            const person = familyData.find(p => p.PersonID === personId);
+            if (!person) return null;
+
+            // دعم الاتجاهين: (SpouseID على الشخص) أو (SpouseID على الطرف الآخر)
+            let spouse = null;
+            if (person.SpouseID && person.SpouseID !== 0) {
+                spouse = familyData.find(p => p.PersonID === person.SpouseID) || null;
+            }
+            if (!spouse) {
+                spouse = familyData.find(p => p.SpouseID === personId) || null;
+            }
+            return spouse;
+        }
+
+        function isOutsideFamily(personId, visited = new Set()) {
+            if (visited.has(personId)) return false;
+            visited.add(personId);
+
+            const person = familyData.find(p => p.PersonID === personId);
+            if (!person) return false;
+
+            const noParents = (person.FatherID === 0 && person.MotherID === 0);
+            if (!noParents) return false;
+
+            const spouse = getSpouseById(personId);
+            if (!spouse) return false;
+
+            // إذا كان/كانت الزوج/الزوجة له/لها جذور داخل العائلة (أب/أم) أو يمكن إرجاعه لجيل أكبر من 1
+            const spouseHasParents = (spouse.FatherID !== 0 || spouse.MotherID !== 0);
+            if (spouseHasParents) return true;
+
+            // أو إذا كان الزوج نفسه/نفسها متصل بسلسلة نسب داخل العائلة عبر زوج/أبناء إلخ
+            // (احتياطي لمنع الحالات غير المكتملة في البيانات)
+            const spouseGen = calculateGeneration(spouse.PersonID, new Set(visited));
+            return spouseGen > 1;
+        }
+
         function calculateGeneration(personId, visited = new Set()) {
             if (visited.has(personId)) return 0;
             visited.add(personId);
-            
+
             const person = familyData.find(p => p.PersonID === personId);
             if (!person) return 0;
-            
-            if (person.FatherID === 0 && person.MotherID === 0) return 1;
-            
+
+            const noParents = (person.FatherID === 0 && person.MotherID === 0);
+
+            // تصحيح المشكلة: الأشخاص من خارج العائلة (منسوبين بالنسب) لا يُعتبرون جذوراً.
+            // نعطيهم نفس جيل الزوج/الزوجة بدل جيل 1.
+            if (noParents) {
+                const spouse = getSpouseById(personId);
+                if (spouse) {
+                    const spouseHasParents = (spouse.FatherID !== 0 || spouse.MotherID !== 0);
+                    if (spouseHasParents) {
+                        return calculateGeneration(spouse.PersonID, visited);
+                    }
+                }
+                return 1;
+            }
+
             const fatherGen = person.FatherID ? calculateGeneration(person.FatherID, visited) : 0;
             const motherGen = person.MotherID ? calculateGeneration(person.MotherID, visited) : 0;
-            
+
             return Math.max(fatherGen, motherGen) + 1;
         }
 
@@ -5261,18 +5356,18 @@
             const sortedData = [...familyData].sort((a, b) => {
                 return currentSortOrder === 'asc' ? a.PersonID - b.PersonID : b.PersonID - a.PersonID;
             });
-            
+
             sortedData.forEach(person => {
                 const gen = calculateGeneration(person.PersonID);
                 if (!generations[gen]) generations[gen] = [];
                 generations[gen].push(person);
             });
-            
+
             const sortedGenerations = {};
             Object.keys(generations).sort((a, b) => a - b).forEach(key => {
                 sortedGenerations[key] = generations[key];
             });
-            
+
             return sortedGenerations;
         }
 
@@ -5281,20 +5376,23 @@
         }
 
         function findSpouse(personId) {
-            return familyData.find(p => p.SpouseID === personId);
-        }
-
-        function renderPersonCard(person) {
+            return getSpouseById(personId);
+        }        function renderPersonCard(person) {
             const spouse = findSpouse(person.PersonID);
             const isMarried = spouse ? 'married' : '';
             const genClass = `gen-${Math.min(calculateGeneration(person.PersonID), 5)}`;
             const generation = calculateGeneration(person.PersonID);
+            const outsider = isOutsideFamily(person.PersonID);
+            const outsiderClass = outsider ? 'outsider' : '';
+            const outsiderBadge = outsider ? `<div class="outsider-badge" title="من خارج العائلة (نسب)"><i class="fas fa-link"></i> نسب</div>` : '';
+
             
             const nodeId = `tree-node-${person.PersonID}`;
             
             return `
-                <div class="tree-node ${person.Gender === 'ذكر' ? 'male' : 'female'} ${isMarried} ${genClass}" 
+                <div class="tree-node ${person.Gender === 'ذكر' ? 'male' : 'female'} ${isMarried} ${genClass} ${outsiderClass}" 
                      id="${nodeId}" onclick="viewPerson(${person.PersonID})" data-person-id="${person.PersonID}">
+                    ${outsiderBadge}
                     <div class="generation-badge">الجيل ${generation}</div>
                     <div class="node-header">
                         <div class="node-id">${person.PersonID}</div>
@@ -5802,7 +5900,7 @@
             const total = familyData.length;
             const males = familyData.filter(p => p.Gender === 'ذكر').length;
             const females = familyData.filter(p => p.Gender === 'انثى').length;
-            const families = familyData.filter(p => p.FatherID === 0).length;
+            const families = familyData.filter(p => (p.FatherID === 0 && p.MotherID === 0 && !isOutsideFamily(p.PersonID))).length;
             
             document.getElementById('totalPersons').textContent = total;
             document.getElementById('maleCount').textContent = males;
