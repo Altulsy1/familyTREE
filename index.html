@@ -2105,6 +2105,97 @@
             padding: 0 3px;
             border-radius: 6px;
         }
+
+        /* =========================
+           أنماط إضافية لكتاب العائلة المحسن
+           ========================= */
+        .book-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(27, 94, 32, 0.1);
+        }
+        
+        .book-card-id {
+            background: #f1f8e9;
+            color: #689f38;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        
+        .book-card-gender {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .book-card-gender.male {
+            background: #e3f2fd;
+            color: #2196F3;
+        }
+        
+        .book-card-gender.female {
+            background: #fce4ec;
+            color: #E91E63;
+        }
+        
+        .book-card-name {
+            color: #1B5E20;
+            font-size: 18px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            font-family: 'Amiri', serif;
+        }
+        
+        .book-card-details {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .book-card-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        
+        .book-card-detail i {
+            color: #4CAF50;
+            min-width: 18px;
+            margin-top: 2px;
+        }
+        
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .book-grid.compact {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        
+        @media print {
+            .book-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 15px !important;
+            }
+            
+            .book-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+        }
 </style>
 </head>
 <body>
@@ -5188,364 +5279,256 @@ const detailHTML = `
             document.body.innerHTML = originalContent;
             location.reload();
         }
-// ============================================
-// دوال كتاب العائلة المحسنة
-// ============================================
 
-function generateFamilyBook() {
-    const preview = document.getElementById('bookPreview');
-    if (!preview) {
-        showError('لم يتم العثور على منطقة المعاينة');
-        return;
-    }
+        // ============================================
+        // دوال كتاب العائلة المحسنة
+        // ============================================
 
-    preview.innerHTML = '';
-    const shell = document.createElement('div');
-    shell.className = 'book-shell';
-    preview.appendChild(shell);
+        function showFamilyBook() {
+            document.getElementById('familyBookModal').classList.add('active');
+            generateFamilyBook();
+        }
 
-    // الصفحة الأولى: الغلاف
-    const cover = document.createElement('section');
-    cover.className = 'book-page book-cover';
-    cover.innerHTML = `
-        <div class="book-watermark">
-            <i class="fas fa-feather-alt"></i>
-            <span>شجرة عائلة محمد عبدالرحمن</span>
-        </div>
-        <div class="book-cover">
-            <h1 class="book-title">📘 كتاب العائلة</h1>
-            <h2 class="book-subtitle">عائلة محمد عبدالرحمن (أبا)</h2>
-            <div style="margin-top: 100px;">
-                <p>تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG')}</p>
-                <p>عدد الأفراد: ${familyData.length}</p>
-                <p>عدد الأجيال: ${new Set(familyData.map(p => calculateGeneration(p.PersonID))).size}</p>
-            </div>
-            <div class="book-badge">
-                <span style="font-size: 20px;">🌳</span>
-                <span>نسخة شاملة لكل الأفراد</span>
-            </div>
-        </div>
-    `;
-    shell.appendChild(cover);
+        function closeFamilyBook() {
+            document.getElementById('familyBookModal').classList.remove('active');
+        }
 
-    // الصفحة الثانية: الفهرس
-    const indexPage = document.createElement('section');
-    indexPage.className = 'book-page';
-    indexPage.innerHTML = `
-        <div class="book-watermark">
-            <i class="fas fa-list"></i>
-            <span>فهرس المحتويات</span>
-        </div>
-        <h2 style="text-align: center; margin-bottom: 30px;">📑 فهرس المحتويات</h2>
-        <div style="margin-right: 50px;">
-            ${Object.entries(organizeByGeneration()).map(([gen, persons]) => `
-                <div style="margin-bottom: 10px; font-size: 16px;">
-                    <a href="#gen-${gen}" style="color: #4CAF50; text-decoration: none;">
-                        <i class="fas fa-layer-group"></i> الجيل ${gen} - ${persons.length} فرد
-                    </a>
-                </div>
-            `).join('')}
-            <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee;">
-                <h3>إحصائيات العائلة</h3>
-                <p><i class="fas fa-users"></i> إجمالي الأفراد: <b>${familyData.length}</b></p>
-                <p><i class="fas fa-male"></i> عدد الذكور: <b>${familyData.filter(p => p.Gender === 'ذكر').length}</b></p>
-                <p><i class="fas fa-female"></i> عدد الإناث: <b>${familyData.filter(p => p.Gender === 'انثى').length}</b></p>
-                <p><i class="fas fa-heart"></i> عدد المتزوجين: <b>${familyData.filter(p => p.SpouseID !== 0).length}</b></p>
-                <p><i class="fas fa-home"></i> عدد العائلات: <b>${familyData.filter(p => p.FatherID === 0 && p.MotherID === 0 && !isOutsideFamily(p.PersonID)).length}</b></p>
-            </div>
-        </div>
-    `;
-    shell.appendChild(indexPage);
+        function generateFamilyBook() {
+            const preview = document.getElementById('bookPreview');
+            if (!preview) {
+                showError('لم يتم العثور على منطقة المعاينة');
+                return;
+            }
 
-    // صفحات الأجيال مع تقسيم إلى صفحات متعددة لكل جيل
-    const generations = organizeByGeneration();
-    const ITEMS_PER_PAGE = 12; // 12 فرد في كل صفحة
+            preview.innerHTML = '';
+            const shell = document.createElement('div');
+            shell.className = 'book-shell';
+            preview.appendChild(shell);
 
-    Object.keys(generations).forEach(genKey => {
-        const personsInGeneration = generations[genKey];
-        const totalPages = Math.ceil(personsInGeneration.length / ITEMS_PER_PAGE);
-        
-        for (let pageNum = 0; pageNum < totalPages; pageNum++) {
-            const startIdx = pageNum * ITEMS_PER_PAGE;
-            const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, personsInGeneration.length);
-            const pagePersons = personsInGeneration.slice(startIdx, endIdx);
-            
-            const pageSuffix = totalPages > 1 ? ` (صفحة ${pageNum + 1} من ${totalPages})` : '';
-            
-            const page = document.createElement('section');
-            page.className = 'book-page';
-            page.id = `gen-${genKey}-page-${pageNum}`;
-            page.innerHTML = `
+            // الصفحة الأولى: الغلاف
+            const cover = document.createElement('section');
+            cover.className = 'book-page book-cover';
+            cover.innerHTML = `
                 <div class="book-watermark">
-                    <i class="fas fa-tree"></i>
-                    <span>الجيل ${genKey}</span>
+                    <i class="fas fa-feather-alt"></i>
+                    <span>شجرة عائلة محمد عبدالرحمن</span>
                 </div>
-                <h2 class="book-generation-title">
-                    <i class="fas fa-layer-group"></i> 
-                    الجيل ${genKey}${pageSuffix}
-                    <span style="font-size: 14px; color: #666; margin-right: 10px;">
-                        (الأفراد ${startIdx + 1} - ${endIdx} من ${personsInGeneration.length})
-                    </span>
-                </h2>
-                <div class="book-grid ${bookCompact ? 'compact' : ''}">
-                    ${pagePersons.map(person => renderBookPersonCard(person)).join('')}
+                <div class="book-cover">
+                    <h1 class="book-title">📘 كتاب العائلة</h1>
+                    <h2 class="book-subtitle">عائلة محمد عبدالرحمن (أبا)</h2>
+                    <div style="margin-top: 100px;">
+                        <p>تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG')}</p>
+                        <p>عدد الأفراد: ${familyData.length}</p>
+                        <p>عدد الأجيال: ${new Set(familyData.map(p => calculateGeneration(p.PersonID))).size}</p>
+                    </div>
+                    <div class="book-badge">
+                        <span style="font-size: 20px;">🌳</span>
+                        <span>نسخة شاملة لكل الأفراد</span>
+                    </div>
                 </div>
             `;
-            
-            if (pageNum === 0) {
-                page.id = `gen-${genKey}`;
-            }
-            
-            shell.appendChild(page);
-        }
-    });
+            shell.appendChild(cover);
 
-    // صفحة إضافية: جميع الأفراد مرتبين أبجدياً (اختياري)
-    if (familyData.length > 0) {
-        const allPersonsPage = document.createElement('section');
-        allPersonsPage.className = 'book-page';
-        allPersonsPage.id = 'all-persons-index';
-        allPersonsPage.innerHTML = `
-            <div class="book-watermark">
-                <i class="fas fa-address-book"></i>
-                <span>فهرس جميع الأفراد</span>
-            </div>
-            <h2 class="book-generation-title" style="color: #2196F3;">
-                <i class="fas fa-address-book"></i>
-                فهرس جميع الأفراد (مرتب أبجدياً)
-            </h2>
-            <div style="columns: 2; column-gap: 40px;">
-                ${[...familyData]
-                    .sort((a, b) => a.FullName.localeCompare(b.FullName, 'ar'))
-                    .map(person => `
-                        <div style="margin-bottom: 8px; page-break-inside: avoid;">
-                            <a href="#gen-${calculateGeneration(person.PersonID)}" 
-                               style="color: ${person.Gender === 'ذكر' ? '#2196F3' : '#E91E63'}; text-decoration: none;"
-                               onclick="scrollToGenerationInBook(${person.PersonID})">
-                                <i class="fas fa-${person.Gender === 'ذكر' ? 'male' : 'female'}"></i>
-                                ${person.FullName} (رقم: ${person.PersonID})
+            // الصفحة الثانية: الفهرس
+            const indexPage = document.createElement('section');
+            indexPage.className = 'book-page';
+            indexPage.innerHTML = `
+                <div class="book-watermark">
+                    <i class="fas fa-list"></i>
+                    <span>فهرس المحتويات</span>
+                </div>
+                <h2 style="text-align: center; margin-bottom: 30px;">📑 فهرس المحتويات</h2>
+                <div style="margin-right: 50px;">
+                    ${Object.entries(organizeByGeneration()).map(([gen, persons]) => `
+                        <div style="margin-bottom: 10px; font-size: 16px;">
+                            <a href="#gen-${gen}" style="color: #4CAF50; text-decoration: none;">
+                                <i class="fas fa-layer-group"></i> الجيل ${gen} - ${persons.length} فرد
                             </a>
                         </div>
                     `).join('')}
-            </div>
-        `;
-        shell.appendChild(allPersonsPage);
-    }
-
-    showSuccess(`تم إنشاء كتاب العائلة بنجاح يحتوي على ${Object.keys(generations).length} جيل${Object.keys(generations).length > 1 ? 'ات' : ''}`);
-}
-
-// دالة مساعدة لعرض بطاقة الفرد في الكتاب
-function renderBookPersonCard(person) {
-    const father = familyData.find(p => p.PersonID === person.FatherID);
-    const mother = familyData.find(p => p.PersonID === person.MotherID);
-    const spouse = familyData.find(p => p.PersonID === person.SpouseID);
-    const children = familyData.filter(p => p.FatherID === person.PersonID || p.MotherID === person.PersonID);
-    
-    const age = computeAge(person.BirthDate);
-    
-    return `
-        <div class="book-card book-member-card" 
-             onclick="highlightBookLineage(${person.PersonID})" 
-             data-book-person-id="${person.PersonID}"
-             data-book-search="${person.FullName || ''} ${person.PersonID} ${person.PlaceOfBirth || ''} ${person.Notes || ''} ${person.BirthDate || ''} ${person.DeathDate || ''}">
-            
-            <div class="book-card-header">
-                <div class="book-card-id">#${person.PersonID}</div>
-                <div class="book-card-gender ${person.Gender === 'ذكر' ? 'male' : 'female'}">
-                    ${person.Gender === 'ذكر' ? 'ذكر' : 'أنثى'}
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee;">
+                        <h3>إحصائيات العائلة</h3>
+                        <p><i class="fas fa-users"></i> إجمالي الأفراد: <b>${familyData.length}</b></p>
+                        <p><i class="fas fa-male"></i> عدد الذكور: <b>${familyData.filter(p => p.Gender === 'ذكر').length}</b></p>
+                        <p><i class="fas fa-female"></i> عدد الإناث: <b>${familyData.filter(p => p.Gender === 'انثى').length}</b></p>
+                        <p><i class="fas fa-heart"></i> عدد المتزوجين: <b>${familyData.filter(p => p.SpouseID !== 0).length}</b></p>
+                        <p><i class="fas fa-home"></i> عدد العائلات: <b>${familyData.filter(p => p.FatherID === 0 && p.MotherID === 0 && !isOutsideFamily(p.PersonID)).length}</b></p>
+                    </div>
                 </div>
-            </div>
-            
-            <h3 class="book-card-name">${person.FullName}</h3>
-            
-            <div class="book-card-details">
-                ${person.BirthDate ? `
-                    <div class="book-card-detail">
-                        <i class="fas fa-star-and-crescent"></i>
-                        <span>المولد: ${formatDateDisplay(person.BirthDate)} ${age ? `(${age} سنة)` : ''}</span>
-                    </div>
-                ` : ''}
-                
-                ${person.DeathDate ? `
-                    <div class="book-card-detail">
-                        <i class="fas fa-kaaba"></i>
-                        <span>الوفاة: ${formatDateDisplay(person.DeathDate)}</span>
-                    </div>
-                ` : ''}
-                
-                ${person.PlaceOfBirth ? `
-                    <div class="book-card-detail">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>${person.PlaceOfBirth}</span>
-                    </div>
-                ` : ''}
-                
-                ${father ? `
-                    <div class="book-card-detail">
-                        <i class="fas fa-male"></i>
-                        <span>الأب: ${father.FullName}</span>
-                    </div>
-                ` : ''}
-                
-                ${mother ? `
-                    <div class="book-card-detail">
-                        <i class="fas fa-female"></i>
-                        <span>الأم: ${mother.FullName}</span>
-                    </div>
-                ` : ''}
-                
-                ${spouse ? `
-                    <div class="book-card-detail">
-                        <i class="fas fa-heart"></i>
-                        <span>الزوج/الزوجة: ${spouse.FullName}</span>
-                    </div>
-                ` : ''}
-                
-                ${children.length > 0 ? `
-                    <div class="book-card-detail">
-                        <i class="fas fa-child"></i>
-                        <span>الأبناء: ${children.length} فرد</span>
-                    </div>
-                ` : ''}
-                
-                ${person.Notes ? `
-                    <div class="book-card-detail">
-                        <i class="fas fa-sticky-note"></i>
-                        <span>${person.Notes}</span>
-                    </div>
-                ` : ''}
-            </div>
-        </div>
-    `;
-}
+            `;
+            shell.appendChild(indexPage);
 
-// دالة للانتقال إلى الجيل في الكتاب
-function scrollToGenerationInBook(personId) {
-    const generation = calculateGeneration(personId);
-    const genElement = document.getElementById(`gen-${generation}`);
-    if (genElement) {
-        genElement.scrollIntoView({ behavior: 'smooth' });
-        highlightBookLineage(personId);
-    }
-}
+            // صفحات الأجيال مع تقسيم إلى صفحات متعددة لكل جيل
+            const generations = organizeByGeneration();
+            const ITEMS_PER_PAGE = 12; // 12 فرد في كل صفحة
 
-// إضافة CSS إضافي لتحسين عرض البطاقات
-const additionalStyles = `
-    .book-card {
-        background: white;
-        border: 1px solid rgba(27, 94, 32, 0.1);
-        border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 16px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
-    
-    .book-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-    
-    .book-card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 12px;
-        padding-bottom: 8px;
-        border-bottom: 1px solid rgba(27, 94, 32, 0.1);
-    }
-    
-    .book-card-id {
-        background: #f1f8e9;
-        color: #689f38;
-        font-size: 12px;
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-weight: bold;
-    }
-    
-    .book-card-gender {
-        font-size: 12px;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-weight: bold;
-    }
-    
-    .book-card-gender.male {
-        background: #e3f2fd;
-        color: #2196F3;
-    }
-    
-    .book-card-gender.female {
-        background: #fce4ec;
-        color: #E91E63;
-    }
-    
-    .book-card-name {
-        color: #1B5E20;
-        font-size: 18px;
-        margin-bottom: 12px;
-        line-height: 1.4;
-        font-family: 'Amiri', serif;
-    }
-    
-    .book-card-details {
-        font-size: 13px;
-        color: #555;
-        line-height: 1.5;
-    }
-    
-    .book-card-detail {
-        display: flex;
-        align-items: flex-start;
-        gap: 8px;
-        margin-bottom: 6px;
-    }
-    
-    .book-card-detail i {
-        color: #4CAF50;
-        min-width: 18px;
-        margin-top: 2px;
-    }
-    
-    .book-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 20px;
-        margin-top: 20px;
-    }
-    
-    .book-grid.compact {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 16px;
-    }
-    
-    @media print {
-        .book-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 15px !important;
+            Object.keys(generations).forEach(genKey => {
+                const personsInGeneration = generations[genKey];
+                const totalPages = Math.ceil(personsInGeneration.length / ITEMS_PER_PAGE);
+                
+                for (let pageNum = 0; pageNum < totalPages; pageNum++) {
+                    const startIdx = pageNum * ITEMS_PER_PAGE;
+                    const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, personsInGeneration.length);
+                    const pagePersons = personsInGeneration.slice(startIdx, endIdx);
+                    
+                    const pageSuffix = totalPages > 1 ? ` (صفحة ${pageNum + 1} من ${totalPages})` : '';
+                    
+                    const page = document.createElement('section');
+                    page.className = 'book-page';
+                    page.id = `gen-${genKey}-page-${pageNum}`;
+                    page.innerHTML = `
+                        <div class="book-watermark">
+                            <i class="fas fa-tree"></i>
+                            <span>الجيل ${genKey}</span>
+                        </div>
+                        <h2 class="book-generation-title">
+                            <i class="fas fa-layer-group"></i> 
+                            الجيل ${genKey}${pageSuffix}
+                            <span style="font-size: 14px; color: #666; margin-right: 10px;">
+                                (الأفراد ${startIdx + 1} - ${endIdx} من ${personsInGeneration.length})
+                            </span>
+                        </h2>
+                        <div class="book-grid ${bookCompact ? 'compact' : ''}">
+                            ${pagePersons.map(person => renderBookPersonCard(person)).join('')}
+                        </div>
+                    `;
+                    
+                    if (pageNum === 0) {
+                        page.id = `gen-${genKey}`;
+                    }
+                    
+                    shell.appendChild(page);
+                }
+            });
+
+            // صفحة إضافية: جميع الأفراد مرتبين أبجدياً (اختياري)
+            if (familyData.length > 0) {
+                const allPersonsPage = document.createElement('section');
+                allPersonsPage.className = 'book-page';
+                allPersonsPage.id = 'all-persons-index';
+                allPersonsPage.innerHTML = `
+                    <div class="book-watermark">
+                        <i class="fas fa-address-book"></i>
+                        <span>فهرس جميع الأفراد</span>
+                    </div>
+                    <h2 class="book-generation-title" style="color: #2196F3;">
+                        <i class="fas fa-address-book"></i>
+                        فهرس جميع الأفراد (مرتب أبجدياً)
+                    </h2>
+                    <div style="columns: 2; column-gap: 40px;">
+                        ${[...familyData]
+                            .sort((a, b) => a.FullName.localeCompare(b.FullName, 'ar'))
+                            .map(person => `
+                                <div style="margin-bottom: 8px; page-break-inside: avoid;">
+                                    <a href="#gen-${calculateGeneration(person.PersonID)}" 
+                                       style="color: ${person.Gender === 'ذكر' ? '#2196F3' : '#E91E63'}; text-decoration: none;"
+                                       onclick="scrollToGenerationInBook(${person.PersonID})">
+                                        <i class="fas fa-${person.Gender === 'ذكر' ? 'male' : 'female'}"></i>
+                                        ${person.FullName} (رقم: ${person.PersonID})
+                                    </a>
+                                </div>
+                            `).join('')}
+                    </div>
+                `;
+                shell.appendChild(allPersonsPage);
+            }
+
+            showSuccess(`تم إنشاء كتاب العائلة بنجاح يحتوي على ${Object.keys(generations).length} جيل${Object.keys(generations).length > 1 ? 'ات' : ''}`);
         }
-        
-        .book-card {
-            break-inside: avoid;
-            page-break-inside: avoid;
-            box-shadow: none !important;
-            border: 1px solid #ddd !important;
-        }
-    }
-`;
 
-// إضافة الأنماط الإضافية عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', function() {
-    const styleEl = document.createElement('style');
-    styleEl.textContent = additionalStyles;
-    document.head.appendChild(styleEl);
-});
+        // دالة مساعدة لعرض بطاقة الفرد في الكتاب
+        function renderBookPersonCard(person) {
+            const father = familyData.find(p => p.PersonID === person.FatherID);
+            const mother = familyData.find(p => p.PersonID === person.MotherID);
+            const spouse = familyData.find(p => p.PersonID === person.SpouseID);
+            const children = familyData.filter(p => p.FatherID === person.PersonID || p.MotherID === person.PersonID);
             
-            document.getElementById('bookPreview').innerHTML = bookHTML;
+            const age = computeAge(person.BirthDate);
+            
+            return `
+                <div class="book-card book-member-card" 
+                     onclick="highlightBookLineage(${person.PersonID})" 
+                     data-book-person-id="${person.PersonID}"
+                     data-book-search="${person.FullName || ''} ${person.PersonID} ${person.PlaceOfBirth || ''} ${person.Notes || ''} ${person.BirthDate || ''} ${person.DeathDate || ''}">
+                    
+                    <div class="book-card-header">
+                        <div class="book-card-id">#${person.PersonID}</div>
+                        <div class="book-card-gender ${person.Gender === 'ذكر' ? 'male' : 'female'}">
+                            ${person.Gender === 'ذكر' ? 'ذكر' : 'أنثى'}
+                        </div>
+                    </div>
+                    
+                    <h3 class="book-card-name">${person.FullName}</h3>
+                    
+                    <div class="book-card-details">
+                        ${person.BirthDate ? `
+                            <div class="book-card-detail">
+                                <i class="fas fa-star-and-crescent"></i>
+                                <span>المولد: ${formatDateDisplay(person.BirthDate)} ${age ? `(${age} سنة)` : ''}</span>
+                            </div>
+                        ` : ''}
+                        
+                        ${person.DeathDate ? `
+                            <div class="book-card-detail">
+                                <i class="fas fa-kaaba"></i>
+                                <span>الوفاة: ${formatDateDisplay(person.DeathDate)}</span>
+                            </div>
+                        ` : ''}
+                        
+                        ${person.PlaceOfBirth ? `
+                            <div class="book-card-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${person.PlaceOfBirth}</span>
+                            </div>
+                        ` : ''}
+                        
+                        ${father ? `
+                            <div class="book-card-detail">
+                                <i class="fas fa-male"></i>
+                                <span>الأب: ${father.FullName}</span>
+                            </div>
+                        ` : ''}
+                        
+                        ${mother ? `
+                            <div class="book-card-detail">
+                                <i class="fas fa-female"></i>
+                                <span>الأم: ${mother.FullName}</span>
+                            </div>
+                        ` : ''}
+                        
+                        ${spouse ? `
+                            <div class="book-card-detail">
+                                <i class="fas fa-heart"></i>
+                                <span>الزوج/الزوجة: ${spouse.FullName}</span>
+                            </div>
+                        ` : ''}
+                        
+                        ${children.length > 0 ? `
+                            <div class="book-card-detail">
+                                <i class="fas fa-child"></i>
+                                <span>الأبناء: ${children.length} فرد</span>
+                            </div>
+                        ` : ''}
+                        
+                        ${person.Notes ? `
+                            <div class="book-card-detail">
+                                <i class="fas fa-sticky-note"></i>
+                                <span>${person.Notes}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // دالة للانتقال إلى الجيل في الكتاب
+        function scrollToGenerationInBook(personId) {
+            const generation = calculateGeneration(personId);
+            const genElement = document.getElementById(`gen-${generation}`);
+            if (genElement) {
+                genElement.scrollIntoView({ behavior: 'smooth' });
+                highlightBookLineage(personId);
+            }
         }
 
         // ============================================
@@ -5707,18 +5690,9 @@ function clearBookSearch() {
         }
 
         function printFamilyBook() {
-            const printContent = document.getElementById('bookPreview').innerHTML;
-            const originalContent = document.body.innerHTML;
-            
-            document.body.innerHTML = `
-                <div dir="rtl" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                    ${printContent}
-                </div>
-            `;
-            
+            const modal = document.getElementById('familyBookModal');
+            if(!modal) return;
             window.print();
-            document.body.innerHTML = originalContent;
-            location.reload();
         }
 
         // ============================================
@@ -6985,16 +6959,10 @@ function clearBookSearch() {
         }
 
         // ============================================
-        // تهيئة النظام عند التحميل
+        // دوال مساعدة إضافية
         // ============================================
 
-        window.onload = function() {
-            updateLanguage();
-        };
-    
-        /* === Enhanced Book + Smart Suggestions (Injected) === */
         let bookCompact = false;
-        let lastSmartSuggestion = null;
 
         function setBrandFamilyName(name){
             try{
@@ -7052,317 +7020,13 @@ function clearBookSearch() {
             }catch(e){ return null; }
         }
 
-        function groupByGeneration(){
-            const map = new Map();
-            familyData.forEach(p=>{
-                const g = calculateGeneration(p.PersonID);
-                if(!map.has(g)) map.set(g, []);
-                map.get(g).push(p);
-            });
-            // sort by generation asc
-            return Array.from(map.entries()).sort((a,b)=>a[0]-b[0]);
-        }
+        // ============================================
+        // تهيئة النظام عند التحميل
+        // ============================================
 
-        // ====== Book Preview ======
-        function generateFamilyBook(){
-            const preview = document.getElementById('bookPreview');
-            if(!preview){
-                showError('لم يتم العثور على منطقة المعاينة');
-                return;
-            }
-
-            // هوية افتراضية من عنوان التطبيق إن لم يُكتب اسم عائلة
-            const h1 = document.querySelector('.logo h1');
-            const defaultBrand = h1 ? h1.textContent.trim() : 'كتاب العائلة';
-            const currentVar = getComputedStyle(document.documentElement).getPropertyValue('--brand-family-name') || '';
-            if(!currentVar.trim()){
-                setBrandFamilyName(defaultBrand);
-            }
-
-            // container
-            preview.innerHTML = '';
-            const shell = document.createElement('div');
-            shell.className = 'book-shell';
-            preview.appendChild(shell);
-
-            // Cover
-            const cover = document.createElement('section');
-            cover.className = 'book-page';
-            cover.innerHTML = `
-              <div class="book-watermark"><i class="fas fa-feather-alt"></i> <span>${safeText(getComputedStyle(document.documentElement).getPropertyValue('--brand-family-name')).replace(/"/g,'')}</span></div>
-              <div class="book-cover">
-                <div class="book-title">كتاب العائلة</div>
-                <div class="book-subtitle">نسخة تفاعلية قابلة للطباعة والتصدير</div>
-                <div class="book-badge">
-                  <span style="font-size:18px;">🌿</span>
-                  <span>${safeText(getComputedStyle(document.documentElement).getPropertyValue('--brand-family-name')).replace(/"/g,'')}</span>
-                  <span style="opacity:.75;">—</span>
-                  <span>${new Date().toLocaleDateString(currentLanguage==='ar'?'ar-EG':'en-US')}</span>
-                </div>
-                <div style="margin-top:26px; color:#1B5E20; opacity:.85; font-size:14px; line-height:1.8;">
-                  <div><i class="fas fa-users"></i> إجمالي الأفراد: <b>${familyData.length}</b></div>
-                  <div><i class="fas fa-male"></i> ذكور: <b>${familyData.filter(p=>p.Gender==='ذكر').length}</b> — <i class="fas fa-female"></i> إناث: <b>${familyData.filter(p=>p.Gender==='انثى').length}</b></div>
-                </div>
-              </div>
-            `;
-            shell.appendChild(cover);
-
-            // Pages by generation
-            const generations = groupByGeneration();
-            generations.forEach(([gen, persons])=>{
-                // sort persons by id
-                persons.sort((a,b)=>Number(a.PersonID)-Number(b.PersonID));
-
-                const page = document.createElement('section');
-                page.className = 'book-page';
-                page.innerHTML = `
-                  <div class="book-watermark"><i class="fas fa-tree"></i> <span>${safeText(getComputedStyle(document.documentElement).getPropertyValue('--brand-family-name')).replace(/"/g,'')}</span></div>
-                  <div class="book-generation-title"><i class="fas fa-layer-group"></i> الجيل ${gen}</div>
-                  <div class="book-grid ${bookCompact ? 'compact' : ''}" id="bookGenGrid_${gen}"></div>
-                `;
-                shell.appendChild(page);
-
-                const grid = page.querySelector(`#bookGenGrid_${gen}`);
-                const max = bookCompact ? 16 : 12; // حدّ لمنع ثقل المعاينة
-                persons.slice(0, max).forEach(p=>{
-                    const father = getPersonById(p.FatherID);
-                    const mother = getPersonById(p.MotherID);
-                    const spouse = getPersonById(p.SpouseID);
-
-                    const tag = (p.Gender === 'ذكر') ? 'ذكر' : (p.Gender === 'انثى' ? 'أنثى' : '—');
-                    const age = computeAge(p.BirthDate);
-                    const ageTxt = (age !== null) ? `العمر: ${age}` : '';
-
-                    const card = document.createElement('div');
-                    card.className = 'book-card';
-                    card.innerHTML = `
-                      <div class="tag">${tag} • #${p.PersonID}</div>
-                      <div class="name">${safeText(p.FullName)}</div>
-                      <div class="meta">
-                        ${p.PlaceOfBirth ? `<span><i class="fas fa-map-marker-alt"></i> ${safeText(p.PlaceOfBirth)}</span>` : ''}
-                        ${p.BirthDate ? `<span><i class="fas fa-star-and-crescent"></i> ${formatDateDisplay(p.BirthDate)} ${ageTxt ? `— ${ageTxt}` : ''}</span>` : ''}
-                        ${p.DeathDate ? `<span><i class="fas fa-kaaba"></i> وفاة: ${formatDateDisplay(p.DeathDate)}</span>` : ''}
-                        ${father ? `<span><i class="fas fa-male"></i> الأب: ${safeText(father.FullName)}</span>` : ''}
-                        ${mother ? `<span><i class="fas fa-female"></i> الأم: ${safeText(mother.FullName)}</span>` : ''}
-                        ${spouse ? `<span><i class="fas fa-heart"></i> الزوج/ة: ${safeText(spouse.FullName)}</span>` : ''}
-                        ${p.Notes ? `<span><i class="fas fa-sticky-note"></i> ${safeText(p.Notes)}</span>` : ''}
-                      </div>
-                    `;
-                    grid.appendChild(card);
-                });
-
-                if(persons.length > (bookCompact ? 16 : 12)){
-                    const more = document.createElement('div');
-                    more.className = 'book-card';
-                    more.style.textAlign = 'center';
-                    more.style.padding = '18px';
-                    more.innerHTML = `<div style="color:#2E7D32; font-weight:700;"><i class="fas fa-ellipsis-h"></i> يوجد ${persons.length - (bookCompact ? 16 : 12)} فرد إضافي في هذا الجيل</div>
-                                      <div style="margin-top:8px; font-size:12px; color:#689f38;">للعرض الكامل استخدم تصدير Excel أو عرض الشجرة</div>`;
-                    grid.appendChild(more);
-                }
-            });
-
-            showSuccess('تم توليد كتاب العائلة بنجاح');
-        }
-
-        
-        // (ملاحظة): تم توحيد دالة تصدير PDF في الأعلى.
-
-function printFamilyBook(){
-            const modal = document.getElementById('familyBookModal');
-            if(!modal) return;
-            window.print();
-        }
-
-        // ====== Smart Relationship Suggestions ======
-        function tokenizeName(name){
-            return safeText(name).trim().split(/\s+/).filter(Boolean);
-        }
-
-        function lastNameToken(name){
-            const t = tokenizeName(name);
-            return t.length ? t[t.length-1] : '';
-        }
-
-        function birthYear(dateStr){
-            if(!dateStr) return null;
-            const d = new Date(dateStr);
-            if(isNaN(d.getTime())) return null;
-            return d.getFullYear();
-        }
-
-        function scoreParentCandidate(child, cand, role){
-            // role: 'father'/'mother'
-            let score = 0;
-
-            // النوع
-            if(role === 'father' && cand.Gender === 'ذكر') score += 30;
-            if(role === 'mother' && cand.Gender === 'انثى') score += 30;
-
-            // نفس اللقب الأخير
-            const childLast = lastNameToken(child.FullName);
-            const candLast = lastNameToken(cand.FullName);
-            if(childLast && candLast && childLast === candLast) score += 18;
-
-            // فارق العمر (إن توفر)
-            const cy = birthYear(child.BirthDate);
-            const py = birthYear(cand.BirthDate);
-            if(cy && py){
-                const diff = cy - py;
-                if(diff >= 12 && diff <= 55) score += 22;
-                if(diff >= 20 && diff <= 45) score += 10;
-                if(diff < 10) score -= 40;
-            }
-
-            // قرب الجيل
-            try{
-                const cg = calculateGeneration(child.PersonID || 0) || 0;
-                const pg = calculateGeneration(cand.PersonID) || 0;
-                const gd = Math.abs((cg-1) - pg);
-                score += Math.max(0, 14 - gd*6);
-            }catch(e){}
-
-            // ملاحظة: جذور العائلة عادة الأعلى
-            if(cand.FatherID === 0 && cand.MotherID === 0) score += 6;
-
-            return score;
-        }
-
-        function computeSmartSuggestionsFromForm(){
-            const fullName = document.getElementById('fullName')?.value || '';
-            const birthDate = document.getElementById('birthDate')?.value || '';
-            const gender = document.getElementById('gender')?.value || '';
-            if(!fullName.trim() || familyData.length === 0){
-                lastSmartSuggestion = null;
-                updateSuggestSummary();
-                return null;
-            }
-
-            // child "virtual" object (قبل الحفظ)
-            const tempChild = {
-                PersonID: Number(document.getElementById('personId')?.value || 0) || 0,
-                FullName: fullName.trim(),
-                BirthDate: birthDate || '',
-                Gender: gender || ''
-            };
-
-            // أفضل الأب/الأم حسب السكور
-            const fatherCandidates = familyData.filter(p=>p.Gender==='ذكر' && Number(p.PersonID)!==tempChild.PersonID);
-            const motherCandidates = familyData.filter(p=>p.Gender==='انثى' && Number(p.PersonID)!==tempChild.PersonID);
-
-            let bestFather = null, bestFatherScore = -1e9;
-            fatherCandidates.forEach(c=>{
-                const sc = scoreParentCandidate(tempChild, c, 'father');
-                if(sc > bestFatherScore){
-                    bestFatherScore = sc;
-                    bestFather = c;
-                }
-            });
-
-            let bestMother = null, bestMotherScore = -1e9;
-            motherCandidates.forEach(c=>{
-                const sc = scoreParentCandidate(tempChild, c, 'mother');
-                if(sc > bestMotherScore){
-                    bestMotherScore = sc;
-                    bestMother = c;
-                }
-            });
-
-            // اقتراح الزوج/الزوجة: إذا تم اختيار الأب/الأم لاحقاً سنقترح شدةً أكثر
-            lastSmartSuggestion = {
-                father: bestFather && bestFatherScore > 25 ? { id: bestFather.PersonID, name: bestFather.FullName, score: bestFatherScore } : null,
-                mother: bestMother && bestMotherScore > 25 ? { id: bestMother.PersonID, name: bestMother.FullName, score: bestMotherScore } : null,
-                reasons: []
-            };
-
-            // أسباب مبسطة
-            const ln = lastNameToken(tempChild.FullName);
-            if(ln) lastSmartSuggestion.reasons.push(`تم استخدام تشابه الاسم الأخير: "${ln}"`);
-            if(birthDate) lastSmartSuggestion.reasons.push('تم استخدام تاريخ الميلاد لحساب ملاءمة فارق العمر');
-            lastSmartSuggestion.reasons.push('تم استخدام الجنس وقرب الجيل كعوامل إضافية');
-
-            updateSuggestSummary();
-            return lastSmartSuggestion;
-        }
-
-        function updateSuggestSummary(){
-            const el = document.getElementById('suggestSummary');
-            if(!el) return;
-            if(!lastSmartSuggestion){
-                el.textContent = '—';
-                return;
-            }
-            const parts = [];
-            if(lastSmartSuggestion.father) parts.push(`أب: ${lastSmartSuggestion.father.name} (#${lastSmartSuggestion.father.id})`);
-            if(lastSmartSuggestion.mother) parts.push(`أم: ${lastSmartSuggestion.mother.name} (#${lastSmartSuggestion.mother.id})`);
-            el.textContent = parts.length ? parts.join(' | ') : 'لا توجد اقتراحات قوية حالياً';
-        }
-
-        function applySmartSuggestions(){
-            if(!lastSmartSuggestion){
-                showInfo('لا توجد اقتراحات لتطبيقها');
-                return;
-            }
-            const fatherSel = document.getElementById('fatherId');
-            const motherSel = document.getElementById('motherId');
-
-            if(lastSmartSuggestion.father && fatherSel){
-                fatherSel.value = String(lastSmartSuggestion.father.id);
-            }
-            if(lastSmartSuggestion.mother && motherSel){
-                motherSel.value = String(lastSmartSuggestion.mother.id);
-            }
-
-            // لو تم اختيار الأب، اقترح الأم من زوجته إن وجدت
-            try{
-                if(fatherSel && Number(fatherSel.value) > 0){
-                    const f = getPersonById(Number(fatherSel.value));
-                    if(f && f.SpouseID && Number(f.SpouseID) > 0 && motherSel){
-                        const m = getPersonById(Number(f.SpouseID));
-                        if(m && m.Gender === 'انثى'){
-                            motherSel.value = String(m.PersonID);
-                        }
-                    }
-                }
-            }catch(e){}
-
-            showSuccess('تم تطبيق الاقتراحات');
-        }
-
-        function clearSmartSuggestions(){
-            lastSmartSuggestion = null;
-            updateSuggestSummary();
-            showInfo('تم مسح الاقتراحات');
-        }
-
-        function showWhySuggestion(){
-            if(!lastSmartSuggestion){
-                alert('لا توجد اقتراحات حالياً.');
-                return;
-            }
-            const lines = [];
-            if(lastSmartSuggestion.father) lines.push(`اقتراح الأب: ${lastSmartSuggestion.father.name} (Score: ${Math.round(lastSmartSuggestion.father.score)})`);
-            if(lastSmartSuggestion.mother) lines.push(`اقتراح الأم: ${lastSmartSuggestion.mother.name} (Score: ${Math.round(lastSmartSuggestion.mother.score)})`);
-            lines.push('');
-            lines.push('الأسباب:');
-            (lastSmartSuggestion.reasons || []).forEach(r=>lines.push('- ' + r));
-            alert(lines.join('\n'));
-        }
-
-        // Hook form inputs (بدون كسر أي منطق سابق)
-        (function attachSmartSuggestListeners(){
-            const safeBind = () => {
-                const fn = document.getElementById('fullName');
-                const bd = document.getElementById('birthDate');
-                const gen = document.getElementById('gender');
-                if(fn){ fn.addEventListener('input', ()=>computeSmartSuggestionsFromForm()); }
-                if(bd){ bd.addEventListener('change', ()=>computeSmartSuggestionsFromForm()); }
-                if(gen){ gen.addEventListener('change', ()=>computeSmartSuggestionsFromForm()); }
-            };
-            // تأخير بسيط لضمان وجود العناصر عند فتح المودال
-            setTimeout(safeBind, 500);
-        })();
-
+        window.onload = function() {
+            updateLanguage();
+        };
     </script>
 </body>
 </html>
