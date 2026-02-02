@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>شجرة عائلة محمد عبدالرحمن ( أبا ) - المنتدى</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        /* جميع الأنماط السابقة من الملف الأصلي تبقى كما هي */
+        /* سأضيف فقط الأنماط الجديدة للمنتدى في النهاية */
+        
+        /* =========================
+           أنماط المنتدى الجديدة
+           ========================= */
+        .forum-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .forum-controls {
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .forum-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            border: 3px solid white;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .user-stats span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.1);
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        .forum-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .forum-search {
+            display: flex;
+            gap: 5px;
+        }
+
+        .forum-search input {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 20px;
+            width: 250px;
+            font-size: 14px;
+        }
+
+        .search-btn {
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #2E7D32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .forum-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-item i {
+            font-size: 30px;
+            color: #4CAF50;
+        }
+
+        .stat-item h3 {
+            font-size: 24px;
+            margin: 0;
+            color: #2E7D32;
+        }
+
+        .stat-item p {
+            margin: 0;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .forum-categories {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .category-card {
+            background: #f8faf8;
+            border: 2px solid #e8f5e9;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-card:hover {
+            background: #e8f5e9;
+            transform: translateY(-3px);
+            border-color: #4CAF50;
+        }
+
+        .category-icon {
+            width: 40px;
+            height: 40px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .category-card h4 {
+            margin: 0 0 5px 0;
+            color: #2E7D32;
+        }
+
+        .category-card p {
+            margin: 0;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .category-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #888;
+        }
+
+        .recent-posts {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .recent-posts h3 {
+            color: #2E7D32;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .posts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .post-item {
+            background: #f8faf8;
+            padding: 12px;
+            border-radius: 8px;
+            border-right: 3px solid #4CAF50;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .post-item:hover {
+            background: #e8f5e9;
+            transform: translateX(5px);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .post-title {
+            font-weight: bold;
+            color: #2E7D32;
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 11px;
+            color: #888;
+        }
+
+        .post-excerpt {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .post-tag {
+            background: #e0f2f1;
+            color: #00695c;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+        }
+
+        .forum-content {
+            flex: 1;
+            overflow-y: auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        /* محرر النصوص */
+        .editor-toolbar {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #f8faf8;
+            border-radius: 8px;
+            border: 1px solid #e8f5e9;
+        }
+
+        .editor-toolbar button {
+            background: white;
+            border: 1px solid #ddd;
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #2E7D32;
+            transition: all 0.3s;
+        }
+
+        .editor-toolbar button:hover {
+            background: #e8f5e9;
+            transform: scale(1.1);
+        }
+
+        .editor-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* رفع الصور */
+        .image-upload {
+            margin-top: 10px;
+        }
+
+        .image-preview {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .preview-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid #e8f5e9;
+        }
+
+        /* التصنيفات */
+        .tags-container {
+            margin-top: 10px;
+        }
+
+        .suggested-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .suggested-tags .tag {
+            background: #e8f5e9;
+            color: #2E7D32;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .suggested-tags .tag:hover {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .selected-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .selected-tag {
+            background: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .remove-tag {
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        /* عرض المنشور */
+        .post-view {
+            padding: 15px;
+        }
+
+        .post-view-header {
+            border-bottom: 2px solid #e8f5e9;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .post-view-title {
+            color: #2E7D32;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .post-view-meta {
+            display: flex;
+            gap: 20px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .post-view-content {
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        .post-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .post-image:hover {
+            transform: scale(1.05);
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e8f5e9;
+        }
+
+        /* التعليقات */
+        .post-comments {
+            margin-top: 30px;
+        }
+
+        .comments-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 15px 0;
+        }
+
+        .comment-item {
+            background: #f8faf8;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #4CAF50;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #2E7D32;
+        }
+
+        .comment-date {
+            color: #888;
+            font-size: 11px;
+        }
+
+        .comment-content {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .add-comment {
+            margin-top: 15px;
+        }
+
+        .add-comment textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e8f5e9;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        /* قائمة المنشورات */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .post-card {
+            background: white;
+            border: 2px solid #e8f5e9;
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #4CAF50;
+        }
+
+        .post-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .post-card-title {
+            font-size: 16px;
+            color: #2E7D32;
+            margin: 0;
+            flex: 1;
+        }
+
+        .post-card-category {
+            background: #e8f5e9;
+            color: #2E7D32;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-right: 10px;
+        }
+
+        .post-card-excerpt {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 10px 0;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .post-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #888;
+        }
+
+        .post-card-stats {
+            display: flex;
+            gap: 10px;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+        }
+
+        .empty-message i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #c8e6c9;
+        }
+
+        /* الإعلانات */
+        .forum-announcement {
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .announcement-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .announcement-content {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* الصفحات */
+        .forum-pagination {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .page-btn {
+            width: 35px;
+            height: 35px;
+            border: 1px solid #e8f5e9;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #2E7D32;
+        }
+
+        .page-btn.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        /* أنماط إضافية للمنتدى */
+        .featured-post {
+            border: 3px solid #FFC107 !important;
+            background: #FFF8E1 !important;
+        }
+
+        .sticky-post {
+            border: 3px solid #2196F3 !important;
+            background: #E3F2FD !important;
+        }
+
+        .forum-loading {
+            text-align: center;
+            padding: 30px;
+            color: #4CAF50;
+        }
+
+        .forum-loading i {
+            font-size: 36px;
+            margin-bottom: 15px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* تحسينات للموبايل */
+        @media (max-width: 768px) {
+            .forum-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .forum-user-info {
+                justify-content: center;
+            }
+            
+            .forum-actions {
+                justify-content: center;
+            }
+            
+            .forum-search input {
+                width: 100%;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .post-view-title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- جميع محتويات HTML الأصلية تبقى كما هي -->
+    <!-- سأضيف فقط عناصر المنتدى الجديدة -->
+
+    <!-- زر القائمة للجوال -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- شاشة الدخول -->
+    <div id="login-screen">
+        <button class="login-language-toggle" onclick="toggleLanguage()">
+            <i class="fas fa-globe"></i>
+            <span id="loginLanguageText">English</span>
+        </button>
+        
+        <div class="login-container">
+            <!-- محتوى شاشة الدخول يبقى كما هو -->
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div id="main-content">
+        <!-- الشريط العلوي -->
+        <div class="top-bar">
+            <!-- محتوى الشريط العلوي يبقى كما هو -->
+        </div>
+
+        <!-- الشريط الجانبي -->
+        <div class="sidebar" id="sidebar">
+            <ul class="sidebar-menu">
+                <!-- عناصر القائمة الحالية -->
+                <li class="menu-item active" onclick="showDashboard()">
+                    <i class="fas fa-home"></i>
+                    <span data-i18n="dashboard">الرئيسية</span>
+                </li>
+                <!-- ... عناصر أخرى ... -->
+                
+                <!-- إضافة رابط المنتدى -->
+                <li class="menu-item" onclick="showFamilyForum()">
+                    <i class="fas fa-comments"></i>
+                    <span data-i18n="familyForum">منتدى العائلة</span>
+                </li>
+                
+                <!-- بقية العناصر تبقى كما هي -->
+            </ul>
+        </div>
+
+        <!-- منطقة المحتوى الرئيسي -->
+        <div class="main-content-area" id="contentArea">
+            <!-- محتوى لوحة التحكم يبقى كما هو -->
+        </div>
+
+        <!-- زر عرض الشجرة -->
+        <button class="tree-view-btn" onclick="showTreeView()">
+            <i class="fas fa-tree"></i>
+        </button>
+    </div>
+
+    <!-- نافذة المنتدى الرئيسية -->
+    <div class="form-modal" id="familyForumModal">
+        <button class="quick-back-btn" onclick="closeFamilyForum()" title="إغلاق">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="form-container" style="max-width: 1000px; height: 90vh;">
+            <div class="form-header">
+                <h3><i class="fas fa-comments"></i> <span>منتدى عائلة محمد عبدالرحمن</span></h3>
+                <button class="close-form" onclick="closeFamilyForum()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="form-body" style="padding: 0;">
+                <div class="forum-container">
+                    <!-- شريط التحكم -->
+                    <div class="forum-controls">
+                        <div class="forum-user-info">
+                            <div class="user-avatar" id="forumUserAvatar"></div>
+                            <div>
+                                <h4 id="forumUserName">مرحباً، <span id="currentForumUser"></span></h4>
+                                <div class="user-stats">
+                                    <span><i class="fas fa-pen"></i> <span id="userPostCount">0</span> منشور</span>
+                                    <span><i class="fas fa-comment"></i> <span id="userCommentCount">0</span> رد</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="forum-actions">
+                            <button class="btn btn-primary" onclick="showNewPostForm()">
+                                <i class="fas fa-plus"></i> منشور جديد
+                            </button>
+                            <button class="btn btn-success" onclick="refreshForum()">
+                                <i class="fas fa-sync"></i> تحديث
+                            </button>
+                            <button class="btn btn-info" onclick="showForumCategories()">
+                                <i class="fas fa-folder"></i> الأقسام
+                            </button>
+                            <div class="forum-search">
+                                <input type="text" id="forumSearch" placeholder="ابحث في المنتدى..." onkeyup="searchForum()">
+                                <button class="search-btn" onclick="searchForum()">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- الإحصائيات -->
+                    <div class="forum-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-file-alt"></i>
+                            <div>
+                                <h3 id="totalPosts">0</h3>
+                                <p>منشور</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-comments"></i>
+                            <div>
+                                <h3 id="totalComments">0</h3>
+                                <p>رد</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <h3 id="activeUsers">0</h3>
+                                <p>مشارك</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-star"></i>
+                            <div>
+                                <h3 id="featuredContent">0</h3>
+                                <p>مميز</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- قائمة الأقسام -->
+                    <div class="forum-categories" id="forumCategories">
+                        <!-- سيتم ملؤها ديناميكياً -->
+                    </div>
+                    
+                    <!-- المنشورات الحديثة -->
+                    <div class="recent-posts">
+                        <h3><i class="fas fa-clock"></i> أحدث المنشورات</h3>
+                        <div class="posts-list" id="recentPostsList"></div>
+                    </div>
+                    
+                    <!-- محتوى المنتدى -->
+                    <div class="forum-content" id="forumContent">
+                        <!-- سيتم تحميل المنشورات هنا -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إنشاء منشور جديد -->
+    <div class="form-modal" id="newPostModal">
+        <button class="quick-back-btn" onclick="closeNewPost()" title="إغلاق">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="form-container" style="max-width: 700px;">
+            <div class="form-header">
+                <h3><i class="fas fa-edit"></i> <span>منشور جديد</span></h3>
+                <button class="close-form" onclick="closeNewPost()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="form-body">
+                <form id="newPostForm" onsubmit="event.preventDefault(); saveNewPost();">
+                    <div class="form-group">
+                        <label class="form-label">عنوان المنشور</label>
+                        <input type="text" class="form-input" id="postTitle" required maxlength="200">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">القسم</label>
+                        <select class="form-select" id="postCategory" required>
+                            <option value="">اختر القسم</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">المحتوى</label>
+                        <div class="editor-toolbar">
+                            <button type="button" onclick="formatText('bold')" title="عريض">
+                                <i class="fas fa-bold"></i>
+                            </button>
+                            <button type="button" onclick="formatText('italic')" title="مائل">
+                                <i class="fas fa-italic"></i>
+                            </button>
+                            <button type="button" onclick="formatText('underline')" title="تحته خط">
+                                <i class="fas fa-underline"></i>
+                            </button>
+                            <button type="button" onclick="insertLink()" title="رابط">
+                                <i class="fas fa-link"></i>
+                            </button>
+                            <button type="button" onclick="insertImage()" title="صورة">
+                                <i class="fas fa-image"></i>
+                            </button>
+                            <button type="button" onclick="formatText('quote')" title="اقتباس">
+                                <i class="fas fa-quote-right"></i>
+                            </button>
+                        </div>
+                        <textarea class="form-textarea" id="postContent" rows="10" required 
+                                  placeholder="اكتب محتوى منشورك هنا..." oninput="updateCharCount()"></textarea>
+                        <div class="editor-info">
+                            <span>يمكنك استخدام HTML الأساسي</span>
+                            <span id="charCount">0/5000 حرف</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">الصور (اختياري)</label>
+                        <div class="image-upload">
+                            <input type="file" id="postImages" accept="image/*" multiple 
+                                   onchange="previewImages(event)" style="display: none;">
+                            <button type="button" class="btn btn-info" onclick="document.getElementById('postImages').click()">
+                                <i class="fas fa-upload"></i> رفع صور
+                            </button>
+                            <div class="image-preview" id="imagePreview"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">التصنيفات</label>
+                        <div class="tags-container">
+                            <input type="text" id="postTags" class="form-input" 
+                                   placeholder="أضف تصنيفات مفصولة بفاصلة" onkeydown="handleTagInput(event)">
+                            <div class="suggested-tags">
+                                <span class="tag" onclick="addTag('مهارات كتابية')">مهارات كتابية</span>
+                                <span class="tag" onclick="addTag('قصص عائلية')">قصص عائلية</span>
+                                <span class="tag" onclick="addTag('شعر')">شعر</span>
+                                <span class="tag" onclick="addTag('مقالات')">مقالات</span>
+                                <span class="tag" onclick="addTag('تواصل')">تواصل</span>
+                                <span class="tag" onclick="addTag('مناسبات عائلية')">مناسبات عائلية</span>
+                                <span class="tag" onclick="addTag('نصائح')">نصائح</span>
+                                <span class="tag" onclick="addTag('إبداع')">إبداع</span>
+                            </div>
+                            <div class="selected-tags" id="selectedTags"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-danger" onclick="closeNewPost()">
+                            <i class="fas fa-times"></i> إلغاء
+                        </button>
+                        <button type="button" class="btn btn-warning" onclick="saveAsDraft()">
+                            <i class="fas fa-save"></i> حفظ مسودة
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-paper-plane"></i> نشر
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة عرض المنشور -->
+    <div class="form-modal" id="viewPostModal">
+        <button class="quick-back-btn" onclick="closeViewPost()" title="إغلاق">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="form-container" style="max-width: 800px; max-height: 90vh;">
+            <div class="form-header">
+                <h3><i class="fas fa-file-alt"></i> <span id="viewPostTitle"></span></h3>
+                <button class="close-form" onclick="closeViewPost()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="form-body">
+                <div id="postViewContent">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                </div>
+                
+                <div class="post-comments">
+                    <h4><i class="fas fa-comments"></i> التعليقات</h4>
+                    <div class="comments-list" id="commentsList"></div>
+                    <div class="add-comment">
+                        <textarea id="newComment" placeholder="أضف تعليقك..." rows="3"></textarea>
+                        <button class="btn btn-primary" onclick="addComment()">
+                            <i class="fas fa-paper-plane"></i> إرسال
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- بقية النماذج الحالية تبقى كما هي -->
+    <!-- ... -->
+
+    <script>
+        // ============================================
+        // تعريف المتغيرات الجديدة للمنتدى
+        // ============================================
+        let forumData = {
+            posts: [],
+            comments: [],
+            categories: [],
+            drafts: [],
+            userStats: {}
+        };
+        
+        let currentView = 'home';
+        let currentCategory = 'all';
+        let currentSearchTerm = '';
+        let currentPostImages = [];
+        let selectedTags = [];
+        let currentViewingPost = null;
+        
+        // هيكل بيانات المنتدى الافتراضي
+        const defaultForumData = {
+            categories: [
+                { id: 1, name: 'المهارات الكتابية', description: 'إبراز مهارات الكتابة والتأليف', icon: 'fa-pen', color: '#4CAF50' },
+                { id: 2, name: 'القصص العائلية', description: 'قصص وتجارب عائلية', icon: 'fa-book', color: '#2196F3' },
+                { id: 3, name: 'الشعر والنثر', description: 'إبداعات شعرية ونثرية', icon: 'fa-feather-alt', color: '#9C27B0' },
+                { id: 4, name: 'المناسبات والفعاليات', description: 'تنظيم المناسبات العائلية', icon: 'fa-calendar', color: '#FF9800' },
+                { id: 5, name: 'النقاش العام', description: 'مواضيع متنوعة للنقاش', icon: 'fa-comments', color: '#795548' },
+                { id: 6, name: 'الترحيب والتعارف', description: 'تعارف أفراد العائلة', icon: 'fa-handshake', color: '#009688' },
+                { id: 7, name: 'الاستشارات', description: 'استشارات ونصائح عائلية', icon: 'fa-question-circle', color: '#F44336' },
+                { id: 8, name: 'الإعلانات', description: 'إعلانات عائلية مهمة', icon: 'fa-bullhorn', color: '#FF5722' }
+            ],
+            posts: [],
+            comments: [],
+            userStats: {}
+        };
+
+        // ============================================
+        // دوال إدارة المنتدى
+        // ============================================
+
+        function showFamilyForum() {
+            if (!checkPermission('view')) {
+                showError('لا تملك صلاحية الوصول للمنتدى');
+                return;
+            }
+            
+            document.getElementById('familyForumModal').classList.add('active');
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            document.querySelector('.sidebar-menu li:nth-child(12)').classList.add('active');
+            
+            loadForumData();
+            updateForumUserInfo();
+            loadForumCategories();
+            loadRecentPosts();
+            showForumHome();
+        }
+
+        function closeFamilyForum() {
+            document.getElementById('familyForumModal').classList.remove('active');
+        }
+
+        // ============================================
+        // تحميل وحفظ بيانات المنتدى
+        // ============================================
+
+        function loadForumData() {
+            // أولاً: تحميل من السحابة
+            if (database && cloudSyncEnabled) {
+                database.ref('forumData').once('value')
+                    .then((snapshot) => {
+                        if (snapshot.exists()) {
+                            const cloudData = snapshot.val();
+                            forumData = {
+                                ...defaultForumData,
+                                ...cloudData,
+                                posts: cloudData.posts || [],
+                                comments: cloudData.comments || [],
+                                userStats: cloudData.userStats || {}
+                            };
+                            
+                            // تحديث الإحصائيات
+                            updateForumStatistics();
+                        } else {
+                            // لا توجد بيانات على السحابة، استخدام الافتراضي
+                            forumData = defaultForumData;
+                            saveForumDataToCloud();
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error loading forum data:', error);
+                        forumData = defaultForumData;
+                    });
+            } else {
+                // استخدام التخزين المحلي
+                const savedData = localStorage.getItem('familyForumData');
+                if (savedData) {
+                    try {
+                        const parsedData = JSON.parse(savedData);
+                        forumData = {
+                            ...defaultForumData,
+                            ...parsedData
+                        };
+                    } catch (error) {
+                        forumData = defaultForumData;
+                    }
+                } else {
+                    forumData = defaultForumData;
+                }
+            }
+        }
+
+        function saveForumData() {
+            // حفظ محلي
+            try {
+                localStorage.setItem('familyForumData', JSON.stringify(forumData));
+            } catch (error) {
+                console.error('Error saving forum data locally:', error);
+            }
+            
+            // حفظ على السحابة
+            saveForumDataToCloud();
+        }
+
+        function saveForumDataToCloud() {
+            if (!database || !cloudSyncEnabled || isOffline) return;
+            
+            try {
+                database.ref('forumData').set(forumData)
+                    .then(() => {
+                        console.log('✅ Forum data saved to cloud');
+                    })
+                    .catch((error) => {
+                        console.error('❌ Error saving forum data to cloud:', error);
+                    });
+            } catch (error) {
+                console.error('❌ Exception in saveForumDataToCloud:', error);
+            }
+        }
+
+        // ============================================
+        // عرض واجهة المنتدى
+        // ============================================
+
+        function updateForumUserInfo() {
+            const userName = currentUser ? users[currentUser]?.name : 'زائر';
+            const userAvatar = document.getElementById('forumUserAvatar');
+            const currentForumUser = document.getElementById('currentForumUser');
+            
+            if (currentForumUser) {
+                currentForumUser.textContent = userName;
+            }
+            
+            if (userAvatar) {
+                const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase();
+                userAvatar.innerHTML = `<span>${initials}</span>`;
+            }
+            
+            // تحديث إحصائيات المستخدم
+            if (currentUser) {
+                if (!forumData.userStats[currentUser]) {
+                    forumData.userStats[currentUser] = {
+                        posts: 0,
+                        comments: 0,
+                        likes: 0
+                    };
+                }
+                
+                const userStats = forumData.userStats[currentUser];
+                document.getElementById('userPostCount').textContent = userStats.posts || 0;
+                document.getElementById('userCommentCount').textContent = userStats.comments || 0;
+            }
+        }
+
+        function updateForumStatistics() {
+            document.getElementById('totalPosts').textContent = forumData.posts.length;
+            
+            const totalComments = forumData.comments.length;
+            document.getElementById('totalComments').textContent = totalComments;
+            
+            // حساب المستخدمين النشطين
+            const activeUsers = new Set();
+            forumData.posts.forEach(post => activeUsers.add(post.author));
+            forumData.comments.forEach(comment => activeUsers.add(comment.author));
+            document.getElementById('activeUsers').textContent = activeUsers.size;
+            
+            // حساب المحتوى المميز
+            const featuredPosts = forumData.posts.filter(post => post.featured).length;
+            document.getElementById('featuredContent').textContent = featuredPosts;
+        }
+
+        function loadForumCategories() {
+            const categoriesContainer = document.getElementById('forumCategories');
+            if (!categoriesContainer) return;
+            
+            let html = '<h3><i class="fas fa-folder"></i> أقسام المنتدى</h3>';
+            html += '<div class="category-grid">';
+            
+            forumData.categories.forEach(category => {
+                const postsInCategory = forumData.posts.filter(post => post.categoryId === category.id).length;
+                const recentPosts = forumData.posts
+                    .filter(post => post.categoryId === category.id)
+                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                    .slice(0, 3);
+                
+                let lastActivity = 'لا توجد نشاطات';
+                if (recentPosts.length > 0) {
+                    const lastPost = recentPosts[0];
+                    lastActivity = formatRelativeTime(new Date(lastPost.createdAt));
+                }
+                
+                html += `
+                    <div class="category-card" onclick="showCategoryPosts(${category.id})">
+                        <div class="category-icon" style="background: ${category.color}">
+                            <i class="fas ${category.icon}"></i>
+                        </div>
+                        <h4>${category.name}</h4>
+                        <p>${category.description}</p>
+                        <div class="category-stats">
+                            <span>${postsInCategory} منشور</span>
+                            <span>${lastActivity}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            categoriesContainer.innerHTML = html;
+        }
+
+        function loadRecentPosts() {
+            const recentPostsList = document.getElementById('recentPostsList');
+            if (!recentPostsList) return;
+            
+            const recentPosts = forumData.posts
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, 10);
+            
+            if (recentPosts.length === 0) {
+                recentPostsList.innerHTML = '<div class="empty-message">لا توجد منشورات بعد</div>';
+                return;
+            }
+            
+            let html = '';
+            recentPosts.forEach(post => {
+                const category = forumData.categories.find(c => c.id === post.categoryId);
+                const author = post.author || 'مجهول';
+                const excerpt = post.content.substring(0, 150) + (post.content.length > 150 ? '...' : '');
+                const timeAgo = formatRelativeTime(new Date(post.createdAt));
+                
+                html += `
+                    <div class="post-item" onclick="viewPost(${post.id})">
+                        <div class="post-header">
+                            <h4 class="post-title">${post.title}</h4>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> ${author}</span>
+                                <span><i class="fas fa-clock"></i> ${timeAgo}</span>
+                            </div>
+                        </div>
+                        <div class="post-excerpt">${excerpt}</div>
+                        <div class="post-tags">
+                            <span class="post-tag">${category?.name || 'عام'}</span>
+                            ${post.tags?.map(tag => `<span class="post-tag">${tag}</span>`).join('') || ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            recentPostsList.innerHTML = html;
+        }
+
+        function showForumHome() {
+            currentView = 'home';
+            const forumContent = document.getElementById('forumContent');
+            
+            let html = '<h3><i class="fas fa-home"></i> الصفحة الرئيسية</h3>';
+            
+            // إعلان ترحيبي
+            html += `
+                <div class="forum-announcement">
+                    <div class="announcement-header">
+                        <i class="fas fa-bullhorn"></i>
+                        <h4>مرحباً بكم في منتدى عائلة محمد عبدالرحمن</h4>
+                    </div>
+                    <div class="announcement-content">
+                        هذا المنتدى مخصص للتواصل بين أفراد العائلة، وإبراز المواهب الكتابية، ومشاركة القصص والتجارب العائلية.
+                        يمكنك إنشاء مواضيع جديدة، المشاركة في النقاشات، والتعرف على المزيد من أفراد العائلة.
+                    </div>
+                </div>
+            `;
+            
+            // المنشورات المميزة
+            const featuredPosts = forumData.posts.filter(post => post.featured);
+            if (featuredPosts.length > 0) {
+                html += '<h4 style="margin-top: 20px; color: #FF9800;"><i class="fas fa-star"></i> منشورات مميزة</h4>';
+                html += '<div class="posts-grid">';
+                
+                featuredPosts.slice(0, 6).forEach(post => {
+                    const category = forumData.categories.find(c => c.id === post.categoryId);
+                    const author = post.author || 'مجهول';
+                    const excerpt = post.content.substring(0, 100) + (post.content.length > 100 ? '...' : '');
+                    
+                    html += `
+                        <div class="post-card featured-post" onclick="viewPost(${post.id})">
+                            <div class="post-card-header">
+                                <h5 class="post-card-title">${post.title}</h5>
+                                <span class="post-card-category">${category?.name || 'عام'}</span>
+                            </div>
+                            <div class="post-card-excerpt">${excerpt}</div>
+                            <div class="post-card-footer">
+                                <div class="post-card-stats">
+                                    <span><i class="fas fa-user"></i> ${author}</span>
+                                    <span><i class="fas fa-comment"></i> ${post.commentCount || 0}</span>
+                                </div>
+                                <span>${formatRelativeTime(new Date(post.createdAt))}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            }
+            
+            // أحدث المنشورات
+            const latestPosts = forumData.posts
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, 12);
+            
+            if (latestPosts.length > 0) {
+                html += '<h4 style="margin-top: 30px;"><i class="fas fa-clock"></i> أحدث المنشورات</h4>';
+                html += '<div class="posts-grid">';
+                
+                latestPosts.forEach(post => {
+                    const category = forumData.categories.find(c => c.id === post.categoryId);
+                    const author = post.author || 'مجهول';
+                    const excerpt = post.content.substring(0, 100) + (post.content.length > 100 ? '...' : '');
+                    
+                    html += `
+                        <div class="post-card" onclick="viewPost(${post.id})">
+                            <div class="post-card-header">
+                                <h5 class="post-card-title">${post.title}</h5>
+                                <span class="post-card-category">${category?.name || 'عام'}</span>
+                            </div>
+                            <div class="post-card-excerpt">${excerpt}</div>
+                            <div class="post-card-footer">
+                                <div class="post-card-stats">
+                                    <span><i class="fas fa-user"></i> ${author}</span>
+                                    <span><i class="fas fa-comment"></i> ${post.commentCount || 0}</span>
+                                </div>
+                                <span>${formatRelativeTime(new Date(post.createdAt))}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            }
+            
+            forumContent.innerHTML = html;
+        }
+
+        function showCategoryPosts(categoryId) {
+            currentView = 'category';
+            currentCategory = categoryId;
+            
+            const category = forumData.categories.find(c => c.id === categoryId);
+            const forumContent = document.getElementById('forumContent');
+            
+            let html = `<h3><i class="fas ${category?.icon || 'fa-folder'}"></i> ${category?.name || 'القسم'}</h3>`;
+            
+            if (category?.description) {
+                html += `<p style="color: #666; margin-bottom: 20px;">${category.description}</p>`;
+            }
+            
+            const categoryPosts = forumData.posts.filter(post => post.categoryId === categoryId);
+            
+            if (categoryPosts.length === 0) {
+                html += '<div class="empty-message">لا توجد منشورات في هذا القسم بعد</div>';
+            } else {
+                html += '<div class="posts-grid">';
+                
+                categoryPosts.forEach(post => {
+                    const author = post.author || 'مجهول';
+                    const excerpt = post.content.substring(0, 100) + (post.content.length > 100 ? '...' : '');
+                    
+                    html += `
+                        <div class="post-card ${post.featured ? 'featured-post' : ''}" onclick="viewPost(${post.id})">
+                            <div class="post-card-header">
+                                <h5 class="post-card-title">${post.title}</h5>
+                                <span class="post-card-category">${category?.name || 'عام'}</span>
+                            </div>
+                            <div class="post-card-excerpt">${excerpt}</div>
+                            <div class="post-card-footer">
+                                <div class="post-card-stats">
+                                    <span><i class="fas fa-user"></i> ${author}</span>
+                                    <span><i class="fas fa-comment"></i> ${post.commentCount || 0}</span>
+                                </div>
+                                <span>${formatRelativeTime(new Date(post.createdAt))}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            }
+            
+            forumContent.innerHTML = html;
+        }
+
+        // ============================================
+        // إنشاء وعرض المنشورات
+        // ============================================
+
+        function showNewPostForm() {
+            if (!currentUser) {
+                showError('يجب تسجيل الدخول لإنشاء منشور');
+                return;
+            }
+            
+            document.getElementById('newPostModal').classList.add('active');
+            
+            // تعبئة قائمة الأقسام
+            const categorySelect = document.getElementById('postCategory');
+            categorySelect.innerHTML = '<option value="">اختر القسم</option>';
+            
+            forumData.categories.forEach(category => {
+                categorySelect.innerHTML += `<option value="${category.id}">${category.name}</option>`;
+            });
+            
+            // تفريغ الحقول
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postContent').value = '';
+            document.getElementById('postTags').value = '';
+            document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('selectedTags').innerHTML = '';
+            document.getElementById('charCount').textContent = '0/5000 حرف';
+            
+            currentPostImages = [];
+            selectedTags = [];
+        }
+
+        function closeNewPost() {
+            document.getElementById('newPostModal').classList.remove('active');
+        }
+
+        function formatText(format) {
+            const textarea = document.getElementById('postContent');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            
+            let formattedText = '';
+            let cursorPos = 0;
+            
+            switch(format) {
+                case 'bold':
+                    formattedText = `<strong>${selectedText}</strong>`;
+                    cursorPos = start + 8 + selectedText.length;
+                    break;
+                case 'italic':
+                    formattedText = `<em>${selectedText}</em>`;
+                    cursorPos = start + 7 + selectedText.length;
+                    break;
+                case 'underline':
+                    formattedText = `<u>${selectedText}</u>`;
+                    cursorPos = start + 7 + selectedText.length;
+                    break;
+                case 'quote':
+                    formattedText = `<blockquote>${selectedText}</blockquote>`;
+                    cursorPos = start + 17 + selectedText.length;
+                    break;
+            }
+            
+            const newText = textarea.value.substring(0, start) + formattedText + textarea.value.substring(end);
+            textarea.value = newText;
+            
+            // تحديث عد الأحرف
+            updateCharCount();
+            
+            // إعادة وضع المؤشر
+            setTimeout(() => {
+                textarea.focus();
+                textarea.setSelectionRange(cursorPos, cursorPos);
+            }, 0);
+        }
+
+        function insertLink() {
+            const url = prompt('أدخل الرابط:');
+            if (!url) return;
+            
+            const text = prompt('أدخل النص الظاهر للرابط:', url);
+            if (text === null) return;
+            
+            const textarea = document.getElementById('postContent');
+            const start = textarea.selectionStart;
+            
+            const linkHTML = `<a href="${url}" target="_blank">${text}</a>`;
+            const newText = textarea.value.substring(0, start) + linkHTML + textarea.value.substring(start);
+            textarea.value = newText;
+            
+            updateCharCount();
+        }
+
+        function insertImage() {
+            const url = prompt('أدخل رابط الصورة:');
+            if (!url) return;
+            
+            const textarea = document.getElementById('postContent');
+            const start = textarea.selectionStart;
+            
+            const imgHTML = `<img src="${url}" alt="صورة" style="max-width: 100%; border-radius: 8px; margin: 10px 0;">`;
+            const newText = textarea.value.substring(0, start) + imgHTML + textarea.value.substring(start);
+            textarea.value = newText;
+            
+            updateCharCount();
+        }
+
+        function updateCharCount() {
+            const textarea = document.getElementById('postContent');
+            const charCount = document.getElementById('charCount');
+            const count = textarea.value.length;
+            charCount.textContent = `${count}/5000 حرف`;
+            
+            if (count > 5000) {
+                charCount.style.color = '#F44336';
+            } else if (count > 4000) {
+                charCount.style.color = '#FF9800';
+            } else {
+                charCount.style.color = '#888';
+            }
+        }
+
+        function previewImages(event) {
+            const files = event.target.files;
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'preview-image';
+                    preview.appendChild(img);
+                    
+                    // حفظ الصورة في المصفوفة المؤقتة
+                    currentPostImages.push({
+                        data: e.target.result,
+                        name: file.name,
+                        type: file.type
+                    });
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function handleTagInput(event) {
+            if (event.key === 'Enter' || event.key === ',') {
+                event.preventDefault();
+                const tagInput = document.getElementById('postTags');
+                const tag = tagInput.value.trim();
+                
+                if (tag && !selectedTags.includes(tag)) {
+                    addTag(tag);
+                    tagInput.value = '';
+                }
+            }
+        }
+
+        function addTag(tag) {
+            if (!selectedTags.includes(tag)) {
+                selectedTags.push(tag);
+                updateSelectedTags();
+            }
+        }
+
+        function removeTag(tag) {
+            selectedTags = selectedTags.filter(t => t !== tag);
+            updateSelectedTags();
+        }
+
+        function updateSelectedTags() {
+            const container = document.getElementById('selectedTags');
+            container.innerHTML = '';
+            
+            selectedTags.forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'selected-tag';
+                tagElement.innerHTML = `
+                    ${tag}
+                    <span class="remove-tag" onclick="removeTag('${tag}')">
+                        <i class="fas fa-times"></i>
+                    </span>
+                `;
+                container.appendChild(tagElement);
+            });
+        }
+
+        function saveAsDraft() {
+            const postData = getPostFormData();
+            if (!postData) return;
+            
+            postData.status = 'draft';
+            postData.id = Date.now();
+            postData.createdAt = new Date().toISOString();
+            
+            // إضافة المسودة للمصفوفة
+            if (!forumData.drafts) forumData.drafts = [];
+            forumData.drafts.push(postData);
+            
+            saveForumData();
+            showSuccess('تم حفظ المسودة بنجاح');
+            closeNewPost();
+        }
+
+        function saveNewPost() {
+            const postData = getPostFormData();
+            if (!postData) return;
+            
+            // إعداد بيانات المنشور
+            const postId = Date.now();
+            const newPost = {
+                id: postId,
+                title: postData.title,
+                content: postData.content,
+                categoryId: parseInt(postData.categoryId),
+                author: currentUser ? users[currentUser]?.name : 'مجهول',
+                authorId: currentUser,
+                tags: selectedTags,
+                images: currentPostImages,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                views: 0,
+                likes: [],
+                commentCount: 0,
+                featured: false,
+                status: 'published'
+            };
+            
+            // إضافة للمنتدى
+            forumData.posts.push(newPost);
+            
+            // تحديث إحصائيات المستخدم
+            if (currentUser) {
+                if (!forumData.userStats[currentUser]) {
+                    forumData.userStats[currentUser] = { posts: 0, comments: 0, likes: 0 };
+                }
+                forumData.userStats[currentUser].posts++;
+            }
+            
+            // حفظ البيانات
+            saveForumData();
+            updateForumStatistics();
+            loadRecentPosts();
+            showCategoryPosts(newPost.categoryId);
+            
+            showSuccess('تم نشر المنشور بنجاح');
+            closeNewPost();
+        }
+
+        function getPostFormData() {
+            const title = document.getElementById('postTitle').value.trim();
+            const categoryId = document.getElementById('postCategory').value;
+            const content = document.getElementById('postContent').value.trim();
+            
+            if (!title) {
+                showError('يرجى إدخال عنوان للمنشور');
+                return null;
+            }
+            
+            if (!categoryId) {
+                showError('يرجى اختيار قسم للمنشور');
+                return null;
+            }
+            
+            if (!content) {
+                showError('يرجى إدخال محتوى للمنشور');
+                return null;
+            }
+            
+            if (content.length > 5000) {
+                showError('المحتوى يجب ألا يتجاوز 5000 حرف');
+                return null;
+            }
+            
+            return {
+                title,
+                categoryId,
+                content,
+                tags: selectedTags,
+                images: currentPostImages
+            };
+        }
+
+        // ============================================
+        // عرض المنشور والتعليقات
+        // ============================================
+
+        function viewPost(postId) {
+            const post = forumData.posts.find(p => p.id === postId);
+            if (!post) {
+                showError('المنشور غير موجود');
+                return;
+            }
+            
+            currentViewingPost = post;
+            
+            // زيادة عدد المشاهدات
+            post.views = (post.views || 0) + 1;
+            
+            // تحديث العنوان
+            document.getElementById('viewPostTitle').textContent = post.title;
+            
+            // تحضير محتوى العرض
+            const category = forumData.categories.find(c => c.id === post.categoryId);
+            const comments = forumData.comments.filter(c => c.postId === postId);
+            
+            let html = `
+                <div class="post-view">
+                    <div class="post-view-header">
+                        <h2 class="post-view-title">${post.title}</h2>
+                        <div class="post-view-meta">
+                            <span><i class="fas fa-user"></i> ${post.author}</span>
+                            <span><i class="fas fa-folder"></i> ${category?.name || 'عام'}</span>
+                            <span><i class="fas fa-clock"></i> ${formatRelativeTime(new Date(post.createdAt))}</span>
+                            <span><i class="fas fa-eye"></i> ${post.views} مشاهدة</span>
+                        </div>
+                    </div>
+                    
+                    <div class="post-view-content">
+                        ${post.content}
+                    </div>
+            `;
+            
+            // عرض الصور إن وجدت
+            if (post.images && post.images.length > 0) {
+                html += '<h4><i class="fas fa-images"></i> الصور المرفقة</h4>';
+                html += '<div class="post-images">';
+                
+                post.images.forEach((img, index) => {
+                    html += `<img src="${img.data}" alt="صورة ${index + 1}" class="post-image" onclick="viewImage('${img.data}')">`;
+                });
+                
+                html += '</div>';
+            }
+            
+            // عرض التصنيفات
+            if (post.tags && post.tags.length > 0) {
+                html += '<div style="margin: 20px 0;">';
+                html += '<strong>التصنيفات:</strong> ';
+                post.tags.forEach(tag => {
+                    html += `<span class="post-tag">${tag}</span> `;
+                });
+                html += '</div>';
+            }
+            
+            // أزرار الإجراءات
+            html += `
+                <div class="post-actions">
+                    <button class="btn btn-success" onclick="likePost(${postId})">
+                        <i class="fas fa-thumbs-up"></i> أعجبني (${post.likes?.length || 0})
+                    </button>
+                    ${currentUser === post.authorId ? `
+                    <button class="btn btn-warning" onclick="editPost(${postId})">
+                        <i class="fas fa-edit"></i> تعديل
+                    </button>
+                    <button class="btn btn-danger" onclick="deletePost(${postId})">
+                        <i class="fas fa-trash"></i> حذف
+                    </button>
+                    ` : ''}
+                    ${currentUser && users[currentUser]?.role === 'admin' ? `
+                    <button class="btn btn-info" onclick="toggleFeatured(${postId})">
+                        <i class="fas fa-star"></i> ${post.featured ? 'إلغاء التميز' : 'تمييز'}
+                    </button>
+                    ` : ''}
+                </div>
+            `;
+            
+            html += '</div>';
+            
+            document.getElementById('postViewContent').innerHTML = html;
+            loadComments(postId);
+            
+            // فتح نافذة العرض
+            document.getElementById('viewPostModal').classList.add('active');
+            
+            // حفظ التحديثات
+            saveForumData();
+        }
+
+        function viewImage(imageSrc) {
+            window.open(imageSrc, '_blank');
+        }
+
+        function closeViewPost() {
+            document.getElementById('viewPostModal').classList.remove('active');
+            currentViewingPost = null;
+        }
+
+        function likePost(postId) {
+            if (!currentUser) {
+                showError('يجب تسجيل الدخول للإعجاب بالمنشور');
+                return;
+            }
+            
+            const post = forumData.posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            if (!post.likes) post.likes = [];
+            
+            const userIndex = post.likes.indexOf(currentUser);
+            if (userIndex === -1) {
+                post.likes.push(currentUser);
+                showSuccess('تم الإعجاب بالمنشور');
+            } else {
+                post.likes.splice(userIndex, 1);
+                showSuccess('تم إلغاء الإعجاب بالمنشور');
+            }
+            
+            saveForumData();
+            viewPost(postId); // إعادة تحميل العرض
+        }
+
+        function editPost(postId) {
+            const post = forumData.posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            if (currentUser !== post.authorId) {
+                showError('لا يمكنك تعديل هذا المنشور');
+                return;
+            }
+            
+            showNewPostForm();
+            
+            // تعبئة البيانات الحالية
+            document.getElementById('postTitle').value = post.title;
+            document.getElementById('postCategory').value = post.categoryId;
+            document.getElementById('postContent').value = post.content;
+            
+            selectedTags = post.tags || [];
+            updateSelectedTags();
+            
+            currentPostImages = post.images || [];
+            
+            // تحديث عرض الصور
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            currentPostImages.forEach(img => {
+                const imgElement = document.createElement('img');
+                imgElement.src = img.data;
+                imgElement.className = 'preview-image';
+                preview.appendChild(imgElement);
+            });
+            
+            // تغيير زر الحفظ
+            const submitBtn = document.querySelector('#newPostForm button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> تحديث';
+            submitBtn.onclick = function() { updatePost(postId); };
+        }
+
+        function updatePost(postId) {
+            const postData = getPostFormData();
+            if (!postData) return;
+            
+            const postIndex = forumData.posts.findIndex(p => p.id === postId);
+            if (postIndex === -1) return;
+            
+            forumData.posts[postIndex] = {
+                ...forumData.posts[postIndex],
+                title: postData.title,
+                content: postData.content,
+                categoryId: parseInt(postData.categoryId),
+                tags: selectedTags,
+                images: currentPostImages,
+                updatedAt: new Date().toISOString()
+            };
+            
+            saveForumData();
+            showSuccess('تم تحديث المنشور بنجاح');
+            closeNewPost();
+            viewPost(postId);
+        }
+
+        function deletePost(postId) {
+            if (!confirm('هل أنت متأكد من حذف هذا المنشور؟')) return;
+            
+            const postIndex = forumData.posts.findIndex(p => p.id === postId);
+            if (postIndex === -1) return;
+            
+            // حذف التعليقات المرتبطة
+            forumData.comments = forumData.comments.filter(c => c.postId !== postId);
+            
+            // تحديث إحصائيات المستخدم
+            if (currentUser) {
+                if (forumData.userStats[currentUser]) {
+                    forumData.userStats[currentUser].posts = Math.max(0, (forumData.userStats[currentUser].posts || 1) - 1);
+                }
+            }
+            
+            // حذف المنشور
+            forumData.posts.splice(postIndex, 1);
+            
+            saveForumData();
+            showSuccess('تم حذف المنشور بنجاح');
+            closeViewPost();
+            
+            // تحديث العرض الحالي
+            if (currentView === 'category') {
+                showCategoryPosts(currentCategory);
+            } else {
+                showForumHome();
+            }
+        }
+
+        function toggleFeatured(postId) {
+            if (!checkPermission('edit')) {
+                showError('لا تملك صلاحية تمييز المنشورات');
+                return;
+            }
+            
+            const post = forumData.posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            post.featured = !post.featured;
+            saveForumData();
+            viewPost(postId);
+            showSuccess(post.featured ? 'تم تمييز المنشور' : 'تم إلغاء تمييز المنشور');
+        }
+
+        // ============================================
+        // إدارة التعليقات
+        // ============================================
+
+        function loadComments(postId) {
+            const commentsList = document.getElementById('commentsList');
+            const comments = forumData.comments.filter(c => c.postId === postId);
+            
+            if (comments.length === 0) {
+                commentsList.innerHTML = '<div class="empty-message" style="padding: 20px;">لا توجد تعليقات بعد</div>';
+                return;
+            }
+            
+            let html = '';
+            comments.forEach(comment => {
+                html += `
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">${comment.author}</span>
+                            <span class="comment-date">${formatRelativeTime(new Date(comment.createdAt))}</span>
+                        </div>
+                        <div class="comment-content">${comment.content}</div>
+                    </div>
+                `;
+            });
+            
+            commentsList.innerHTML = html;
+        }
+
+        function addComment() {
+            if (!currentUser) {
+                showError('يجب تسجيل الدخول لإضافة تعليق');
+                return;
+            }
+            
+            const commentInput = document.getElementById('newComment');
+            const commentText = commentInput.value.trim();
+            
+            if (!commentText) {
+                showError('يرجى إدخال نص التعليق');
+                return;
+            }
+            
+            if (!currentViewingPost) {
+                showError('لا يوجد منشور مفتوح');
+                return;
+            }
+            
+            const newComment = {
+                id: Date.now(),
+                postId: currentViewingPost.id,
+                content: commentText,
+                author: currentUser ? users[currentUser]?.name : 'مجهول',
+                authorId: currentUser,
+                createdAt: new Date().toISOString()
+            };
+            
+            // إضافة التعليق
+            forumData.comments.push(newComment);
+            
+            // تحديث عدد التعليقات في المنشور
+            currentViewingPost.commentCount = (currentViewingPost.commentCount || 0) + 1;
+            
+            // تحديث إحصائيات المستخدم
+            if (currentUser) {
+                if (!forumData.userStats[currentUser]) {
+                    forumData.userStats[currentUser] = { posts: 0, comments: 0, likes: 0 };
+                }
+                forumData.userStats[currentUser].comments++;
+            }
+            
+            // حفظ البيانات
+            saveForumData();
+            updateForumStatistics();
+            
+            // تفريغ الحقل وتحديث العرض
+            commentInput.value = '';
+            loadComments(currentViewingPost.id);
+            showSuccess('تم إضافة التعليق بنجاح');
+        }
+
+        // ============================================
+        // البحث والفلترة
+        // ============================================
+
+        function searchForum() {
+            const searchTerm = document.getElementById('forumSearch').value.trim().toLowerCase();
+            currentSearchTerm = searchTerm;
+            
+            if (!searchTerm) {
+                showForumHome();
+                return;
+            }
+            
+            const results = forumData.posts.filter(post => 
+                post.title.toLowerCase().includes(searchTerm) ||
+                post.content.toLowerCase().includes(searchTerm) ||
+                (post.tags && post.tags.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+                post.author.toLowerCase().includes(searchTerm)
+            );
+            
+            const forumContent = document.getElementById('forumContent');
+            
+            let html = `<h3><i class="fas fa-search"></i> نتائج البحث عن "${searchTerm}"</h3>`;
+            
+            if (results.length === 0) {
+                html += '<div class="empty-message">لا توجد نتائج للبحث</div>';
+            } else {
+                html += `<p>تم العثور على ${results.length} نتيجة</p>`;
+                html += '<div class="posts-grid">';
+                
+                results.forEach(post => {
+                    const category = forumData.categories.find(c => c.id === post.categoryId);
+                    const author = post.author || 'مجهول';
+                    const excerpt = post.content.substring(0, 100) + (post.content.length > 100 ? '...' : '');
+                    
+                    // تمييز الكلمة في النتائج
+                    const highlightedTitle = highlightText(post.title, searchTerm);
+                    const highlightedExcerpt = highlightText(excerpt, searchTerm);
+                    
+                    html += `
+                        <div class="post-card" onclick="viewPost(${post.id})">
+                            <div class="post-card-header">
+                                <h5 class="post-card-title">${highlightedTitle}</h5>
+                                <span class="post-card-category">${category?.name || 'عام'}</span>
+                            </div>
+                            <div class="post-card-excerpt">${highlightedExcerpt}</div>
+                            <div class="post-card-footer">
+                                <div class="post-card-stats">
+                                    <span><i class="fas fa-user"></i> ${author}</span>
+                                    <span><i class="fas fa-comment"></i> ${post.commentCount || 0}</span>
+                                </div>
+                                <span>${formatRelativeTime(new Date(post.createdAt))}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            }
+            
+            forumContent.innerHTML = html;
+        }
+
+        function highlightText(text, searchTerm) {
+            if (!searchTerm) return text;
+            
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            return text.replace(regex, '<span style="background-color: #FFF59D; padding: 1px 3px; border-radius: 3px;">$1</span>');
+        }
+
+        function refreshForum() {
+            loadForumData();
+            updateForumUserInfo();
+            loadForumCategories();
+            loadRecentPosts();
+            
+            switch(currentView) {
+                case 'home':
+                    showForumHome();
+                    break;
+                case 'category':
+                    showCategoryPosts(currentCategory);
+                    break;
+                default:
+                    showForumHome();
+            }
+            
+            showSuccess('تم تحديث المنتدى');
+        }
+
+        function showForumCategories() {
+            currentView = 'home';
+            document.getElementById('forumContent').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ============================================
+        // دوال مساعدة
+        // ============================================
+
+        function formatRelativeTime(date) {
+            const now = new Date();
+            const diff = now - date;
+            
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            const months = Math.floor(days / 30);
+            const years = Math.floor(months / 12);
+            
+            if (years > 0) return `قبل ${years} سنة`;
+            if (months > 0) return `قبل ${months} شهر`;
+            if (days > 0) return `قبل ${days} يوم`;
+            if (hours > 0) return `قبل ${hours} ساعة`;
+            if (minutes > 0) return `قبل ${minutes} دقيقة`;
+            return 'الآن';
+        }
+
+        // ============================================
+        // تهيئة المنتدى عند تحميل الصفحة
+        // ============================================
+
+        // إضافة الترجمة للمنتدى
+        if (translations.ar) {
+            translations.ar.familyForum = 'منتدى العائلة';
+        }
+        if (translations.en) {
+            translations.en.familyForum = 'Family Forum';
+        }
+
+        // تحديث تهيئة النظام لتحميل بيانات المنتدى
+        const originalInitSystem = initSystem;
+        initSystem = function() {
+            originalInitSystem();
+            loadForumData();
+        };
+
+        // ============================================
+        // باقي الكود الأصلي يبقى كما هو
+        // ============================================
+
+        // جميع الدوال والمتغيرات الأصلية تبقى كما هي
+        // سيتم دمجها مع الدوال الجديدة
+
+        // ... باقي الكود الأصلي ...
+
+    </script>
+</body>
+</html>
