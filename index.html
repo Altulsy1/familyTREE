@@ -3659,7 +3659,7 @@
                 PersonID: 1,
                 FullName: "محمد عبدالرحمن ادم",
                 Gender: "ذكر",
-                PlaceOfBirth: "",
+                PlaceOfBirth: "تلس",
                 BirthDate: "",
                 DeathDate: "",
                 FatherID: 0,
@@ -3671,7 +3671,7 @@
                 PersonID: 2,
                 FullName: "عائشة ابكر محمد",
                 Gender: "انثى",
-                PlaceOfBirth: "",
+                PlaceOfBirth: "تلس",
                 BirthDate: "",
                 DeathDate: "",
                 FatherID: 0,
@@ -3689,7 +3689,7 @@
                 title: 'اجتماع عائلي شهر رمضان',
                 date: new Date(new Date().getFullYear(), 3, 15).toISOString().split('T')[0], // 15 أبريل
                 time: '20:00',
-                location: 'منزل الجد - الرياض',
+                location: 'منزل الجد - نيالا',
                 description: 'اجتماع عائلي لتفقد أحوال الأسرة وتوزيع الصدقات وتنظيم إفطارات رمضان.',
                 organizer: 'محمد عبدالرحمن',
                 status: 'نشط',
@@ -5143,13 +5143,7 @@
             location.reload();
         }
 
-        // ============================================
-        // باقي الكود يتبع هنا (نفس الكود الأصلي مع التعديلات المطلوبة)
-        // ============================================
-
-        // باقي الدوال (initSystem, handleLogin, logout, loadDashboard, showAddPersonForm, editPerson, deletePerson, showPersonDetail, savePerson, etc.)
-        // تبقى كما هي مع التعديلات المطلوبة أعلاه
-
+      
         // ============================================
         // دوال النظام الأساسية
         // ============================================
@@ -7479,7 +7473,6 @@ function clearBookSearch() {
             showSuccess(bookGrid.classList.contains('compact') ? 
                 'تم تفعيل العرض المضغوط' : 'تم تفعيل العرض الموسع');
         }
-
     </script>
 </body>
 </html>
