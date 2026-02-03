@@ -7472,6 +7472,206 @@ function clearBookSearch() {
             bookGrid.classList.toggle('compact');
             showSuccess(bookGrid.classList.contains('compact') ? 
                 'تم تفعيل العرض المضغوط' : 'تم تفعيل العرض الموسع');
+      function loadUsers() {
+    const savedUsers = localStorage.getItem('familyTreeUsers');
+    if (savedUsers) {
+        try {
+            const parsedUsers = JSON.parse(savedUsers);
+            // دمج المستخدمين المحفوظين مع المستخدمين الأساسيين
+            Object.assign(users, parsedUsers);
+        } catch (error) {
+            console.error('Error loading users:', error);
+        }
+    }
+}
+
+function checkPermission(permission) {
+    if (!currentUser) return false;
+    
+    const userRole = users[currentUser]?.role || 'user';
+    const permissions = userPermissions[userRole] || userPermissions['user'];
+    
+    return permissions.includes(permission);
+}
+
+function updateUIByPermissions() {
+    const canEdit = checkPermission('edit');
+    const canDelete = checkPermission('delete');
+    const canManageUsers = checkPermission('manage_users');
+    
+    // تحديث الواجهة بناءً على الصلاحيات
+    const editButtons = document.querySelectorAll('.action-btn.edit, .action-btn.delete');
+    editButtons.forEach(btn => {
+        const isEdit = btn.classList.contains('edit');
+        const isDelete = btn.classList.contains('delete');
+        
+        if ((isEdit && !canEdit) || (isDelete && !canDelete)) {
+            btn.style.display = 'none';
+        }
+    });
+    
+    // إخفاء عناصر القائمة الجانبية
+    const menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach((item, index) => {
+        // عناصر تحتاج صلاحيات خاصة
+        if (index === 10 && !canManageUsers) { // إدارة الصلاحيات
+            item.style.display = 'none';
+        }
+    });
+}
+
+function updateSidebarPermissions() {
+    // تحديث عناصر القائمة الجانبية بناءً على صلاحيات المستخدم
+    const isAdmin = currentUser === 'admin';
+    const isUser = currentUser === 'user';
+    const isHost = currentUser === 'host';
+    
+    // إخفاء/إظهار العناصر حسب الصلاحيات
+    const menuItems = document.querySelectorAll('.menu-item');
+    
+    // عناصر لإدارة الصلاحيات (فقط للمدير)
+    const permissionsIndex = 10; // إدارة الصلاحيات
+    const encryptionIndex = 11; // إعدادات التشفير
+    
+    if (menuItems[permissionsIndex]) {
+        menuItems[permissionsIndex].style.display = isAdmin ? 'flex' : 'none';
+    }
+    
+    if (menuItems[encryptionIndex]) {
+        menuItems[encryptionIndex].style.display = isAdmin ? 'flex' : 'none';
+    }
+}
+
+function showSuccess(message) {
+    const alert = document.getElementById('successAlert');
+    const messageElement = document.getElementById('successMessage');
+    
+    if (alert && messageElement) {
+        messageElement.textContent = message;
+        alert.style.display = 'flex';
+        
+        setTimeout(() => {
+            alert.style.display = 'none';
+        }, 3000);
+    }
+}
+
+function showError(message) {
+    const alert = document.getElementById('errorAlert');
+    const messageElement = document.getElementById('errorMessage');
+    
+    if (alert && messageElement) {
+        messageElement.textContent = message;
+        alert.style.display = 'flex';
+        
+        setTimeout(() => {
+            alert.style.display = 'none';
+        }, 5000);
+    }
+}
+
+function showWarning(message) {
+    // إنشاء تنبيه تحذير إذا لم يكن موجوداً
+    let warningAlert = document.getElementById('warningAlert');
+    if (!warningAlert) {
+        warningAlert = document.createElement('div');
+        warningAlert.id = 'warningAlert';
+        warningAlert.className = 'alert warning';
+        warningAlert.innerHTML = `
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="warningMessage"></span>
+        `;
+        document.querySelector('.control-panel').prepend(warningAlert);
+    }
+    
+    const messageElement = document.getElementById('warningMessage');
+    if (messageElement) {
+        messageElement.textContent = message;
+        warningAlert.style.display = 'flex';
+        
+        setTimeout(() => {
+            warningAlert.style.display = 'none';
+        }, 4000);
+    }
+}
+
+function showInfo(message) {
+    // إنشاء تنبيه معلومات إذا لم يكن موجوداً
+    let infoAlert = document.getElementById('infoAlert');
+    if (!infoAlert) {
+        infoAlert = document.createElement('div');
+        infoAlert.id = 'infoAlert';
+        infoAlert.className = 'alert info';
+        infoAlert.innerHTML = `
+            <i class="fas fa-info-circle"></i>
+            <span id="infoMessage"></span>
+        `;
+        document.querySelector('.control-panel').prepend(infoAlert);
+    }
+    
+    const messageElement = document.getElementById('infoMessage');
+    if (messageElement) {
+        messageElement.textContent = message;
+        infoAlert.style.display = 'flex';
+        
+        setTimeout(() => {
+            infoAlert.style.display = 'none';
+        }, 3000);
+    }
+}
+
+// دالة تهيئة زر القائمة للجوال
+function initMobileMenu() {
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const sidebar = document.getElementById('sidebar');
+    
+    if (mobileMenuToggle && sidebar) {
+        mobileMenuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+        
+        // إغلاق القائمة عند النقر خارجها
+        document.addEventListener('click', function(event) {
+            if (!sidebar.contains(event.target) && 
+                !mobileMenuToggle.contains(event.target) && 
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+    }
+}
+
+// تحديث دالة smart-suggestions إذا كانت موجودة
+function applySmartSuggestions() {
+    showInfo('سيتم تطبيق الاقتراحات الذكية في النسخ القادمة');
+}
+
+function showWhySuggestion() {
+    showInfo('يقوم النظام باقتراح العلاقات بناءً على الأفراد الموجودين في نفس العمر والجيل');
+}
+
+function clearSmartSuggestions() {
+    showInfo('تم مسح الاقتراحات');
+}
+
+// تهيئة النظام عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    // تحديث اللغة
+    updateLanguage();
+    
+    // تهيئة زر القائمة للجوال
+    initMobileMenu();
+    
+    // إضافة أنماط CSS مفقودة
+    const style = document.createElement('style');
+    style.textContent = `
+        .warning { background: #fff3e0; color: #ef6c00; border-color: #ffe0b2; border-right-color: #ff9800; }
+        .info { background: #e0f7fa; color: #006064; border-color: #b2ebf2; border-right-color: #00bcd4; }
+    `;
+    document.head.appendChild(style);
+});
+
+console.log('✅ تم تحميل النظام بنجاح');
         }
     </script>
 </body>
