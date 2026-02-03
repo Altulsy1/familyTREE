@@ -7673,6 +7673,525 @@ document.addEventListener('DOMContentLoaded', function() {
 
 console.log('✅ تم تحميل النظام بنجاح');
         }
+        // ============================================
+// دوال التنبيهات والإشعارات
+// ============================================
+
+function showSuccess(message) {
+    console.log('Success:', message);
+    const alert = document.getElementById('successAlert');
+    const messageElement = document.getElementById('successMessage');
+    
+    if (alert && messageElement) {
+        messageElement.textContent = message;
+        alert.style.display = 'flex';
+        
+        setTimeout(() => {
+            alert.style.display = 'none';
+        }, 3000);
+    } else {
+        alert('✅ ' + message);
+    }
+}
+
+function showError(message) {
+    console.log('Error:', message);
+    const alert = document.getElementById('errorAlert');
+    const messageElement = document.getElementById('errorMessage');
+    
+    if (alert && messageElement) {
+        messageElement.textContent = message;
+        alert.style.display = 'flex';
+        
+        setTimeout(() => {
+            alert.style.display = 'none';
+        }, 5000);
+    } else {
+        alert('❌ ' + message);
+    }
+}
+
+function showWarning(message) {
+    console.log('Warning:', message);
+    // إنشاء تنبيه تحذير إذا لم يكن موجوداً
+    let warningAlert = document.getElementById('warningAlert');
+    if (!warningAlert) {
+        warningAlert = document.createElement('div');
+        warningAlert.id = 'warningAlert';
+        warningAlert.className = 'alert warning';
+        warningAlert.innerHTML = `
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="warningMessage"></span>
+        `;
+        const controlPanel = document.querySelector('.control-panel');
+        if (controlPanel) {
+            controlPanel.prepend(warningAlert);
+        }
+    }
+    
+    const messageElement = document.getElementById('warningMessage');
+    if (messageElement) {
+        messageElement.textContent = message;
+        warningAlert.style.display = 'flex';
+        
+        setTimeout(() => {
+            warningAlert.style.display = 'none';
+        }, 4000);
+    } else {
+        alert('⚠ ' + message);
+    }
+}
+
+function showInfo(message) {
+    console.log('Info:', message);
+    // إنشاء تنبيه معلومات إذا لم يكن موجوداً
+    let infoAlert = document.getElementById('infoAlert');
+    if (!infoAlert) {
+        infoAlert = document.createElement('div');
+        infoAlert.id = 'infoAlert';
+        infoAlert.className = 'alert info';
+        infoAlert.innerHTML = `
+            <i class="fas fa-info-circle"></i>
+            <span id="infoMessage"></span>
+        `;
+        const controlPanel = document.querySelector('.control-panel');
+        if (controlPanel) {
+            controlPanel.prepend(infoAlert);
+        }
+    }
+    
+    const messageElement = document.getElementById('infoMessage');
+    if (messageElement) {
+        messageElement.textContent = message;
+        infoAlert.style.display = 'flex';
+        
+        setTimeout(() => {
+            infoAlert.style.display = 'none';
+        }, 3000);
+    } else {
+        alert('ℹ ' + message);
+    }
+}
+
+// ============================================
+// دوال إدارة المستخدمين والصلاحيات
+// ============================================
+
+function loadUsers() {
+    const savedUsers = localStorage.getItem('familyTreeUsers');
+    if (savedUsers) {
+        try {
+            const parsedUsers = JSON.parse(savedUsers);
+            // دمج المستخدمين المحفوظين مع المستخدمين الأساسيين
+            Object.assign(users, parsedUsers);
+            console.log('✅ Loaded users:', Object.keys(users));
+        } catch (error) {
+            console.error('Error loading users:', error);
+        }
+    } else {
+        // حفظ المستخدمين الأساسيين
+        localStorage.setItem('familyTreeUsers', JSON.stringify(users));
+    }
+}
+
+function checkPermission(permission) {
+    if (!currentUser) return false;
+    
+    const userRole = users[currentUser]?.role || 'user';
+    const permissions = userPermissions[userRole] || userPermissions['user'];
+    
+    return permissions.includes(permission);
+}
+
+function updateUIByPermissions() {
+    const canEdit = checkPermission('edit');
+    const canDelete = checkPermission('delete');
+    const canManageUsers = checkPermission('manage_users');
+    
+    console.log('Updating UI permissions for:', currentUser, 'Edit:', canEdit, 'Delete:', canDelete);
+    
+    // تحديث الواجهة بناءً على الصلاحيات
+    const editButtons = document.querySelectorAll('.action-btn.edit, .action-btn.delete');
+    editButtons.forEach(btn => {
+        const isEdit = btn.classList.contains('edit');
+        const isDelete = btn.classList.contains('delete');
+        
+        if ((isEdit && !canEdit) || (isDelete && !canDelete)) {
+            btn.style.display = 'none';
+        } else {
+            btn.style.display = 'flex';
+        }
+    });
+    
+    // تحديث الأزرار في لوحة التحكم
+    const controlButtons = document.querySelectorAll('.action-buttons .btn');
+    controlButtons.forEach(btn => {
+        const btnText = btn.textContent || '';
+        if (btnText.includes('تعديل') && !canEdit) {
+            btn.style.display = 'none';
+        }
+    });
+}
+
+function updateSidebarPermissions() {
+    if (!currentUser) return;
+    
+    const isAdmin = currentUser === 'admin';
+    const isAsma = currentUser === 'asma';
+    const isUser = currentUser === 'user';
+    const isHost = currentUser === 'host';
+    
+    console.log('Updating sidebar for user:', currentUser, 'Admin:', isAdmin);
+    
+    // عناصر القائمة الجانبية
+    const menuItems = document.querySelectorAll('.sidebar-menu .menu-item');
+    
+    // مؤشرات عناصر القائمة
+    const menuIndexes = {
+        permissions: 10,      // إدارة الصلاحيات
+        encryption: 11,       // إعدادات التشفير
+        cloudManager: 13      // إدارة السحابة
+    };
+    
+    // إخفاء/إظهار العناصر حسب الصلاحيات
+    menuItems.forEach((item, index) => {
+        let shouldShow = true;
+        
+        switch(index) {
+            case menuIndexes.permissions:
+                shouldShow = isAdmin;
+                break;
+            case menuIndexes.encryption:
+                shouldShow = isAdmin;
+                break;
+            case menuIndexes.cloudManager:
+                shouldShow = isAdmin || isAsma;
+                break;
+        }
+        
+        item.style.display = shouldShow ? 'flex' : 'none';
+    });
+}
+
+// ============================================
+// دوال تحسين تهيئة النظام
+// ============================================
+
+function initSystem() {
+    console.log('🚀 جاري تهيئة النظام...');
+    
+    // 1. تحميل المستخدمين
+    loadUsers();
+    
+    // 2. تحميل قوائم انتظار المزامنة
+    const savedQueue = localStorage.getItem('syncQueue');
+    if (savedQueue) {
+        try {
+            syncQueue = JSON.parse(savedQueue);
+        } catch (error) {
+            syncQueue = [];
+        }
+    }
+    
+    const savedEventsQueue = localStorage.getItem('eventsSyncQueue');
+    if (savedEventsQueue) {
+        try {
+            eventsSyncQueue = JSON.parse(savedEventsQueue);
+        } catch (error) {
+            eventsSyncQueue = [];
+        }
+    }
+    
+    // 3. تحميل البيانات المحلية
+    const savedEncryptionFlag = localStorage.getItem('isDataEncrypted');
+    const savedData = localStorage.getItem('familyData');
+    
+    if (savedEncryptionFlag === 'true' && savedData) {
+        isDataEncrypted = true;
+        showWarning('البيانات مشفرة. يرجى استخدام فك التشفير لعرض البيانات.');
+        familyData = defaultFamilyData; // استخدام البيانات الافتراضية
+    } else if (savedData) {
+        try {
+            familyData = JSON.parse(savedData);
+            isDataEncrypted = false;
+            console.log('✅ تم تحميل بيانات', familyData.length, 'فرد');
+        } catch (error) {
+            console.error('❌ خطأ في تحميل البيانات:', error);
+            familyData = defaultFamilyData;
+            isDataEncrypted = false;
+        }
+    } else {
+        familyData = defaultFamilyData;
+        isDataEncrypted = false;
+        saveDataLocally(); // حفظ البيانات الافتراضية
+    }
+    
+    // 4. تحديث nextPersonId
+    if (familyData.length > 0) {
+        const maxId = Math.max(...familyData.map(p => p.PersonID));
+        nextPersonId = maxId + 1;
+    } else {
+        nextPersonId = 1;
+    }
+    
+    // 5. تحميل الإعلانات
+    const savedEvents = localStorage.getItem('familyEvents');
+    if (savedEvents) {
+        try {
+            familyEvents = JSON.parse(savedEvents);
+        } catch (error) {
+            familyEvents = defaultEvents;
+        }
+    } else {
+        familyEvents = defaultEvents;
+        saveEventsLocally();
+    }
+    
+    console.log('📊 إحصائيات النظام:');
+    console.log('- عدد الأفراد:', familyData.length);
+    console.log('- عدد الإعلانات:', familyEvents.length);
+    console.log('- البيانات في قائمة الانتظار:', syncQueue.length);
+    console.log('- الإعلانات في قائمة الانتظار:', eventsSyncQueue.length);
+    
+    // 6. تهيئة Firebase
+    try {
+        cloudSyncEnabled = initializeFirebase();
+        if (cloudSyncEnabled) {
+            setTimeout(() => {
+                loadDataFromCloud();
+            }, 1500);
+        }
+    } catch (error) {
+        console.error('❌ فشل تهيئة Firebase:', error);
+        cloudSyncEnabled = false;
+    }
+    
+    // 7. تحديث الواجهة
+    updateUIByPermissions();
+    updateSidebarPermissions();
+    updateSyncStatus();
+    
+    // 8. تهيئة القائمة الجوالية
+    initMobileMenu();
+    
+    // 9. تحديث الإحصائيات مباشرة
+    updateStatisticsImmediately();
+    
+    showSuccess('تم تهيئة النظام بنجاح');
+}
+
+function updateStatisticsImmediately() {
+    // تحديث الإحصائيات مباشرة في واجهة المستخدم
+    const totalPersons = familyData.length;
+    const maleCount = familyData.filter(p => p.Gender === 'ذكر').length;
+    const femaleCount = familyData.filter(p => p.Gender === 'انثى').length;
+    
+    // حساب العائلات الفريدة (الأشخاص بدون آباء ولا أمهات وليسوا من خارج العائلة)
+    const uniqueFamilies = familyData.filter(p => {
+        const noParents = p.FatherID === 0 && p.MotherID === 0;
+        const notOutsider = !isOutsideFamily(p.PersonID);
+        return noParents && notOutsider;
+    }).length;
+    
+    console.log('📈 الإحصائيات المحدثة:', { totalPersons, maleCount, femaleCount, uniqueFamilies });
+    
+    // تحديث DOM مباشرة
+    const totalElement = document.getElementById('totalPersons');
+    const maleElement = document.getElementById('maleCount');
+    const femaleElement = document.getElementById('femaleCount');
+    const familiesElement = document.getElementById('familiesCount');
+    
+    if (totalElement) totalElement.textContent = totalPersons;
+    if (maleElement) maleElement.textContent = maleCount;
+    if (femaleElement) femaleElement.textContent = femaleCount;
+    if (familiesElement) familiesElement.textContent = uniqueFamilies;
+}
+
+// ============================================
+// دوال زر القائمة للجوال
+// ============================================
+
+function initMobileMenu() {
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const sidebar = document.getElementById('sidebar');
+    
+    if (mobileMenuToggle && sidebar) {
+        // إزالة أي مستمعين سابقين
+        mobileMenuToggle.replaceWith(mobileMenuToggle.cloneNode(true));
+        const newToggle = document.getElementById('mobileMenuToggle');
+        
+        newToggle.addEventListener('click', function(event) {
+            event.stopPropagation();
+            sidebar.classList.toggle('active');
+            console.log('📱 القائمة الجانبية:', sidebar.classList.contains('active') ? 'مفتوحة' : 'مغلقة');
+        });
+        
+        // إغلاق القائمة عند النقر خارجها
+        document.addEventListener('click', function(event) {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(event.target) && 
+                !newToggle.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+        
+        // منع إغلاق القائمة عند النقر داخلها
+        sidebar.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+        
+        console.log('✅ تم تهيئة زر القائمة للجوال');
+    } else {
+        console.error('❌ لم يتم العثور على عناصر القائمة الجوالية');
+    }
+}
+
+// ============================================
+// دوال إضافية مفقودة
+// ============================================
+
+function applySmartSuggestions() {
+    showInfo('سيتم تطبيق الاقتراحات الذكية في النسخ القادمة');
+}
+
+function showWhySuggestion() {
+    showInfo('يقوم النظام باقتراح العلاقات بناءً على الأفراد الموجودين في نفس العمر والجيل');
+}
+
+function clearSmartSuggestions() {
+    const suggestBox = document.getElementById('relationSuggestBox');
+    if (suggestBox) {
+        suggestBox.style.display = 'none';
+    }
+    showInfo('تم مسح الاقتراحات');
+}
+
+function applyBrandingFromInput() {
+    const input = document.getElementById('familyBrandNameInput');
+    if (input && input.value.trim()) {
+        const brandName = input.value.trim();
+        const logoElement = document.querySelector('.logo h1');
+        if (logoElement) {
+            logoElement.textContent = `شجرة عائلة ${brandName}`;
+        }
+        showSuccess(`تم تطبيق هوية العائلة: ${brandName}`);
+    } else {
+        showError('يرجى إدخال اسم العائلة أولاً');
+    }
+}
+
+function toggleBookCompact() {
+    const bookGrid = document.querySelector('.book-grid');
+    if (bookGrid) {
+        bookGrid.classList.toggle('compact');
+        showInfo(bookGrid.classList.contains('compact') ? 'تم تفعيل العرض المضغوط' : 'تم تفعيل العرض الموسع');
+    }
+}
+
+// ============================================
+// دوال دعم الطباعة والتصدير
+// ============================================
+
+function printFamilyBook() {
+    window.print();
+}
+
+// ============================================
+// تهيئة النظام عند تحميل الصفحة
+// ============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 تم تحميل الصفحة');
+    
+    // 1. تحديث اللغة
+    updateLanguage();
+    
+    // 2. إضافة مستمعين للأحداث الأساسية
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('main-content').style.display = 'none';
+    
+    // 3. اختبار زر القائمة للجوال
+    setTimeout(() => {
+        initMobileMenu();
+    }, 500);
+    
+    // 4. إضافة CSS إضافي إذا لزم الأمر
+    const extraStyles = document.createElement('style');
+    extraStyles.textContent = `
+        /* تحسينات للقائمة الجوالية */
+        @media (max-width: 992px) {
+            .sidebar.active {
+                transform: translateX(0);
+                right: 0;
+                box-shadow: 5px 0 25px rgba(0,0,0,0.3);
+            }
+            
+            .mobile-menu-toggle {
+                z-index: 1003;
+                animation: pulse 2s infinite;
+            }
+            
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+        }
+        
+        /* تحسينات عامة */
+        .alert {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(extraStyles);
+    
+    console.log('✅ تم تهيئة الصفحة بنجاح');
+});
+
+// ============================================
+// اختبار النظام
+// ============================================
+
+// دالة اختبار يمكن استدعاؤها من console
+window.testSystem = function() {
+    console.log('🧪 اختبار النظام:');
+    console.log('- المستخدم الحالي:', currentUser);
+    console.log('- عدد الأفراد:', familyData.length);
+    console.log('- عدد الإعلانات:', familyEvents.length);
+    console.log('- قائمة الانتظار:', syncQueue.length);
+    console.log('- البيانات مشفرة:', isDataEncrypted);
+    console.log('- السحابة مفعلة:', cloudSyncEnabled);
+    console.log('- اتصال الإنترنت:', !isOffline);
+    
+    // اختبار زر القائمة
+    const mobileToggle = document.getElementById('mobileMenuToggle');
+    if (mobileToggle) {
+        console.log('- زر القائمة موجود:', true);
+        mobileToggle.click();
+        setTimeout(() => {
+            console.log('- القائمة الجانبية:', document.getElementById('sidebar').classList.contains('active'));
+            mobileToggle.click();
+        }, 1000);
+    }
+    
+    // اختبار الإحصائيات
+    updateStatisticsImmediately();
+    
+    return '✅ تم اختبار النظام بنجاح';
+};
+
+console.log('🌟 نظام شجرة العائلة جاهز للاستخدام');
     </script>
 </body>
 </html>
