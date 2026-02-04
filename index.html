@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>شجرة عائلة محمد عبدالرحمن ( أبا )</title>
+    <title>شجرة عائلة محمد عبدالرحمن (أبا)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
     
@@ -40,18 +40,22 @@
             --generation-3-bg: #FFF8E1;
             --generation-4-bg: #F3E5F5;
             --generation-5-bg: #E0F7FA;
-            
             --light-green: #C8E6C9;
             --medium-green: #A5D6A7;
             --dark-green: #388E3C;
             --accent-green: #4CAF50;
+            --brand-family-name: "محمد عبدالرحمن";
+            --brand-mark: "🌳";
+            --paper-bg: rgba(255,255,255,0.92);
+            --paper-border: rgba(27,94,32,0.12);
+            --shadow-soft: 0 10px 30px rgba(0,0,0,0.10);
         }
         
         * { 
             margin: 0; 
             padding: 0; 
             box-sizing: border-box; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
         }
         
         body { 
@@ -59,6 +63,17 @@
             direction: rtl; 
             min-height: 100vh;
             overflow-x: hidden;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+              linear-gradient(rgba(248,250,248,0.80), rgba(248,250,248,0.80)),
+              url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><text x='18' y='160' font-size='92' opacity='0.06'>%F0%9F%8C%B3</text><text x='140' y='245' font-size='24' opacity='0.06'>%D8%B9%D8%A7%D8%A6%D9%84%D8%A9</text></svg>");
+            z-index: -1;
+            pointer-events: none;
         }
         
         /* شاشة الدخول */
@@ -86,7 +101,6 @@
             margin: 20px;
         }
         
-        /* زر اللغة في شاشة الدخول */
         .login-language-toggle {
             position: absolute;
             top: 20px;
@@ -211,6 +225,7 @@
         .logo h1 {
             font-size: 1.2rem;
             margin: 0;
+            font-family: 'Amiri', 'Cairo', serif;
         }
         
         .user-info {
@@ -220,7 +235,6 @@
             flex-wrap: wrap;
         }
         
-        /* أنماط حالة المزامنة */
         .sync-status {
             padding: 6px 12px;
             border-radius: 20px;
@@ -300,7 +314,6 @@
             transform: translateY(-2px);
         }
         
-        /* زر تبديل اللغة */
         .language-toggle {
             background: transparent;
             border: 1px solid rgba(255,255,255,0.3);
@@ -454,6 +467,7 @@
             align-items: center;
             gap: 10px;
             font-size: 1.2rem;
+            font-family: 'Amiri', 'Cairo', serif;
         }
         
         .action-buttons {
@@ -655,6 +669,7 @@
             align-items: center;
             gap: 10px;
             font-size: 1.2rem;
+            font-family: 'Amiri', 'Cairo', serif;
         }
         
         .close-form {
@@ -687,10 +702,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 15px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
         }
         
         .form-label {
@@ -862,6 +873,7 @@
             align-items: center;
             gap: 12px;
             font-size: 1.3rem;
+            font-family: 'Amiri', 'Cairo', serif;
         }
         
         .tree-toolbar {
@@ -908,12 +920,6 @@
             position: relative;
             background: #f8faf8;
             -webkit-overflow-scrolling: touch;
-        }
-        
-        /* زر استيراد البيانات */
-        .import-btn {
-            background: linear-gradient(135deg, var(--button-info) 0%, #00838f 100%);
-            color: white;
         }
         
         /* تنسيقات محسنة للشجرة */
@@ -979,29 +985,6 @@
             min-width: 150px;
         }
         
-        .married-couple {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            align-items: flex-start;
-            position: relative;
-            margin-bottom: 10px;
-        }
-        
-        .married-couple::before {
-            content: "💍";
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 16px;
-            z-index: 3;
-            background: white;
-            border-radius: 50%;
-            padding: 5px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        
         .tree-node {
             background: white;
             border: 2px solid #e8f5e9;
@@ -1015,54 +998,6 @@
             position: relative;
             z-index: 2;
             overflow: hidden;
-        }
-
-        
-        /* =========================
-           Book Lineage Highlight (في كتاب العائلة)
-           ========================= */
-        .book-member-card.book-card-dimmed{
-            opacity: 0.25;
-            filter: grayscale(80%);
-        }
-        .book-member-card.book-card-selected{
-            opacity: 1;
-            filter: none;
-            outline: 3px solid rgba(76,175,80,0.55);
-            box-shadow: 0 12px 26px rgba(0,0,0,0.15);
-        }
-        .book-member-card.book-card-ancestor{
-            outline: 3px solid rgba(33,150,243,0.55);
-        }
-        .book-member-card.book-card-descendant{
-            outline: 3px solid rgba(233,30,99,0.45);
-        }
-
-/* =========================
-           Lineage Highlight (تمييز السلالة)
-           ========================= */
-        .tree-node.lineage-dimmed{
-            opacity: 0.22;
-            filter: grayscale(85%);
-            transform: none !important;
-        }
-        .tree-node.lineage-selected{
-            opacity: 1;
-            filter: none;
-            box-shadow: 0 10px 28px rgba(0,0,0,0.18);
-            border-width: 3px;
-        }
-        .tree-node.lineage-ancestor{
-            opacity: 1;
-            filter: none;
-            outline: 3px dashed rgba(33,150,243,0.55);
-            outline-offset: 3px;
-        }
-        .tree-node.lineage-descendant{
-            opacity: 1;
-            filter: none;
-            outline: 3px dashed rgba(76,175,80,0.55);
-            outline-offset: 3px;
         }
         
         .tree-node:hover {
@@ -1080,7 +1015,6 @@
             border-top: 4px solid var(--female-color);
             background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
         }
-        
         
         .tree-node.outsider {
             border: 2px dashed #6A1B9A;
@@ -1107,19 +1041,20 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
             z-index: 5;
         }
-.tree-node.gen-1 { border-color: var(--generation-1); background: var(--generation-1-bg); }
+
+        .tree-node.gen-1 { border-color: var(--generation-1); background: var(--generation-1-bg); }
         .tree-node.gen-2 { border-color: var(--generation-2); background: var(--generation-2-bg); }
         .tree-node.gen-3 { border-color: var(--generation-3); background: var(--generation-3-bg); }
         .tree-node.gen-4 { border-color: var(--generation-4); background: var(--generation-4-bg); }
         .tree-node.gen-5 { border-color: var(--generation-5); background: var(--generation-5-bg); }
 
-        /* تلوين بادج الجيل بحسب الجيل */
         .tree-node.gen-1 .generation-badge { background: var(--generation-1); color: #fff; }
         .tree-node.gen-2 .generation-badge { background: var(--generation-2); color: #fff; }
         .tree-node.gen-3 .generation-badge { background: var(--generation-3); color: #fff; }
         .tree-node.gen-4 .generation-badge { background: var(--generation-4); color: #fff; }
         .tree-node.gen-5 .generation-badge { background: var(--generation-5); color: #fff; }
-.node-header {
+        
+        .node-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1565,156 +1500,403 @@
             font-weight: bold;
             animation: pulse 2s infinite;
         }
+        
+        /* Lineage Highlight */
+        .tree-node.lineage-dimmed {
+            opacity: 0.22;
+            filter: grayscale(85%);
+            transform: none !important;
+        }
+        
+        .tree-node.lineage-selected {
+            opacity: 1;
+            filter: none;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+            border-width: 3px;
+        }
+        
+        .tree-node.lineage-ancestor {
+            opacity: 1;
+            filter: none;
+            outline: 3px dashed rgba(33,150,243,0.55);
+            outline-offset: 3px;
+        }
+        
+        .tree-node.lineage-descendant {
+            opacity: 1;
+            filter: none;
+            outline: 3px dashed rgba(76,175,80,0.55);
+            outline-offset: 3px;
+        }
 
-        /* تحديث الأنماط للشاشات الصغيرة */
-        @media (max-width: 992px) {
-            .sidebar {
-                transform: translateX(100%);
-                width: 280px;
-                right: -280px;
-            }
-            
-            .sidebar.active {
-                transform: translateX(0);
-                right: 0;
-            }
-            
-            .main-content-area {
-                margin-right: 0;
-                width: 100%;
-                padding: 15px;
-            }
-            
-            .logo h1 {
-                font-size: 1.1rem;
-            }
-            
-            .user-info {
-                gap: 8px;
-            }
-            
-            .logout-btn span {
-                display: none;
-            }
-            
-            .logout-btn {
-                padding: 8px;
-            }
+        /* Book Lineage */
+        .book-member-card.book-card-dimmed {
+            opacity: 0.25;
+            filter: grayscale(80%);
         }
         
-        @media (max-width: 768px) {
-            .panel-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .action-buttons {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .stats-cards {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .tree-node {
-                width: 140px;
-                padding: 10px;
-            }
-            
-            .tree-filter {
-                margin: 0 10px 10px;
-                padding: 10px;
-                flex-direction: column;
-                position: fixed;
-                top: 70px;
-                left: 0;
-                right: 0;
-                z-index: 999;
-                border-radius: 0;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                transform: translateY(-100%);
-                transition: transform 0.3s ease;
-            }
-            
-            .tree-filter.active {
-                transform: translateY(0);
-            }
-            
-            .mobile-search-toggle {
-                display: flex;
-            }
-            
-            .sync-status {
-                font-size: 11px;
-                padding: 5px 8px;
-                margin-left: 5px;
-            }
-            
-            .data-table {
-                font-size: 12px;
-            }
-            
-            .data-table th, .data-table td {
-                padding: 8px 6px;
-            }
-            
-            .tree-view-btn {
-                width: 50px;
-                height: 50px;
-                bottom: 15px;
-                left: 15px;
-                font-size: 20px;
-            }
+        .book-member-card.book-card-selected {
+            opacity: 1;
+            filter: none;
+            outline: 3px solid rgba(76,175,80,0.55);
+            box-shadow: 0 12px 26px rgba(0,0,0,0.15);
         }
         
-        @media (max-width: 480px) {
-            .stats-cards {
-                grid-template-columns: 1fr;
-            }
-            
-            .tree-node {
-                width: 130px;
-                font-size: 12px;
-            }
-            
-            .tree-node-container {
-                min-width: 130px;
-            }
-            
-            .tree-level {
-                justify-content: center;
-            }
-            
-            .btn {
-                padding: 7px 12px;
-                font-size: 12px;
-            }
-            
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .top-bar {
-                padding: 12px 15px;
-            }
-            
-            .logo h1 {
-                font-size: 1rem;
-            }
-            
-            .tree-controls {
-                justify-content: center;
-            }
-            
-            .tree-header h2 {
-                font-size: 1.1rem;
-            }
-            
-            .mobile-optimized .tree-node {
-                width: 120px;
-                padding: 8px;
-            }
+        .book-member-card.book-card-ancestor {
+            outline: 3px solid rgba(33,150,243,0.55);
+        }
+        
+        .book-member-card.book-card-descendant {
+            outline: 3px solid rgba(233,30,99,0.45);
+        }
+
+        /* Book Search */
+        .book-member-card.book-hidden {
+            display: none !important;
+        }
+        
+        .book-member-card.book-match {
+            outline: 3px solid rgba(255,193,7,0.65);
+            outline-offset: 2px;
+        }
+        
+        mark.book-mark {
+            background: rgba(255,193,7,0.45);
+            padding: 0 3px;
+            border-radius: 6px;
+        }
+
+        /* Book Preview */
+        .book-preview {
+            background: transparent !important;
+            padding: 12px !important;
+        }
+
+        .book-shell {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .book-page {
+            background: var(--paper-bg);
+            border: 1px solid var(--paper-border);
+            border-radius: 18px;
+            box-shadow: var(--shadow-soft);
+            padding: 34px 36px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-page::after {
+            content: var(--brand-mark);
+            position: absolute;
+            bottom: 14px;
+            left: 18px;
+            font-size: 22px;
+            opacity: 0.25;
+        }
+
+        .book-watermark {
+            position: absolute;
+            top: 16px;
+            left: 18px;
+            font-size: 12px;
+            color: rgba(27,94,32,0.55);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            user-select: none;
+        }
+
+        .book-cover {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .book-cover .book-title {
+            font-size: 38px;
+            color: var(--header-bg);
+            margin-bottom: 10px;
+            font-family: 'Amiri', serif;
+        }
+
+        .book-cover .book-subtitle {
+            color: #2E7D32;
+            font-size: 16px;
+            margin-bottom: 26px;
+        }
+
+        .book-cover .book-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(76,175,80,0.12);
+            border: 1px solid rgba(76,175,80,0.25);
+            color: #1B5E20;
+            font-weight: 700;
+        }
+
+        .book-generation-title {
+            font-size: 24px;
+            color: var(--header-bg);
+            border-bottom: 3px solid rgba(76,175,80,0.35);
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Amiri', serif;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+        }
+        
+        .book-grid.compact {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .book-card {
+            background: rgba(255,255,255,0.85);
+            border: 1px solid rgba(27,94,32,0.10);
+            border-radius: 14px;
+            padding: 14px 14px 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            position: relative;
+        }
+
+        .book-card .name {
+            font-family: 'Amiri', serif;
+            font-size: 18px;
+            color: #1B5E20;
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+
+        .book-card .meta {
+            font-size: 13px;
+            color: #2E7D32;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .book-card .meta span {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .book-card .tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(0,151,167,0.10);
+            border: 1px solid rgba(0,151,167,0.18);
+            color: #006064;
+            font-weight: 700;
+        }
+
+        /* أنماط إضافية لكتاب العائلة */
+        .book-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(27, 94, 32, 0.1);
+        }
+        
+        .book-card-id {
+            background: #f1f8e9;
+            color: #689f38;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        
+        .book-card-gender {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .book-card-gender.male {
+            background: #e3f2fd;
+            color: #2196F3;
+        }
+        
+        .book-card-gender.female {
+            background: #fce4ec;
+            color: #E91E63;
+        }
+        
+        .book-card-name {
+            color: #1B5E20;
+            font-size: 18px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            font-family: 'Amiri', serif;
+        }
+        
+        .book-card-details {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .book-card-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        
+        .book-card-detail i {
+            color: #4CAF50;
+            min-width: 18px;
+            margin-top: 2px;
+        }
+
+        /* Smart Suggestions */
+        .smart-suggest {
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(0,151,167,0.06);
+            border: 1px solid rgba(0,151,167,0.12);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .smart-suggest .hint {
+            font-size: 12px;
+            color: #006064;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .smart-suggest .hint b { 
+            color: #004d40; 
+        }
+        
+        .smart-suggest .suggest-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-right: auto;
+        }
+        
+        .chip {
+            border: 1px solid rgba(27,94,32,0.18);
+            background: rgba(76,175,80,0.10);
+            color: #1B5E20;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all .2s;
+            user-select: none;
+        }
+        
+        .chip:hover { 
+            transform: translateY(-1px); 
+            box-shadow: 0 6px 14px rgba(0,0,0,0.08); 
+        }
+
+        /* Import Button */
+        .import-btn {
+            background: linear-gradient(135deg, var(--button-info) 0%, #00838f 100%);
+            color: white;
+        }
+
+        /* زر العودة السريع */
+        .quick-back-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background: rgba(255,255,255,0.9);
+            border: 1px solid #e8f5e9;
+            color: var(--header-bg);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .quick-back-btn:hover {
+            background: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        /* زر القائمة للجوال */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: var(--button-primary);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            z-index: 1002;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            border: none;
+            font-size: 20px;
+        }
+        
+        /* تحسينات لعرض الموبايل */
+        .mobile-optimized .tree-node {
+            width: 120px;
+            padding: 8px;
+            margin: 3px;
+        }
+        
+        .mobile-optimized .tree-node-container {
+            min-width: 120px;
+        }
+        
+        .mobile-optimized .tree-level {
+            gap: 8px;
+            padding: 8px;
+        }
+        
+        .mobile-optimized .node-name {
+            font-size: 13px;
+            height: 2.4em;
+        }
+        
+        .mobile-optimized .node-details {
+            font-size: 10px;
+        }
+        
+        .mobile-optimized .generation-label {
+            padding: 6px 15px;
+            font-size: 13px;
         }
         
         /* شاشة تحميل لتصدير الصور */
@@ -1933,90 +2115,140 @@
             padding: 5px 10px;
             font-size: 11px;
         }
-        
-        /* زر العودة السريع */
-        .quick-back-btn {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            background: rgba(255,255,255,0.9);
-            border: 1px solid #e8f5e9;
-            color: var(--header-bg);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1001;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+        /* طباعة */
+        @media print {
+            body::before { display: none; }
+            .book-page {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                border-radius: 0 !important;
+                page-break-after: always;
+                break-after: page;
+            }
+            .book-controls, .close-form, .quick-back-btn, .mobile-menu-toggle { 
+                display: none !important; 
+            }
+            .book-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 15px !important;
+            }
+            .book-card, .event-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+            .event-actions {
+                display: none !important;
+            }
         }
-        
-        .quick-back-btn:hover {
-            background: white;
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        
-        /* زر القائمة للجوال */
-        .mobile-menu-toggle {
-            display: none;
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            background: var(--button-primary);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
-            z-index: 1002;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            border: none;
-            font-size: 20px;
-        }
-        
+
+        /* تحديث الأنماط للشاشات الصغيرة */
         @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(100%);
+                width: 280px;
+                right: -280px;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+                right: 0;
+            }
+            
+            .main-content-area {
+                margin-right: 0;
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1.1rem;
+            }
+            
+            .user-info {
+                gap: 8px;
+            }
+            
+            .logout-btn span {
+                display: none;
+            }
+            
+            .logout-btn {
+                padding: 8px;
+            }
+            
             .mobile-menu-toggle {
                 display: flex;
             }
         }
         
-        /* تحسينات لعرض الموبايل */
-        .mobile-optimized .tree-node {
-            width: 120px;
-            padding: 8px;
-            margin: 3px;
-        }
-        
-        .mobile-optimized .tree-node-container {
-            min-width: 120px;
-        }
-        
-        .mobile-optimized .tree-level {
-            gap: 8px;
-            padding: 8px;
-        }
-        
-        .mobile-optimized .node-name {
-            font-size: 13px;
-            height: 2.4em;
-        }
-        
-        .mobile-optimized .node-details {
-            font-size: 10px;
-        }
-        
-        .mobile-optimized .generation-label {
-            padding: 6px 15px;
-            font-size: 13px;
-        }
-        
-        /* تنسيقات محسنة لجدول الموبايل */
         @media (max-width: 768px) {
+            .panel-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .tree-node {
+                width: 140px;
+                padding: 10px;
+            }
+            
+            .tree-filter {
+                margin: 0 10px 10px;
+                padding: 10px;
+                flex-direction: column;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                z-index: 999;
+                border-radius: 0;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .tree-filter.active {
+                transform: translateY(0);
+            }
+            
+            .mobile-search-toggle {
+                display: flex;
+            }
+            
+            .sync-status {
+                font-size: 11px;
+                padding: 5px 8px;
+                margin-left: 5px;
+            }
+            
+            .data-table {
+                font-size: 12px;
+            }
+            
+            .data-table th, .data-table td {
+                padding: 8px 6px;
+            }
+            
+            .tree-view-btn {
+                width: 50px;
+                height: 50px;
+                bottom: 15px;
+                left: 15px;
+                font-size: 20px;
+            }
+            
             .table-responsive {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
@@ -2027,352 +2259,55 @@
             }
         }
         
-        /* تحسين أداء التمرير على الموبايل */
-        .tree-content, .form-body, .backup-list {
-            -webkit-overflow-scrolling: touch;
-        }
-    
-        /* =========================
-           تحسينات الهوية + الخطوط + الخلفية
-           ========================= */
-        :root{
-            --brand-family-name: "محمد عبدالرحمن";
-            --brand-mark: "🌳";
-            --paper-bg: rgba(255,255,255,0.92);
-            --paper-border: rgba(27,94,32,0.12);
-            --shadow-soft: 0 10px 30px rgba(0,0,0,0.10);
-        }
-
-        *{
-            font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
-        }
-
-        /* عناوين عربية كلاسيكية */
-        .book-title, .book-generation-title, .person-name, .logo h1, .panel-header h2, .tree-header h2{
-            font-family: "Amiri", "Cairo", serif;
-        }
-
-        /* خلفية شفافة خفيفة جداً (SVG مضمّن) */
-        body::before{
-            content:"";
-            position:fixed;
-            inset:0;
-            background:
-              linear-gradient(rgba(248,250,248,0.80), rgba(248,250,248,0.80)),
-              url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><text x='18' y='160' font-size='92' opacity='0.06'>%F0%9F%8C%B3</text><text x='140' y='245' font-size='24' opacity='0.06'>%D8%B9%D8%A7%D8%A6%D9%84%D8%A9</text></svg>");
-            z-index:-1;
-            pointer-events:none;
-        }
-
-        /* =========================
-           Book Preview (كتاب العائلة)
-           ========================= */
-        .book-preview{
-            background: transparent !important;
-            padding: 12px !important;
-        }
-
-        .book-shell{
-            display:flex;
-            flex-direction:column;
-            gap: 14px;
-        }
-
-        .book-page{
-            background: var(--paper-bg);
-            border: 1px solid var(--paper-border);
-            border-radius: 18px;
-            box-shadow: var(--shadow-soft);
-            padding: 34px 36px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .book-page::after{
-            content: var(--brand-mark);
-            position:absolute;
-            bottom: 14px;
-            left: 18px;
-            font-size: 22px;
-            opacity: 0.25;
-        }
-
-        .book-watermark{
-            position:absolute;
-            top: 16px;
-            left: 18px;
-            font-size: 12px;
-            color: rgba(27,94,32,0.55);
-            display:flex;
-            gap: 8px;
-            align-items:center;
-            user-select:none;
-        }
-
-        .book-cover{
-            text-align:center;
-            padding: 60px 20px;
-        }
-
-        .book-cover .book-title{
-            font-size: 38px;
-            color: var(--header-bg);
-            margin-bottom: 10px;
-        }
-
-        .book-cover .book-subtitle{
-            color: #2E7D32;
-            font-size: 16px;
-            margin-bottom: 26px;
-        }
-
-        .book-cover .book-badge{
-            display:inline-flex;
-            align-items:center;
-            gap:10px;
-            padding: 10px 16px;
-            border-radius: 999px;
-            background: rgba(76,175,80,0.12);
-            border: 1px solid rgba(76,175,80,0.25);
-            color: #1B5E20;
-            font-weight: 700;
-        }
-
-        .book-generation-title{
-            font-size: 24px;
-            color: var(--header-bg);
-            border-bottom: 3px solid rgba(76,175,80,0.35);
-            padding-bottom: 10px;
-            margin-bottom: 16px;
-            display:flex;
-            align-items:center;
-            gap:10px;
-        }
-
-        .book-grid{
-            display:grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 14px;
-        }
-
-        .book-card{
-            background: rgba(255,255,255,0.85);
-            border: 1px solid rgba(27,94,32,0.10);
-            border-radius: 14px;
-            padding: 14px 14px 12px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-            position:relative;
-        }
-
-        .book-card .name{
-            font-family: "Amiri", serif;
-            font-size: 18px;
-            color: #1B5E20;
-            margin-bottom: 8px;
-            line-height: 1.35;
-        }
-
-        .book-card .meta{
-            font-size: 13px;
-            color: #2E7D32;
-            display:flex;
-            flex-direction:column;
-            gap: 6px;
-        }
-
-        .book-card .meta span{
-            display:flex;
-            gap: 8px;
-            align-items:center;
-        }
-
-        .book-card .tag{
-            position:absolute;
-            top: 12px;
-            left: 12px;
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: rgba(0,151,167,0.10);
-            border: 1px solid rgba(0,151,167,0.18);
-            color: #006064;
-            font-weight: 700;
-        }
-
-        /* طباعة الكتاب */
-        @media print{
-            body::before{ display:none; }
-            .book-page{
-                box-shadow:none !important;
-                border: 1px solid #ddd !important;
-                border-radius: 0 !important;
-                page-break-after: always;
-                break-after: page;
-            }
-            .book-controls, .close-form, .quick-back-btn { display:none !important; }
-        }
-
-        /* =========================
-           ذكاء اقتراح العلاقات
-           ========================= */
-        .smart-suggest{
-            margin-top: 10px;
-            padding: 10px 12px;
-            border-radius: 12px;
-            background: rgba(0,151,167,0.06);
-            border: 1px solid rgba(0,151,167,0.12);
-            display:flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items:center;
-        }
-        .smart-suggest .hint{
-            font-size: 12px;
-            color: #006064;
-            display:flex;
-            align-items:center;
-            gap: 8px;
-        }
-        .smart-suggest .hint b{ color:#004d40; }
-        .smart-suggest .suggest-actions{
-            display:flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-right:auto;
-        }
-        .chip{
-            border: 1px solid rgba(27,94,32,0.18);
-            background: rgba(76,175,80,0.10);
-            color:#1B5E20;
-            border-radius: 999px;
-            padding: 6px 10px;
-            font-size: 12px;
-            cursor:pointer;
-            transition: all .2s;
-            user-select:none;
-        }
-        .chip:hover{ transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,0.08); }
-
-    
-        /* =========================
-           Book Quick Search (بحث داخل الكتاب)
-           ========================= */
-        .book-member-card.book-hidden{
-            display: none !important;
-        }
-        .book-member-card.book-match{
-            outline: 3px solid rgba(255,193,7,0.65);
-            outline-offset: 2px;
-        }
-        mark.book-mark{
-            background: rgba(255,193,7,0.45);
-            padding: 0 3px;
-            border-radius: 6px;
-        }
-
-        /* =========================
-           أنماط إضافية لكتاب العائلة المحسن
-           ========================= */
-        .book-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(27, 94, 32, 0.1);
-        }
-        
-        .book-card-id {
-            background: #f1f8e9;
-            color: #689f38;
-            font-size: 12px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-        
-        .book-card-gender {
-            font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-        
-        .book-card-gender.male {
-            background: #e3f2fd;
-            color: #2196F3;
-        }
-        
-        .book-card-gender.female {
-            background: #fce4ec;
-            color: #E91E63;
-        }
-        
-        .book-card-name {
-            color: #1B5E20;
-            font-size: 18px;
-            margin-bottom: 12px;
-            line-height: 1.4;
-            font-family: 'Amiri', serif;
-        }
-        
-        .book-card-details {
-            font-size: 13px;
-            color: #555;
-            line-height: 1.5;
-        }
-        
-        .book-card-detail {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
-        
-        .book-card-detail i {
-            color: #4CAF50;
-            min-width: 18px;
-            margin-top: 2px;
-        }
-        
-        .book-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .book-grid.compact {
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        
-        /* أنماط الطباعة لقسم الإعلانات */
-        @media print {
-            .book-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 15px !important;
+        @media (max-width: 480px) {
+            .stats-cards {
+                grid-template-columns: 1fr;
             }
             
-            .book-card {
-                break-inside: avoid;
-                page-break-inside: avoid;
-                box-shadow: none !important;
-                border: 1px solid #ddd !important;
+            .tree-node {
+                width: 130px;
+                font-size: 12px;
             }
             
-            .event-card {
-                break-inside: avoid;
-                page-break-inside: avoid;
-                box-shadow: none !important;
-                border: 1px solid #ddd !important;
+            .tree-node-container {
+                min-width: 130px;
             }
             
-            .event-actions {
-                display: none !important;
+            .tree-level {
+                justify-content: center;
+            }
+            
+            .btn {
+                padding: 7px 12px;
+                font-size: 12px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .top-bar {
+                padding: 12px 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1rem;
+            }
+            
+            .tree-controls {
+                justify-content: center;
+            }
+            
+            .tree-header h2 {
+                font-size: 1.1rem;
+            }
+            
+            .mobile-optimized .tree-node {
+                width: 120px;
+                padding: 8px;
             }
         }
-</style>
+    </style>
 </head>
 <body>
     <button class="mobile-menu-toggle" id="mobileMenuToggle">
@@ -2384,9 +2319,6 @@
             <i class="fas fa-globe"></i>
             <span id="loginLanguageText">English</span>
         </button>
-                        <button class="btn btn-secondary" style="padding: 8px 12px;" onclick="clearBookLineage()" title="إلغاء تمييز السلالة">
-                            <i class="fas fa-highlighter"></i>
-                        </button>
         
         <div class="login-container">
             <div class="login-logo">
@@ -2698,7 +2630,7 @@
                     
                     </div>
 
-                    <div class="smart-suggest" id="relationSuggestBox">
+                    <div class="smart-suggest" id="relationSuggestBox" style="display: none;">
                         <div class="hint">
                             <i class="fas fa-magic"></i>
                             <span>اقتراحات ذكية: <b id="suggestSummary">—</b></span>
@@ -2712,7 +2644,6 @@
 
                     <div class="form-group">
                         <label class="form-label" data-i18n="formNotes">ملاحظات إضافية</label>
-
                         <textarea class="form-textarea" id="notes" rows="3"></textarea>
                     </div>
                     
@@ -2866,7 +2797,6 @@
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-
 
                     <div id="bookOptions" style="margin-right:auto; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
                         <div style="display:flex; gap:8px; align-items:center; background: rgba(255,255,255,0.15); padding: 8px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.20);">
@@ -3326,7 +3256,6 @@
         let nextPersonId = 1;
         let treeZoom = 100;
         let treeCompactMode = false;
-        let treeViewMode = 'vertical';
         let currentTreeSearch = '';
         let currentSortOrder = 'asc';
         let isDataEncrypted = false;
@@ -3353,7 +3282,7 @@
         let eventsEditing = false;
         let currentEventsFilter = 'all';
 
-        // تكوين Firebase - ضع معلومات مشروعك هنا
+        // تكوين Firebase
         const firebaseConfig = {
           apiKey: "AIzaSyB5kAQNtC6xP4zaS4Whjoy7ZG7bQTQ68iU",
           authDomain: "familytree-2da8b.firebaseapp.com",
@@ -3365,11 +3294,6 @@
           measurementId: "G-0BT7ET24BK"
         };
         
-        function showBackup() {
-            if (confirm('هل تريد تصدير نسخة احتياطية من جميع البيانات؟')) {
-                exportData('json');
-            }
-        }
         // بيانات الترجمة
         const translations = {
             ar: {
@@ -3457,7 +3381,6 @@
                 clearSearch: "مسح البحث",
                 firstGeneration: "الجيل الأول",
                 treeInfo: "انقر على أي فرد لعرض معلوماته",
-                treeTooltip: "يمكنك التمرير أفقياً وعمودياً لعرض جميع الأفراد. استخدم التكبير لرؤية التفاصيل.",
                 
                 personInfo: "معلومات الفرد",
                 print: "طباعة",
@@ -3589,7 +3512,6 @@
                 clearSearch: "Clear Search",
                 firstGeneration: "First Generation",
                 treeInfo: "Click on any person to view details",
-                treeTooltip: "Scroll horizontally and vertically to view all persons. Use zoom to see details.",
                 
                 personInfo: "Person Information",
                 print: "Print",
@@ -3642,15 +3564,15 @@
         const users = {
             'admin': { password: 'mHome155', name: 'مدير النظام', role: 'admin' },
             'user': { password: 'a1b2c3', name: 'مستخدم', role: 'user' },
-              'asma': { password: '112233', name: 'اسماء', role: 'asma' },
+            'asma': { password: '112233', name: 'اسماء', role: 'asma' },
             'host': { password: '123456', name: 'مضيف', role: 'host' }
         };
 
-        // تحديث صلاحيات المستخدمين
+        // صلاحيات المستخدمين
         const userPermissions = {
             'admin': ['view', 'add', 'edit', 'delete', 'export', 'print', 'import', 'manage_users', 'manage_events'],
-             'asma': ['view', 'add', 'edit', 'export', 'print'],
-             'user': ['view', 'add', 'export', 'print'],
+            'asma': ['view', 'add', 'edit', 'export', 'print'],
+            'user': ['view', 'add', 'export', 'print'],
             'host': ['view', 'print']
         };
 
@@ -3681,13 +3603,12 @@
             }
         ];
 
-        // بيانات أولية للإعلانات
         const defaultEvents = [
             {
                 id: 'EV1',
                 type: 'مناسبة',
                 title: 'اجتماع عائلي شهر رمضان',
-                date: new Date(new Date().getFullYear(), 3, 15).toISOString().split('T')[0], // 15 أبريل
+                date: new Date(new Date().getFullYear(), 3, 15).toISOString().split('T')[0],
                 time: '20:00',
                 location: 'منزل الجد - نيالا',
                 description: 'اجتماع عائلي لتفقد أحوال الأسرة وتوزيع الصدقات وتنظيم إفطارات رمضان.',
@@ -3700,7 +3621,7 @@
                 id: 'EV2',
                 type: 'برنامج',
                 title: 'برنامج تعليمي للأبناء',
-                date: new Date(new Date().getFullYear(), 4, 1).toISOString().split('T')[0], // 1 مايو
+                date: new Date(new Date().getFullYear(), 4, 1).toISOString().split('T')[0],
                 time: '17:00',
                 location: 'مكتبة العائلة',
                 description: 'برنامج تعليمي مكثف للأبناء يشمل دروس تقوية ودورات مهارات حياتية.',
@@ -3712,7 +3633,7 @@
         ];
 
         // ============================================
-        // وظائف الترجمة
+        // دوال الترجمة
         // ============================================
 
         function toggleLanguage() {
@@ -3765,7 +3686,6 @@
 
         function initializeFirebase() {
             try {
-                // التحقق من عدم تهيئة Firebase مسبقاً
                 if (!firebase.apps.length) {
                     firebaseApp = firebase.initializeApp(firebaseConfig);
                 } else {
@@ -3773,11 +3693,7 @@
                 }
                 
                 database = firebase.database();
-                
-                // تفعيل المزامنة مع السحابة
                 enableCloudSync();
-                
-                // مراقبة حالة الاتصال
                 monitorConnection();
                 
                 console.log('✅ Firebase initialized successfully');
@@ -3799,25 +3715,19 @@
             
             cloudSyncEnabled = true;
             
-            // محاولة تحميل البيانات من السحابة أولاً
             setTimeout(() => {
                 loadDataFromCloud();
             }, 1000);
             
-            // مراقبة التغييرات في السحابة (للتبديل بين المستخدمين)
             database.ref('familyData').on('value', (snapshot) => {
                 if (snapshot.exists()) {
                     const cloudData = snapshot.val();
                     
-                    // تصحيح: التحقق من أن البيانات هي مصفوفة
                     let dataFromCloud;
                     if (Array.isArray(cloudData)) {
                         dataFromCloud = cloudData;
                     } else {
-                        // إذا كانت البيانات كائن مع خصائص
                         dataFromCloud = Object.values(cloudData).filter(item => item && typeof item === 'object');
-                        
-                        // تصفية الخاصية _lastUpdated إذا كانت موجودة
                         dataFromCloud = dataFromCloud.filter(item => !item._lastUpdated);
                     }
                     
@@ -3835,16 +3745,13 @@
                         }
                     }
                     
-                    // التحقق مما إذا كانت البيانات على السحابة مختلفة
                     const localDataJSON = JSON.stringify(localData.sort((a, b) => a.PersonID - b.PersonID));
                     const cloudDataJSON = JSON.stringify(dataFromCloud.sort((a, b) => a.PersonID - b.PersonID));
                     
                     if (cloudDataJSON !== localDataJSON) {
-                        // سؤال المستخدم عن التحديث
                         if (confirm('تم تحديث البيانات على السحابة. هل تريد تحميل التحديثات؟')) {
                             familyData = dataFromCloud;
                             
-                            // تحديث nextPersonId
                             if (familyData.length > 0) {
                                 const maxId = Math.max(...familyData.map(p => p.PersonID));
                                 nextPersonId = maxId + 1;
@@ -3852,13 +3759,9 @@
                                 nextPersonId = 1;
                             }
                             
-                            // حفظ محلياً
                             saveDataLocally();
-                            
-                            // تحديث الواجهة
                             loadDashboard();
                             
-                            // إذا كانت شجرة العائلة مفتوحة، قم بتحديثها
                             if (document.getElementById('treeView').classList.contains('active')) {
                                 renderTree();
                             }
@@ -3869,12 +3772,10 @@
                 }
             });
             
-            // مراقبة التغييرات في الإعلانات على السحابة
             database.ref('familyEvents').on('value', (snapshot) => {
                 if (snapshot.exists()) {
                     const cloudEvents = snapshot.val();
                     
-                    // تحويل الكائن إلى مصفوفة
                     let eventsFromCloud = [];
                     if (Array.isArray(cloudEvents)) {
                         eventsFromCloud = cloudEvents;
@@ -3882,12 +3783,10 @@
                         eventsFromCloud = Object.values(cloudEvents).filter(item => item && typeof item === 'object');
                     }
                     
-                    // مقارنة مع البيانات المحلية
                     const localEventsJSON = JSON.stringify(familyEvents.sort((a, b) => new Date(a.date) - new Date(b.date)));
                     const cloudEventsJSON = JSON.stringify(eventsFromCloud.sort((a, b) => new Date(a.date) - new Date(b.date)));
                     
                     if (cloudEventsJSON !== localEventsJSON) {
-                        // سؤال المستخدم عن التحديث
                         if (confirm('تم تحديث الإعلانات على السحابة. هل تريد تحميل التحديثات؟')) {
                             familyEvents = eventsFromCloud;
                             saveEventsLocally();
@@ -3919,19 +3818,14 @@
                     if (snapshot.exists()) {
                         const cloudData = snapshot.val();
                         
-                        // تصحيح: التحقق من أن البيانات هي مصفوفة
                         let dataFromCloud;
                         if (Array.isArray(cloudData)) {
                             dataFromCloud = cloudData;
                         } else {
-                            // إذا كانت البيانات كائن مع خصائص
                             dataFromCloud = Object.values(cloudData).filter(item => item && typeof item === 'object');
-                            
-                            // تصفية الخاصية _lastUpdated إذا كانت موجودة
                             dataFromCloud = dataFromCloud.filter(item => !item._lastUpdated);
                         }
                         
-                        // مقارنة البيانات المحلية
                         const localDataString = localStorage.getItem('familyData');
                         let localData = [];
                         
@@ -3946,16 +3840,13 @@
                             }
                         }
                         
-                        // التحقق مما إذا كانت البيانات على السحابة مختلفة
                         const localDataJSON = JSON.stringify(localData.sort((a, b) => a.PersonID - b.PersonID));
                         const cloudDataJSON = JSON.stringify(dataFromCloud.sort((a, b) => a.PersonID - b.PersonID));
                         
                         if (cloudDataJSON !== localDataJSON) {
-                            // سؤال المستخدم عن التحديث
                             if (confirm('توجد بيانات أحدث على السحابة. هل تريد تحميلها؟')) {
                                 familyData = dataFromCloud;
                                 
-                                // تحديث nextPersonId
                                 if (familyData.length > 0) {
                                     const maxId = Math.max(...familyData.map(p => p.PersonID));
                                     nextPersonId = maxId + 1;
@@ -3963,16 +3854,10 @@
                                     nextPersonId = 1;
                                 }
                                 
-                                // حفظ محلياً
                                 saveDataLocally();
-                                
-                                // تحديث الوقت
                                 lastSyncTime = new Date();
-                                
-                                // تصحيح: تحديث واجهة المستخدم
                                 loadDashboard();
                                 
-                                // إذا كانت شجرة العائلة مفتوحة، قم بتحديثها
                                 if (document.getElementById('treeView').classList.contains('active')) {
                                     renderTree();
                                 }
@@ -4009,7 +3894,6 @@
                     if (snapshot.exists()) {
                         const cloudEvents = snapshot.val();
                         
-                        // تحويل الكائن إلى مصفوفة
                         let eventsFromCloud = [];
                         if (Array.isArray(cloudEvents)) {
                             eventsFromCloud = cloudEvents;
@@ -4017,12 +3901,10 @@
                             eventsFromCloud = Object.values(cloudEvents).filter(item => item && typeof item === 'object');
                         }
                         
-                        // مقارنة مع البيانات المحلية
                         const localEventsJSON = JSON.stringify(familyEvents.sort((a, b) => new Date(a.date) - new Date(b.date)));
                         const cloudEventsJSON = JSON.stringify(eventsFromCloud.sort((a, b) => new Date(a.date) - new Date(b.date)));
                         
                         if (cloudEventsJSON !== localEventsJSON) {
-                            // سؤال المستخدم عن التحديث
                             if (confirm('تم تحديث الإعلانات على السحابة. هل تريد تحميل التحديثات؟')) {
                                 familyEvents = eventsFromCloud;
                                 saveEventsLocally();
@@ -4049,14 +3931,13 @@
             if (!database || !cloudSyncEnabled || isOffline) return Promise.resolve(false);
             
             try {
-                const dataToUpload = familyData; // فقط البيانات نفسها
+                const dataToUpload = familyData;
                 
                 return database.ref('familyData').set(dataToUpload)
                     .then(() => {
                         console.log('✅ Data saved to cloud successfully');
                         lastSyncTime = new Date();
                         
-                        // حفظ طابع زمني منفصل
                         database.ref('lastUpdated').set({
                             timestamp: Date.now(),
                             user: currentUser,
@@ -4090,7 +3971,6 @@
                     .then(() => {
                         console.log('✅ Events saved to cloud successfully');
                         
-                        // حفظ طابع زمني
                         database.ref('eventsLastUpdated').set({
                             timestamp: Date.now(),
                             user: currentUser,
@@ -4116,13 +3996,10 @@
         // ============================================
 
         function saveData() {
-            // الحفظ المحلي أولاً
             const localSaved = saveDataLocally();
             
-            // إذا كان الاتصال بالسحابة مفعلاً، حاول الحفظ على السحابة
             if (cloudSyncEnabled && database && !isOffline) {
                 if (localSaved) {
-                    // محاولة الحفظ على السحابة في الخلفية
                     saveDataToCloud().then(success => {
                         if (success) {
                             console.log('✅ Data synced with cloud');
@@ -4153,7 +4030,6 @@
                     localStorage.setItem('isDataEncrypted', 'false');
                 }
                 
-                // حفظ وقت التحديث الأخير
                 localStorage.setItem('lastSyncTimestamp', Date.now());
                 localStorage.setItem('lastUserUpdate', currentUser || 'anonymous');
                 
@@ -4197,7 +4073,6 @@
             localStorage.setItem('syncQueue', JSON.stringify(syncQueue));
             updateSyncStatus();
             
-            // محاولة المزامنة عند استعادة الاتصال
             if (syncQueue.length > 0) {
                 showWarning('يوجد بيانات غير مزامنة. سيتم محاولة المزامنة عند استعادة الاتصال.');
             }
@@ -4214,7 +4089,6 @@
             eventsSyncQueue.push(syncItem);
             localStorage.setItem('eventsSyncQueue', JSON.stringify(eventsSyncQueue));
             
-            // محاولة المزامنة عند استعادة الاتصال
             if (eventsSyncQueue.length > 0) {
                 showWarning('يوجد إعلانات غير مزامنة. سيتم محاولة المزامنة عند استعادة الاتصال.');
             }
@@ -4232,11 +4106,11 @@
                     localStorage.setItem('syncQueue', JSON.stringify(syncQueue));
                     showSuccess('تم مزامنة البيانات المعلقة');
                 } else {
-                    syncQueue.unshift(item); // إعادة إلى القائمة
+                    syncQueue.unshift(item);
                 }
                 
                 if (syncQueue.length > 0) {
-                    setTimeout(processSyncQueue, 2000); // محاولة العنصر التالي
+                    setTimeout(processSyncQueue, 2000);
                 }
                 
                 hideExportLoading();
@@ -4257,7 +4131,7 @@
                     showSuccess('تم مزامنة الإعلانات المعلقة');
                 })
                 .catch(() => {
-                    eventsSyncQueue.unshift(item); // إعادة إلى القائمة
+                    eventsSyncQueue.unshift(item);
                 })
                 .finally(() => {
                     hideExportLoading();
@@ -4269,18 +4143,15 @@
         // ============================================
 
         function monitorConnection() {
-            // مراقبة اتصال الإنترنت
             window.addEventListener('online', () => {
                 isOffline = false;
                 showSuccess('تم استعادة الاتصال بالإنترنت');
                 updateSyncStatus();
                 
-                // محاولة مزامنة البيانات المعلقة
                 if (syncQueue.length > 0) {
                     processSyncQueue();
                 }
                 
-                // محاولة مزامنة الإعلانات المعلقة
                 if (eventsSyncQueue.length > 0) {
                     processEventsSyncQueue();
                 }
@@ -4292,7 +4163,6 @@
                 updateSyncStatus();
             });
             
-            // التحقق الأولي
             isOffline = !navigator.onLine;
             updateSyncStatus();
         }
@@ -4339,7 +4209,6 @@
             `;
             syncStatusElement.className = `sync-status ${statusClass}`;
             
-            // تحديث حالة المزامنة في نافذة إدارة السحابة
             if (document.getElementById('cloudManagerModal').classList.contains('active')) {
                 updateCloudManagerStatus();
             }
@@ -4350,7 +4219,6 @@
             element.id = 'syncStatus';
             element.className = 'sync-status';
             
-            // إضافة زر للمزامنة اليدوية
             const syncButton = document.createElement('button');
             syncButton.innerHTML = '<i class="fas fa-sync"></i>';
             syncButton.title = 'مزامنة يدوية';
@@ -4359,7 +4227,6 @@
             
             element.appendChild(syncButton);
             
-            // إضافة إلى الشريط العلوي
             const userInfo = document.querySelector('.user-info');
             if (userInfo) {
                 userInfo.insertBefore(element, userInfo.firstChild);
@@ -4546,7 +4413,6 @@
                 document.getElementById('internetStatus').textContent = isOffline ? '✗ غير متصل' : '✓ متصل';
                 document.getElementById('internetStatus').className = isOffline ? 'status-badge error' : 'status-badge success';
                 
-                // إضافة إحصائيات الإعلانات
                 if (document.getElementById('eventsStats')) {
                     document.getElementById('eventsStats').innerHTML = `
                         <div class="status-item">
@@ -4792,7 +4658,6 @@
                 saveEvents();
             }
             
-            // محاولة تحميل الإعلانات من السحابة إذا كان الاتصال مفعلاً
             if (cloudSyncEnabled && database) {
                 setTimeout(() => {
                     loadEventsFromCloud();
@@ -4802,11 +4667,9 @@
 
         function saveEvents() {
             try {
-                // الحفظ المحلي
                 localStorage.setItem('familyEvents', JSON.stringify(familyEvents));
                 console.log('✅ Events saved locally');
                 
-                // الحفظ على السحابة إذا كان الاتصال مفعلاً
                 if (cloudSyncEnabled && database && !isOffline) {
                     saveEventsToCloud();
                 } else if (cloudSyncEnabled && isOffline) {
@@ -4831,7 +4694,6 @@
             
             document.getElementById('familyEventsModal').classList.add('active');
             
-            // إظهار/إخفاء لوحة التحكم حسب الصلاحية
             const isAdmin = currentUser === 'admin';
             document.getElementById('eventsControlPanel').style.display = isAdmin ? 'block' : 'none';
             document.getElementById('toggleEventFormBtn').style.display = isAdmin ? 'inline-flex' : 'none';
@@ -4909,7 +4771,7 @@
                 familyEvents.push(eventData);
             }
             
-            saveEvents(); // هذه الدالة تم تحديثها لدعم السحابة
+            saveEvents();
             resetEventForm();
             loadEvents();
             document.getElementById('eventsControlPanel').style.display = 'none';
@@ -4933,7 +4795,6 @@
             
             noEventsMessage.style.display = 'none';
             
-            // تصفية الأحداث حسب النوع
             let filteredEvents = [...familyEvents];
             if (currentEventsFilter === 'نشط') {
                 filteredEvents = filteredEvents.filter(e => e.status === 'نشط');
@@ -4942,7 +4803,6 @@
                 filteredEvents = filteredEvents.filter(e => e.date >= today && e.status === 'نشط');
             }
             
-            // ترتيب الأحداث: القادمة أولاً
             filteredEvents.sort((a, b) => {
                 if (a.date === b.date) {
                     return new Date(b.createdAt) - new Date(a.createdAt);
@@ -5080,7 +4940,6 @@
             const buttons = document.querySelectorAll('.action-buttons button');
             buttons.forEach(btn => btn.classList.remove('active'));
             
-            // إضافة active للزر المحدد
             const activeBtn = Array.from(buttons).find(btn => 
                 btn.onclick && btn.onclick.toString().includes(`'${filterType}'`)
             );
@@ -5143,7 +5002,6 @@
             location.reload();
         }
 
-      
         // ============================================
         // دوال النظام الأساسية
         // ============================================
@@ -5153,7 +5011,6 @@
             
             loadUsers();
             
-            // تحميل قائمة انتظار المزامنة
             const savedQueue = localStorage.getItem('syncQueue');
             if (savedQueue) {
                 try {
@@ -5163,7 +5020,6 @@
                 }
             }
             
-            // تحميل قائمة انتظار مزامنة الإعلانات
             const savedEventsQueue = localStorage.getItem('eventsSyncQueue');
             if (savedEventsQueue) {
                 try {
@@ -5173,7 +5029,6 @@
                 }
             }
             
-            // تحميل البيانات
             const savedEncryptionFlag = localStorage.getItem('isDataEncrypted');
             const savedData = localStorage.getItem('familyData');
             
@@ -5198,7 +5053,6 @@
                 isDataEncrypted = false;
             }
             
-            // تحميل الإعلانات
             initEventsSystem();
             
             if (familyData.length > 0) {
@@ -5212,10 +5066,8 @@
             console.log('عدد الإعلانات:', familyEvents.length);
             console.log('إعلانات في قائمة الانتظار:', eventsSyncQueue.length);
             
-            // تهيئة Firebase
             cloudSyncEnabled = initializeFirebase();
             
-            // تصحيح: تحميل البيانات من السحابة بعد التهيئة
             if (cloudSyncEnabled) {
                 setTimeout(() => {
                     loadDataFromCloud();
@@ -5226,7 +5078,6 @@
             updateSidebarPermissions();
             updateSyncStatus();
             
-            // تهيئة القائمة الجوالية
             initMobileMenu();
         }
 
@@ -5239,7 +5090,6 @@
                     sidebar.classList.toggle('active');
                 });
                 
-                // إغلاق القائمة عند النقر خارجها
                 document.addEventListener('click', function(event) {
                     if (!sidebar.contains(event.target) && !mobileMenuToggle.contains(event.target) && sidebar.classList.contains('active')) {
                         sidebar.classList.remove('active');
@@ -5450,7 +5300,8 @@
                     (person.MotherID && person.MotherID !== 0 && p.MotherID === person.MotherID)
                 )
             );
-const detailHTML = `
+            
+            const detailHTML = `
                 <div class="person-header">
                     <div class="person-avatar">
                         <i class="fas fa-${person.Gender === 'ذكر' ? 'male' : 'female'}"></i>
@@ -5559,7 +5410,7 @@ const detailHTML = `
         }
 
         // ============================================
-        // باقي الدوال الأساسية (loadDashboard, showDashboard, showAllPersons, showStatistics, etc.)
+        // دوال التحكم الرئيسية
         // ============================================
 
         function loadDashboard() {
@@ -5591,7 +5442,6 @@ const detailHTML = `
         function showStatistics() {
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
             document.querySelector('.sidebar-menu li:nth-child(5)').classList.add('active');
-            // يمكن إضافة صفحة إحصاءات متقدمة هنا
             loadDashboard();
         }
 
@@ -5599,6 +5449,12 @@ const detailHTML = `
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
             document.querySelector('.sidebar-menu li:nth-child(4)').classList.add('active');
             loadDashboard();
+        }
+
+        function showBackup() {
+            if (confirm('هل تريد تصدير نسخة احتياطية من جميع البيانات؟')) {
+                exportData('json');
+            }
         }
 
         function loadPersonsTable() {
@@ -5738,9 +5594,9 @@ const detailHTML = `
             `;
             shell.appendChild(indexPage);
 
-            // صفحات الأجيال مع تقسيم إلى صفحات متعددة لكل جيل
+            // صفحات الأجيال
             const generations = organizeByGeneration();
-            const ITEMS_PER_PAGE = 12; // 12 فرد في كل صفحة
+            const ITEMS_PER_PAGE = 12;
 
             Object.keys(generations).forEach(genKey => {
                 const personsInGeneration = generations[genKey];
@@ -5781,7 +5637,7 @@ const detailHTML = `
                 }
             });
 
-            // صفحة إضافية: جميع الأفراد مرتبين أبجدياً (اختياري)
+            // صفحة فهرس جميع الأفراد
             if (familyData.length > 0) {
                 const allPersonsPage = document.createElement('section');
                 allPersonsPage.className = 'book-page';
@@ -5816,7 +5672,6 @@ const detailHTML = `
             showSuccess(`تم إنشاء كتاب العائلة بنجاح يحتوي على ${Object.keys(generations).length} جيل${Object.keys(generations).length > 1 ? 'ات' : ''}`);
         }
 
-        // دالة مساعدة لعرض بطاقة الفرد في الكتاب
         function renderBookPersonCard(person) {
             const father = familyData.find(p => p.PersonID === person.FatherID);
             const mother = familyData.find(p => p.PersonID === person.MotherID);
@@ -5901,7 +5756,6 @@ const detailHTML = `
             `;
         }
 
-        // دالة للانتقال إلى الجيل في الكتاب
         function scrollToGenerationInBook(personId) {
             const generation = calculateGeneration(personId);
             const genElement = document.getElementById(`gen-${generation}`);
@@ -5912,7 +5766,7 @@ const detailHTML = `
         }
 
         // ============================================
-        // بحث سريع داخل كتاب العائلة (اسم/رقم/مكان/ملاحظات)
+        // بحث سريع داخل كتاب العائلة
         // ============================================
 
         function normalizeArabic(str) {
@@ -5924,15 +5778,83 @@ const detailHTML = `
                 .replace(/[ؤ]/g, 'و')
                 .replace(/[ئ]/g, 'ي')
                 .replace(/[ة]/g, 'ه')
-                .replace(/[ً-ٰٟ]/g, '') // تشكيل
+                .replace(/[ً-ٰٟ]/g, '')
                 .replace(/\s+/g, ' ')
                 .trim();
         }
 
-        
+        function clearBookSearch() {
+            const input = document.getElementById('bookSearchInput');
+            if (input) input.value = '';
+            document.querySelectorAll('.book-member-card').forEach(card => {
+                card.classList.remove('book-hidden', 'book-match');
+                unmarkElement(card);
+            });
+        }
+
+        function unmarkElement(root) {
+            if (!root) return;
+            const marks = root.querySelectorAll('mark.book-mark');
+            marks.forEach(m => {
+                const text = document.createTextNode(m.textContent);
+                m.parentNode.replaceChild(text, m);
+                m.parentNode.normalize();
+            });
+        }
+
+        function markMatchesInElement(root, query) {
+            const nameEl = root.querySelector('h4');
+            if (!nameEl) return;
+            unmarkElement(nameEl);
+
+            const text = nameEl.textContent;
+            const normText = normalizeArabic(text);
+            const normQ = normalizeArabic(query);
+            if (!normQ) return;
+
+            const idx = normText.indexOf(normQ);
+            if (idx === -1) return;
+
+            const safeQ = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const rx = new RegExp(safeQ, 'gi');
+            nameEl.innerHTML = nameEl.innerHTML.replace(rx, (m) => `<mark class="book-mark">${m}</mark>`);
+        }
+
+        function searchFamilyBook() {
+            const input = document.getElementById('bookSearchInput');
+            const q = input ? input.value : '';
+            const nq = normalizeArabic(q);
+
+            const cards = document.querySelectorAll('.book-member-card');
+            if (!nq) {
+                cards.forEach(card => {
+                    card.classList.remove('book-hidden', 'book-match');
+                    unmarkElement(card);
+                });
+                return;
+            }
+
+            let firstMatch = null;
+            cards.forEach(card => {
+                const hay = normalizeArabic(card.getAttribute('data-book-search') || '');
+                const isMatch = hay.includes(nq);
+                card.classList.toggle('book-hidden', !isMatch);
+                card.classList.toggle('book-match', isMatch);
+
+                if (isMatch && !firstMatch) firstMatch = card;
+                if (isMatch) markMatchesInElement(card, q);
+                else unmarkElement(card);
+            });
+
+            if (firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
         // ============================================
-        // التفاعل داخل كتاب العائلة: تمييز السلالة + الانتقال للشجرة
+        // التفاعل داخل كتاب العائلة
         // ============================================
+
         function onBookPersonClick(evt, personId) {
             if (evt) evt.stopPropagation();
             highlightBookLineage(personId);
@@ -5981,80 +5903,6 @@ const detailHTML = `
             });
         }
 
-
-function clearBookSearch() {
-            const input = document.getElementById('bookSearchInput');
-            if (input) input.value = '';
-            // إزالة الإخفاء والتظليل وإزالة <mark>
-            document.querySelectorAll('.book-member-card').forEach(card => {
-                card.classList.remove('book-hidden', 'book-match');
-                unmarkElement(card);
-            });
-        }
-
-        function unmarkElement(root) {
-            if (!root) return;
-            const marks = root.querySelectorAll('mark.book-mark');
-            marks.forEach(m => {
-                const text = document.createTextNode(m.textContent);
-                m.parentNode.replaceChild(text, m);
-                m.parentNode.normalize();
-            });
-        }
-
-        function markMatchesInElement(root, query) {
-            // تظليل بسيط داخل عنوان الاسم فقط لتجنب تغيير البنية
-            const nameEl = root.querySelector('h4');
-            if (!nameEl) return;
-            unmarkElement(nameEl);
-
-            const text = nameEl.textContent;
-            const normText = normalizeArabic(text);
-            const normQ = normalizeArabic(query);
-            if (!normQ) return;
-
-            // تظليل حسب الموضع في النص الأصلي (تقريبياً)
-            const idx = normText.indexOf(normQ);
-            if (idx === -1) return;
-
-            // fallback: تظليل حرفي (case-insensitive) بدون تعريب كامل
-            const safeQ = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const rx = new RegExp(safeQ, 'gi');
-            nameEl.innerHTML = nameEl.innerHTML.replace(rx, (m) => `<mark class="book-mark">${m}</mark>`);
-        }
-
-        function searchFamilyBook() {
-            const input = document.getElementById('bookSearchInput');
-            const q = input ? input.value : '';
-            const nq = normalizeArabic(q);
-
-            const cards = document.querySelectorAll('.book-member-card');
-            if (!nq) {
-                cards.forEach(card => {
-                    card.classList.remove('book-hidden', 'book-match');
-                    unmarkElement(card);
-                });
-                return;
-            }
-
-            let firstMatch = null;
-            cards.forEach(card => {
-                const hay = normalizeArabic(card.getAttribute('data-book-search') || '');
-                const isMatch = hay.includes(nq);
-                card.classList.toggle('book-hidden', !isMatch);
-                card.classList.toggle('book-match', isMatch);
-
-                if (isMatch && !firstMatch) firstMatch = card;
-                if (isMatch) markMatchesInElement(card, q);
-                else unmarkElement(card);
-            });
-
-            if (firstMatch) {
-                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }
-
-
         function exportFamilyBook() {
             const element = document.getElementById('bookPreview');
             const opt = {
@@ -6070,9 +5918,29 @@ function clearBookSearch() {
         }
 
         function printFamilyBook() {
-            const modal = document.getElementById('familyBookModal');
-            if(!modal) return;
             window.print();
+        }
+
+        function toggleBookCompact() {
+            const bookGrid = document.querySelector('.book-grid');
+            if (bookGrid) {
+                bookGrid.classList.toggle('compact');
+            }
+        }
+
+        function applyBrandingFromInput() {
+            const input = document.getElementById('familyBrandNameInput');
+            const brandName = input.value.trim();
+            if (brandName) {
+                document.querySelectorAll('.book-title, .book-subtitle').forEach(el => {
+                    if (el.classList.contains('book-title')) {
+                        el.textContent = `كتاب عائلة ${brandName}`;
+                    } else if (el.classList.contains('book-subtitle')) {
+                        el.textContent = `عائلة ${brandName}`;
+                    }
+                });
+                showSuccess(`تم تطبيق هوية عائلة ${brandName}`);
+            }
         }
 
         // ============================================
@@ -6218,7 +6086,7 @@ function clearBookSearch() {
                 isDataEncrypted = false;
                 encryptionPassword = '';
                 
-                localStorage.setItem('familyData', JSON.stringify(familyData));
+                localStorage.setItem('familyData', JSON.stringify(decryptedData));
                 localStorage.setItem('isDataEncrypted', 'false');
                 
                 showSuccess('تم فك تشفير البيانات بنجاح');
@@ -6290,7 +6158,6 @@ function clearBookSearch() {
             document.getElementById('treeView').classList.add('active');
             treeZoom = 100;
             treeCompactMode = false;
-            treeViewMode = 'vertical';
             renderTree();
             setupTreeScrollListener();
             setupMobileSearch();
@@ -6320,12 +6187,7 @@ function clearBookSearch() {
             Object.keys(generations).forEach(genKey => {
                 const genNumber = parseInt(genKey);
                 const generationDiv = document.createElement('div');
-                
-                if (treeViewMode === 'vertical') {
-                    generationDiv.className = `tree-generation generation-${Math.min(genNumber, 5)}`;
-                } else {
-                    generationDiv.className = `tree-generation tree-horizontal generation-${Math.min(genNumber, 5)}`;
-                }
+                generationDiv.className = `tree-generation generation-${Math.min(genNumber, 5)}`;
                 
                 let genLabel = '';
                 switch(genNumber) {
@@ -6389,16 +6251,14 @@ function clearBookSearch() {
             if (currentTreeSearch) searchInTree();
         }
 
-        
         // ============================================
-        // منطق محسن لحساب الأجيال + تمييز المنتمين بالنسب (من خارج العائلة)
+        // منطق محسن لحساب الأجيال
         // ============================================
 
         function getSpouseById(personId) {
             const person = familyData.find(p => p.PersonID === personId);
             if (!person) return null;
 
-            // دعم الاتجاهين: (SpouseID على الشخص) أو (SpouseID على الطرف الآخر)
             let spouse = null;
             if (person.SpouseID && person.SpouseID !== 0) {
                 spouse = familyData.find(p => p.PersonID === person.SpouseID) || null;
@@ -6422,12 +6282,9 @@ function clearBookSearch() {
             const spouse = getSpouseById(personId);
             if (!spouse) return false;
 
-            // إذا كان/كانت الزوج/الزوجة له/لها جذور داخل العائلة (أب/أم) أو يمكن إرجاعه لجيل أكبر من 1
             const spouseHasParents = (spouse.FatherID !== 0 || spouse.MotherID !== 0);
             if (spouseHasParents) return true;
 
-            // أو إذا كان الزوج نفسه/نفسها متصل بسلسلة نسب داخل العائلة عبر زوج/أبناء إلخ
-            // (احتياطي لمنع الحالات غير المكتملة في البيانات)
             const spouseGen = calculateGeneration(spouse.PersonID, new Set(visited));
             return spouseGen > 1;
         }
@@ -6441,8 +6298,6 @@ function clearBookSearch() {
 
             const noParents = (person.FatherID === 0 && person.MotherID === 0);
 
-            // تصحيح المشكلة: الأشخاص من خارج العائلة (منسوبين بالنسب) لا يُعتبرون جذوراً.
-            // نعطيهم نفس جيل الزوج/الزوجة بدل جيل 1.
             if (noParents) {
                 const spouse = getSpouseById(personId);
                 if (spouse) {
@@ -6486,7 +6341,9 @@ function clearBookSearch() {
 
         function findSpouse(personId) {
             return getSpouseById(personId);
-        }        function renderPersonCard(person) {
+        }
+
+        function renderPersonCard(person) {
             const spouse = findSpouse(person.PersonID);
             const isMarried = spouse ? 'married' : '';
             const genClass = `gen-${Math.min(calculateGeneration(person.PersonID), 5)}`;
@@ -6494,7 +6351,6 @@ function clearBookSearch() {
             const outsider = isOutsideFamily(person.PersonID);
             const outsiderClass = outsider ? 'outsider' : '';
             const outsiderBadge = outsider ? `<div class="outsider-badge" title="من خارج العائلة (نسب)"><i class="fas fa-link"></i> نسب</div>` : '';
-
             
             const nodeId = `tree-node-${person.PersonID}`;
             
@@ -6521,7 +6377,7 @@ function clearBookSearch() {
         }
 
         // ============================================
-        // تمييز السلالة (الأسلاف/الأحفاد) عند الضغط
+        // تمييز السلالة (الأسلاف/الأحفاد)
         // ============================================
 
         function getAncestors(personId, ancestors = new Set()) {
@@ -6553,7 +6409,6 @@ function clearBookSearch() {
         }
 
         function highlightLineage(personId) {
-            // إزالة التمييز السابق
             document.querySelectorAll('.tree-node').forEach(node => {
                 node.classList.remove('lineage-dimmed', 'lineage-selected', 'lineage-ancestor', 'lineage-descendant');
             });
@@ -6561,13 +6416,11 @@ function clearBookSearch() {
             const ancestors = getAncestors(personId);
             const descendants = getDescendants(personId);
             
-            // تمييز الفرد المحدد
             const selectedNode = document.querySelector(`.tree-node[data-person-id="${personId}"]`);
             if (selectedNode) {
                 selectedNode.classList.add('lineage-selected');
             }
             
-            // تمييز الأسلاف
             ancestors.forEach(ancestorId => {
                 const ancestorNode = document.querySelector(`.tree-node[data-person-id="${ancestorId}"]`);
                 if (ancestorNode) {
@@ -6575,7 +6428,6 @@ function clearBookSearch() {
                 }
             });
             
-            // تمييز الأحفاد
             descendants.forEach(descendantId => {
                 const descendantNode = document.querySelector(`.tree-node[data-person-id="${descendantId}"]`);
                 if (descendantNode) {
@@ -6583,7 +6435,6 @@ function clearBookSearch() {
                 }
             });
             
-            // تخفيف الباقين
             document.querySelectorAll('.tree-node').forEach(node => {
                 const nodeId = parseInt(node.getAttribute('data-person-id'));
                 if (nodeId !== personId && 
@@ -6604,7 +6455,6 @@ function clearBookSearch() {
             event.stopPropagation();
             highlightLineage(personId);
             
-            // إذا كان هناك بحث نشط، نظهر التفاصيل
             if (!currentTreeSearch) {
                 showPersonDetail(personId);
             }
@@ -6724,7 +6574,6 @@ function clearBookSearch() {
                 searchMatchElement.style.display = 'inline';
                 showSuccess(`تم العثور على ${searchMatchCount} فرد`);
                 
-                // تمرير للعنصر الأول المطابق
                 const firstMatch = document.querySelector('.tree-node.search-match');
                 if (firstMatch) {
                     firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -6765,10 +6614,8 @@ function clearBookSearch() {
                 if (Math.abs(currentScrollTop - lastScrollTop) > 50) {
                     const treeFilter = document.getElementById('treeFilter');
                     if (currentScrollTop > lastScrollTop) {
-                        // التمرير لأسفل - إخفاء شريط البحث
                         treeFilter.style.transform = 'translateY(-100%)';
                     } else {
-                        // التمرير لأعلى - إظهار شريط البحث
                         treeFilter.style.transform = 'translateY(0)';
                     }
                     lastScrollTop = currentScrollTop;
@@ -6785,7 +6632,6 @@ function clearBookSearch() {
                     treeFilter.classList.toggle('active');
                 });
                 
-                // إغلاق شريط البحث عند النقر خارجها
                 document.addEventListener('click', function(event) {
                     if (!treeFilter.contains(event.target) && 
                         !mobileSearchToggle.contains(event.target) && 
@@ -6808,7 +6654,6 @@ function clearBookSearch() {
             const menu = document.getElementById('exportMenu');
             menu.classList.toggle('show');
             
-            // إغلاق القائمة عند النقر خارجها
             setTimeout(() => {
                 document.addEventListener('click', function closeMenu(event) {
                     if (!menu.contains(event.target) && !event.target.closest('.export-options')) {
@@ -6897,7 +6742,6 @@ function clearBookSearch() {
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Family Members");
             
-            // إضافة صفحة للعلاقات
             const relationships = [];
             familyData.forEach(person => {
                 if (person.FatherID !== 0) {
@@ -7085,11 +6929,9 @@ function clearBookSearch() {
                 return;
             }
             
-            // عرض العناوين
             const headers = Object.keys(excelData[0]);
             tableHead.innerHTML = `<tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr>`;
             
-            // عرض البيانات
             tableBody.innerHTML = '';
             excelData.slice(0, 10).forEach(row => {
                 const tr = document.createElement('tr');
@@ -7101,7 +6943,6 @@ function clearBookSearch() {
                 tableBody.appendChild(tr);
             });
             
-            // عرض الإحصائيات
             statsDiv.style.display = 'block';
             document.getElementById('importStatsText').textContent = 
                 `تم تحميل ${excelData.length} صف. ${excelData.length > 10 ? 'يتم عرض أول 10 صفوف فقط.' : ''}`;
@@ -7121,7 +6962,7 @@ function clearBookSearch() {
                 return;
             }
             
-            if (!confirm(`سيتم استيراد ${excelData.length} فرد. هل تريد المتابعة؟`)) {
+            if (!confirm(`سيتم استيراد ${excelData.length} فرد. هل تريد المتابعة؟')) {
                 return;
             }
             
@@ -7145,10 +6986,8 @@ function clearBookSearch() {
                     importedPersons.push(person);
                 });
                 
-                // دمج مع البيانات الحالية
                 familyData = [...familyData, ...importedPersons];
                 
-                // تحديث nextPersonId
                 if (familyData.length > 0) {
                     nextPersonId = Math.max(...familyData.map(p => p.PersonID)) + 1;
                 }
@@ -7258,34 +7097,45 @@ function clearBookSearch() {
             if (!currentUser) return;
             
             const permissions = userPermissions[currentUser] || userPermissions['user'];
+            const isAdmin = currentUser === 'admin';
             
-            // تحديث الأزرار حسب الصلاحيات
-            const addButton = document.querySelector('.btn-primary[onclick*="showAddPersonForm"]');
-            const exportButton = document.querySelector('.btn-warning[onclick*="toggleExportMenu"]');
-            const importButton = document.querySelector('.import-btn');
+            // إخفاء/إظهار الأزرار حسب الصلاحيات
+            const addBtn = document.querySelector('.btn-primary[onclick="showAddPersonForm()"]');
+            if (addBtn) {
+                addBtn.style.display = permissions.includes('add') ? 'inline-flex' : 'none';
+            }
             
-            if (addButton) addButton.style.display = permissions.includes('add') ? 'inline-flex' : 'none';
-            if (exportButton) exportButton.style.display = permissions.includes('export') ? 'inline-flex' : 'none';
-            if (importButton) importButton.style.display = permissions.includes('import') ? 'inline-flex' : 'none';
+            const exportBtn = document.querySelector('.export-options');
+            if (exportBtn) {
+                exportBtn.style.display = permissions.includes('export') ? 'inline-block' : 'none';
+            }
+            
+            const importBtn = document.querySelector('.import-btn');
+            if (importBtn) {
+                importBtn.style.display = permissions.includes('import') ? 'inline-flex' : 'none';
+            }
+            
+            const cloudBtns = document.querySelectorAll('.btn-info[onclick*="cloud"]');
+            cloudBtns.forEach(btn => {
+                btn.style.display = isAdmin ? 'inline-flex' : 'none';
+            });
         }
 
         function updateSidebarPermissions() {
             if (!currentUser) return;
             
+            const isAdmin = currentUser === 'admin';
             const permissions = userPermissions[currentUser] || userPermissions['user'];
-            const menuItems = document.querySelectorAll('.sidebar-menu li');
             
-            // إخفاء عناصر القائمة حسب الصلاحيات
-            menuItems.forEach(item => {
-                const text = item.textContent || '';
-                if (text.includes('الصلاحيات') && !permissions.includes('manage_users')) {
-                    item.style.display = 'none';
-                } else if (text.includes('Excel') && !permissions.includes('import')) {
-                    item.style.display = 'none';
-                } else if (text.includes('التشفير') && currentUser !== 'admin') {
-                    item.style.display = 'none';
-                } else {
-                    item.style.display = 'flex';
+            // إخفاء عناصر القائمة الجانبية حسب الصلاحيات
+            const permissionItems = document.querySelectorAll('.menu-item[onclick*="Permissions"], .menu-item[onclick*="Encryption"], .menu-item[onclick*="Cloud"]');
+            permissionItems.forEach(item => {
+                if (item.textContent.includes('إدارة الصلاحيات') || item.textContent.includes('Permissions')) {
+                    item.style.display = permissions.includes('manage_users') ? 'block' : 'none';
+                } else if (item.textContent.includes('إعدادات التشفير') || item.textContent.includes('Encryption')) {
+                    item.style.display = isAdmin ? 'block' : 'none';
+                } else if (item.textContent.includes('إدارة السحابة') || item.textContent.includes('Cloud')) {
+                    item.style.display = isAdmin ? 'block' : 'none';
                 }
             });
         }
@@ -7296,18 +7146,12 @@ function clearBookSearch() {
             return permissions.includes(permission);
         }
 
-        // ============================================
-        // دوال عرض الرسائل
-        // ============================================
-
         function showSuccess(message) {
             const alert = document.getElementById('successAlert');
-            const messageElement = document.getElementById('successMessage');
-            
-            if (alert && messageElement) {
-                messageElement.textContent = message;
+            const messageEl = document.getElementById('successMessage');
+            if (alert && messageEl) {
+                messageEl.textContent = message;
                 alert.style.display = 'flex';
-                
                 setTimeout(() => {
                     alert.style.display = 'none';
                 }, 3000);
@@ -7316,882 +7160,56 @@ function clearBookSearch() {
 
         function showError(message) {
             const alert = document.getElementById('errorAlert');
-            const messageElement = document.getElementById('errorMessage');
-            
-            if (alert && messageElement) {
-                messageElement.textContent = message;
+            const messageEl = document.getElementById('errorMessage');
+            if (alert && messageEl) {
+                messageEl.textContent = message;
                 alert.style.display = 'flex';
-                
                 setTimeout(() => {
                     alert.style.display = 'none';
-                }, 5000);
+                }, 3000);
             }
         }
 
         function showWarning(message) {
             const alert = document.createElement('div');
             alert.className = 'alert warning';
-            alert.innerHTML = `
-                <i class="fas fa-exclamation-triangle"></i>
-                <span>${message}</span>
-            `;
-            
-            const controlPanel = document.querySelector('.control-panel');
-            if (controlPanel) {
-                controlPanel.insertBefore(alert, controlPanel.firstChild);
-                
-                setTimeout(() => {
-                    alert.remove();
-                }, 5000);
-            }
+            alert.innerHTML = `<i class="fas fa-exclamation-triangle"></i><span>${message}</span>`;
+            document.querySelector('.main-content-area').insertBefore(alert, document.querySelector('.control-panel'));
+            setTimeout(() => {
+                alert.remove();
+            }, 3000);
         }
 
         function showInfo(message) {
             const alert = document.createElement('div');
             alert.className = 'alert info';
-            alert.innerHTML = `
-                <i class="fas fa-info-circle"></i>
-                <span>${message}</span>
-            `;
-            
-            const controlPanel = document.querySelector('.control-panel');
-            if (controlPanel) {
-                controlPanel.insertBefore(alert, controlPanel.firstChild);
-                
-                setTimeout(() => {
-                    alert.remove();
-                }, 3000);
-            }
+            alert.innerHTML = `<i class="fas fa-info-circle"></i><span>${message}</span>`;
+            document.querySelector('.main-content-area').insertBefore(alert, document.querySelector('.control-panel'));
+            setTimeout(() => {
+                alert.remove();
+            }, 3000);
+        }
+
+        // وظائف اقتراحات ذكية (وهمية حالياً)
+        function applySmartSuggestions() {
+            showInfo('خاصية الاقتراحات الذكية قيد التطوير');
+        }
+
+        function showWhySuggestion() {
+            showInfo('شرح الاقتراحات قيد التطوير');
+        }
+
+        function clearSmartSuggestions() {
+            document.getElementById('relationSuggestBox').style.display = 'none';
         }
 
         // ============================================
         // تهيئة النظام عند تحميل الصفحة
         // ============================================
-
+        
         document.addEventListener('DOMContentLoaded', function() {
             updateLanguage();
-            loadUsers();
-            
-            // تعريف زر القائمة للجوال
-            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-            const sidebar = document.getElementById('sidebar');
-            
-            if (mobileMenuToggle && sidebar) {
-                mobileMenuToggle.addEventListener('click', function() {
-                    sidebar.classList.toggle('active');
-                });
-                
-                // إغلاق القائمة عند النقر خارجها
-                document.addEventListener('click', function(event) {
-                    if (!sidebar.contains(event.target) && !mobileMenuToggle.contains(event.target) && sidebar.classList.contains('active')) {
-                        sidebar.classList.remove('active');
-                    }
-                });
-            }
-            
-            // تعريف زر البحث في الموبايل للشجرة
-            const mobileSearchToggle = document.getElementById('mobileSearchToggle');
-            if (mobileSearchToggle) {
-                mobileSearchToggle.addEventListener('click', function() {
-                    const treeFilter = document.getElementById('treeFilter');
-                    if (treeFilter) {
-                        treeFilter.classList.toggle('active');
-                    }
-                });
-            }
-            
-            // إغلاق القوائم المنسدلة عند النقر خارجها
-            document.addEventListener('click', function(event) {
-                const exportMenu = document.getElementById('exportMenu');
-                const treeExportMenu = document.getElementById('treeExportMenu');
-                
-                if (exportMenu && exportMenu.classList.contains('show') && 
-                    !event.target.closest('.export-options')) {
-                    exportMenu.classList.remove('show');
-                }
-                
-                if (treeExportMenu && treeExportMenu.classList.contains('show') && 
-                    !event.target.closest('.export-options')) {
-                    treeExportMenu.classList.remove('show');
-                }
-            });
-            
-            console.log('✅ System initialized successfully');
         });
-
-        // ============================================
-        // استيراد الاقتراحات الذكية (اختياري - يمكن تطويرها)
-        // ============================================
-
-        function applySmartSuggestions() {
-            // يمكن تطوير هذه الدالة لاقتراح علاقات ذكية
-            showInfo('سيتم تطوير نظام الاقتراحات الذكية في الإصدارات القادمة');
-        }
-
-        function showWhySuggestion() {
-            showInfo('يقوم النظام بتحليل العلاقات الحالية لاقتراح أفضل الخيارات للعلاقات العائلية');
-        }
-
-        function clearSmartSuggestions() {
-            document.getElementById('smartSuggestions').innerHTML = '';
-        }
-
-        // ============================================
-        // دالة تطبيق الهوية البصرية
-        // ============================================
-
-        function applyBrandingFromInput() {
-            const brandNameInput = document.getElementById('familyBrandNameInput');
-            if (!brandNameInput) return;
-            
-            const brandName = brandNameInput.value.trim();
-            if (!brandName) {
-                showError('الرجاء إدخال اسم للهوية العائلية');
-                return;
-            }
-            
-            // حفظ في localStorage
-            localStorage.setItem('familyBrandName', brandName);
-            
-            // تطبيق على واجهة المستخدم
-            const logoTitle = document.querySelector('.logo h1');
-            if (logoTitle) {
-                logoTitle.textContent = `شجرة عائلة ${brandName}`;
-            }
-            
-            // تحديث عنوان النظام
-            document.title = `شجرة عائلة ${brandName}`;
-            
-            showSuccess(`تم تطبيق الهوية البصرية: ${brandName}`);
-        }
-
-        function toggleBookCompact() {
-            const bookGrid = document.querySelector('.book-grid');
-            if (!bookGrid) return;
-            
-            bookGrid.classList.toggle('compact');
-            showSuccess(bookGrid.classList.contains('compact') ? 
-                'تم تفعيل العرض المضغوط' : 'تم تفعيل العرض الموسع');
-      function loadUsers() {
-    const savedUsers = localStorage.getItem('familyTreeUsers');
-    if (savedUsers) {
-        try {
-            const parsedUsers = JSON.parse(savedUsers);
-            // دمج المستخدمين المحفوظين مع المستخدمين الأساسيين
-            Object.assign(users, parsedUsers);
-        } catch (error) {
-            console.error('Error loading users:', error);
-        }
-    }
-}
-
-function checkPermission(permission) {
-    if (!currentUser) return false;
-    
-    const userRole = users[currentUser]?.role || 'user';
-    const permissions = userPermissions[userRole] || userPermissions['user'];
-    
-    return permissions.includes(permission);
-}
-
-function updateUIByPermissions() {
-    const canEdit = checkPermission('edit');
-    const canDelete = checkPermission('delete');
-    const canManageUsers = checkPermission('manage_users');
-    
-    // تحديث الواجهة بناءً على الصلاحيات
-    const editButtons = document.querySelectorAll('.action-btn.edit, .action-btn.delete');
-    editButtons.forEach(btn => {
-        const isEdit = btn.classList.contains('edit');
-        const isDelete = btn.classList.contains('delete');
-        
-        if ((isEdit && !canEdit) || (isDelete && !canDelete)) {
-            btn.style.display = 'none';
-        }
-    });
-    
-    // إخفاء عناصر القائمة الجانبية
-    const menuItems = document.querySelectorAll('.menu-item');
-    menuItems.forEach((item, index) => {
-        // عناصر تحتاج صلاحيات خاصة
-        if (index === 10 && !canManageUsers) { // إدارة الصلاحيات
-            item.style.display = 'none';
-        }
-    });
-}
-
-function updateSidebarPermissions() {
-    // تحديث عناصر القائمة الجانبية بناءً على صلاحيات المستخدم
-    const isAdmin = currentUser === 'admin';
-    const isUser = currentUser === 'user';
-    const isHost = currentUser === 'host';
-    
-    // إخفاء/إظهار العناصر حسب الصلاحيات
-    const menuItems = document.querySelectorAll('.menu-item');
-    
-    // عناصر لإدارة الصلاحيات (فقط للمدير)
-    const permissionsIndex = 10; // إدارة الصلاحيات
-    const encryptionIndex = 11; // إعدادات التشفير
-    
-    if (menuItems[permissionsIndex]) {
-        menuItems[permissionsIndex].style.display = isAdmin ? 'flex' : 'none';
-    }
-    
-    if (menuItems[encryptionIndex]) {
-        menuItems[encryptionIndex].style.display = isAdmin ? 'flex' : 'none';
-    }
-}
-
-function showSuccess(message) {
-    const alert = document.getElementById('successAlert');
-    const messageElement = document.getElementById('successMessage');
-    
-    if (alert && messageElement) {
-        messageElement.textContent = message;
-        alert.style.display = 'flex';
-        
-        setTimeout(() => {
-            alert.style.display = 'none';
-        }, 3000);
-    }
-}
-
-function showError(message) {
-    const alert = document.getElementById('errorAlert');
-    const messageElement = document.getElementById('errorMessage');
-    
-    if (alert && messageElement) {
-        messageElement.textContent = message;
-        alert.style.display = 'flex';
-        
-        setTimeout(() => {
-            alert.style.display = 'none';
-        }, 5000);
-    }
-}
-
-function showWarning(message) {
-    // إنشاء تنبيه تحذير إذا لم يكن موجوداً
-    let warningAlert = document.getElementById('warningAlert');
-    if (!warningAlert) {
-        warningAlert = document.createElement('div');
-        warningAlert.id = 'warningAlert';
-        warningAlert.className = 'alert warning';
-        warningAlert.innerHTML = `
-            <i class="fas fa-exclamation-triangle"></i>
-            <span id="warningMessage"></span>
-        `;
-        document.querySelector('.control-panel').prepend(warningAlert);
-    }
-    
-    const messageElement = document.getElementById('warningMessage');
-    if (messageElement) {
-        messageElement.textContent = message;
-        warningAlert.style.display = 'flex';
-        
-        setTimeout(() => {
-            warningAlert.style.display = 'none';
-        }, 4000);
-    }
-}
-
-function showInfo(message) {
-    // إنشاء تنبيه معلومات إذا لم يكن موجوداً
-    let infoAlert = document.getElementById('infoAlert');
-    if (!infoAlert) {
-        infoAlert = document.createElement('div');
-        infoAlert.id = 'infoAlert';
-        infoAlert.className = 'alert info';
-        infoAlert.innerHTML = `
-            <i class="fas fa-info-circle"></i>
-            <span id="infoMessage"></span>
-        `;
-        document.querySelector('.control-panel').prepend(infoAlert);
-    }
-    
-    const messageElement = document.getElementById('infoMessage');
-    if (messageElement) {
-        messageElement.textContent = message;
-        infoAlert.style.display = 'flex';
-        
-        setTimeout(() => {
-            infoAlert.style.display = 'none';
-        }, 3000);
-    }
-}
-
-// دالة تهيئة زر القائمة للجوال
-function initMobileMenu() {
-    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-    const sidebar = document.getElementById('sidebar');
-    
-    if (mobileMenuToggle && sidebar) {
-        mobileMenuToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('active');
-        });
-        
-        // إغلاق القائمة عند النقر خارجها
-        document.addEventListener('click', function(event) {
-            if (!sidebar.contains(event.target) && 
-                !mobileMenuToggle.contains(event.target) && 
-                sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-            }
-        });
-    }
-}
-
-// تحديث دالة smart-suggestions إذا كانت موجودة
-function applySmartSuggestions() {
-    showInfo('سيتم تطبيق الاقتراحات الذكية في النسخ القادمة');
-}
-
-function showWhySuggestion() {
-    showInfo('يقوم النظام باقتراح العلاقات بناءً على الأفراد الموجودين في نفس العمر والجيل');
-}
-
-function clearSmartSuggestions() {
-    showInfo('تم مسح الاقتراحات');
-}
-
-// تهيئة النظام عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', function() {
-    // تحديث اللغة
-    updateLanguage();
-    
-    // تهيئة زر القائمة للجوال
-    initMobileMenu();
-    
-    // إضافة أنماط CSS مفقودة
-    const style = document.createElement('style');
-    style.textContent = `
-        .warning { background: #fff3e0; color: #ef6c00; border-color: #ffe0b2; border-right-color: #ff9800; }
-        .info { background: #e0f7fa; color: #006064; border-color: #b2ebf2; border-right-color: #00bcd4; }
-    `;
-    document.head.appendChild(style);
-});
-
-console.log('✅ تم تحميل النظام بنجاح');
-        }
-        // ============================================
-// دوال التنبيهات والإشعارات
-// ============================================
-
-function showSuccess(message) {
-    console.log('Success:', message);
-    const alert = document.getElementById('successAlert');
-    const messageElement = document.getElementById('successMessage');
-    
-    if (alert && messageElement) {
-        messageElement.textContent = message;
-        alert.style.display = 'flex';
-        
-        setTimeout(() => {
-            alert.style.display = 'none';
-        }, 3000);
-    } else {
-        alert('✅ ' + message);
-    }
-}
-
-function showError(message) {
-    console.log('Error:', message);
-    const alert = document.getElementById('errorAlert');
-    const messageElement = document.getElementById('errorMessage');
-    
-    if (alert && messageElement) {
-        messageElement.textContent = message;
-        alert.style.display = 'flex';
-        
-        setTimeout(() => {
-            alert.style.display = 'none';
-        }, 5000);
-    } else {
-        alert('❌ ' + message);
-    }
-}
-
-function showWarning(message) {
-    console.log('Warning:', message);
-    // إنشاء تنبيه تحذير إذا لم يكن موجوداً
-    let warningAlert = document.getElementById('warningAlert');
-    if (!warningAlert) {
-        warningAlert = document.createElement('div');
-        warningAlert.id = 'warningAlert';
-        warningAlert.className = 'alert warning';
-        warningAlert.innerHTML = `
-            <i class="fas fa-exclamation-triangle"></i>
-            <span id="warningMessage"></span>
-        `;
-        const controlPanel = document.querySelector('.control-panel');
-        if (controlPanel) {
-            controlPanel.prepend(warningAlert);
-        }
-    }
-    
-    const messageElement = document.getElementById('warningMessage');
-    if (messageElement) {
-        messageElement.textContent = message;
-        warningAlert.style.display = 'flex';
-        
-        setTimeout(() => {
-            warningAlert.style.display = 'none';
-        }, 4000);
-    } else {
-        alert('⚠ ' + message);
-    }
-}
-
-function showInfo(message) {
-    console.log('Info:', message);
-    // إنشاء تنبيه معلومات إذا لم يكن موجوداً
-    let infoAlert = document.getElementById('infoAlert');
-    if (!infoAlert) {
-        infoAlert = document.createElement('div');
-        infoAlert.id = 'infoAlert';
-        infoAlert.className = 'alert info';
-        infoAlert.innerHTML = `
-            <i class="fas fa-info-circle"></i>
-            <span id="infoMessage"></span>
-        `;
-        const controlPanel = document.querySelector('.control-panel');
-        if (controlPanel) {
-            controlPanel.prepend(infoAlert);
-        }
-    }
-    
-    const messageElement = document.getElementById('infoMessage');
-    if (messageElement) {
-        messageElement.textContent = message;
-        infoAlert.style.display = 'flex';
-        
-        setTimeout(() => {
-            infoAlert.style.display = 'none';
-        }, 3000);
-    } else {
-        alert('ℹ ' + message);
-    }
-}
-
-// ============================================
-// دوال إدارة المستخدمين والصلاحيات
-// ============================================
-
-function loadUsers() {
-    const savedUsers = localStorage.getItem('familyTreeUsers');
-    if (savedUsers) {
-        try {
-            const parsedUsers = JSON.parse(savedUsers);
-            // دمج المستخدمين المحفوظين مع المستخدمين الأساسيين
-            Object.assign(users, parsedUsers);
-            console.log('✅ Loaded users:', Object.keys(users));
-        } catch (error) {
-            console.error('Error loading users:', error);
-        }
-    } else {
-        // حفظ المستخدمين الأساسيين
-        localStorage.setItem('familyTreeUsers', JSON.stringify(users));
-    }
-}
-
-function checkPermission(permission) {
-    if (!currentUser) return false;
-    
-    const userRole = users[currentUser]?.role || 'user';
-    const permissions = userPermissions[userRole] || userPermissions['user'];
-    
-    return permissions.includes(permission);
-}
-
-function updateUIByPermissions() {
-    const canEdit = checkPermission('edit');
-    const canDelete = checkPermission('delete');
-    const canManageUsers = checkPermission('manage_users');
-    
-    console.log('Updating UI permissions for:', currentUser, 'Edit:', canEdit, 'Delete:', canDelete);
-    
-    // تحديث الواجهة بناءً على الصلاحيات
-    const editButtons = document.querySelectorAll('.action-btn.edit, .action-btn.delete');
-    editButtons.forEach(btn => {
-        const isEdit = btn.classList.contains('edit');
-        const isDelete = btn.classList.contains('delete');
-        
-        if ((isEdit && !canEdit) || (isDelete && !canDelete)) {
-            btn.style.display = 'none';
-        } else {
-            btn.style.display = 'flex';
-        }
-    });
-    
-    // تحديث الأزرار في لوحة التحكم
-    const controlButtons = document.querySelectorAll('.action-buttons .btn');
-    controlButtons.forEach(btn => {
-        const btnText = btn.textContent || '';
-        if (btnText.includes('تعديل') && !canEdit) {
-            btn.style.display = 'none';
-        }
-    });
-}
-
-function updateSidebarPermissions() {
-    if (!currentUser) return;
-    
-    const isAdmin = currentUser === 'admin';
-    const isAsma = currentUser === 'asma';
-    const isUser = currentUser === 'user';
-    const isHost = currentUser === 'host';
-    
-    console.log('Updating sidebar for user:', currentUser, 'Admin:', isAdmin);
-    
-    // عناصر القائمة الجانبية
-    const menuItems = document.querySelectorAll('.sidebar-menu .menu-item');
-    
-    // مؤشرات عناصر القائمة
-    const menuIndexes = {
-        permissions: 10,      // إدارة الصلاحيات
-        encryption: 11,       // إعدادات التشفير
-        cloudManager: 13      // إدارة السحابة
-    };
-    
-    // إخفاء/إظهار العناصر حسب الصلاحيات
-    menuItems.forEach((item, index) => {
-        let shouldShow = true;
-        
-        switch(index) {
-            case menuIndexes.permissions:
-                shouldShow = isAdmin;
-                break;
-            case menuIndexes.encryption:
-                shouldShow = isAdmin;
-                break;
-            case menuIndexes.cloudManager:
-                shouldShow = isAdmin || isAsma;
-                break;
-        }
-        
-        item.style.display = shouldShow ? 'flex' : 'none';
-    });
-}
-
-// ============================================
-// دوال تحسين تهيئة النظام
-// ============================================
-
-function initSystem() {
-    console.log('🚀 جاري تهيئة النظام...');
-    
-    // 1. تحميل المستخدمين
-    loadUsers();
-    
-    // 2. تحميل قوائم انتظار المزامنة
-    const savedQueue = localStorage.getItem('syncQueue');
-    if (savedQueue) {
-        try {
-            syncQueue = JSON.parse(savedQueue);
-        } catch (error) {
-            syncQueue = [];
-        }
-    }
-    
-    const savedEventsQueue = localStorage.getItem('eventsSyncQueue');
-    if (savedEventsQueue) {
-        try {
-            eventsSyncQueue = JSON.parse(savedEventsQueue);
-        } catch (error) {
-            eventsSyncQueue = [];
-        }
-    }
-    
-    // 3. تحميل البيانات المحلية
-    const savedEncryptionFlag = localStorage.getItem('isDataEncrypted');
-    const savedData = localStorage.getItem('familyData');
-    
-    if (savedEncryptionFlag === 'true' && savedData) {
-        isDataEncrypted = true;
-        showWarning('البيانات مشفرة. يرجى استخدام فك التشفير لعرض البيانات.');
-        familyData = defaultFamilyData; // استخدام البيانات الافتراضية
-    } else if (savedData) {
-        try {
-            familyData = JSON.parse(savedData);
-            isDataEncrypted = false;
-            console.log('✅ تم تحميل بيانات', familyData.length, 'فرد');
-        } catch (error) {
-            console.error('❌ خطأ في تحميل البيانات:', error);
-            familyData = defaultFamilyData;
-            isDataEncrypted = false;
-        }
-    } else {
-        familyData = defaultFamilyData;
-        isDataEncrypted = false;
-        saveDataLocally(); // حفظ البيانات الافتراضية
-    }
-    
-    // 4. تحديث nextPersonId
-    if (familyData.length > 0) {
-        const maxId = Math.max(...familyData.map(p => p.PersonID));
-        nextPersonId = maxId + 1;
-    } else {
-        nextPersonId = 1;
-    }
-    
-    // 5. تحميل الإعلانات
-    const savedEvents = localStorage.getItem('familyEvents');
-    if (savedEvents) {
-        try {
-            familyEvents = JSON.parse(savedEvents);
-        } catch (error) {
-            familyEvents = defaultEvents;
-        }
-    } else {
-        familyEvents = defaultEvents;
-        saveEventsLocally();
-    }
-    
-    console.log('📊 إحصائيات النظام:');
-    console.log('- عدد الأفراد:', familyData.length);
-    console.log('- عدد الإعلانات:', familyEvents.length);
-    console.log('- البيانات في قائمة الانتظار:', syncQueue.length);
-    console.log('- الإعلانات في قائمة الانتظار:', eventsSyncQueue.length);
-    
-    // 6. تهيئة Firebase
-    try {
-        cloudSyncEnabled = initializeFirebase();
-        if (cloudSyncEnabled) {
-            setTimeout(() => {
-                loadDataFromCloud();
-            }, 1500);
-        }
-    } catch (error) {
-        console.error('❌ فشل تهيئة Firebase:', error);
-        cloudSyncEnabled = false;
-    }
-    
-    // 7. تحديث الواجهة
-    updateUIByPermissions();
-    updateSidebarPermissions();
-    updateSyncStatus();
-    
-    // 8. تهيئة القائمة الجوالية
-    initMobileMenu();
-    
-    // 9. تحديث الإحصائيات مباشرة
-    updateStatisticsImmediately();
-    
-    showSuccess('تم تهيئة النظام بنجاح');
-}
-
-function updateStatisticsImmediately() {
-    // تحديث الإحصائيات مباشرة في واجهة المستخدم
-    const totalPersons = familyData.length;
-    const maleCount = familyData.filter(p => p.Gender === 'ذكر').length;
-    const femaleCount = familyData.filter(p => p.Gender === 'انثى').length;
-    
-    // حساب العائلات الفريدة (الأشخاص بدون آباء ولا أمهات وليسوا من خارج العائلة)
-    const uniqueFamilies = familyData.filter(p => {
-        const noParents = p.FatherID === 0 && p.MotherID === 0;
-        const notOutsider = !isOutsideFamily(p.PersonID);
-        return noParents && notOutsider;
-    }).length;
-    
-    console.log('📈 الإحصائيات المحدثة:', { totalPersons, maleCount, femaleCount, uniqueFamilies });
-    
-    // تحديث DOM مباشرة
-    const totalElement = document.getElementById('totalPersons');
-    const maleElement = document.getElementById('maleCount');
-    const femaleElement = document.getElementById('femaleCount');
-    const familiesElement = document.getElementById('familiesCount');
-    
-    if (totalElement) totalElement.textContent = totalPersons;
-    if (maleElement) maleElement.textContent = maleCount;
-    if (femaleElement) femaleElement.textContent = femaleCount;
-    if (familiesElement) familiesElement.textContent = uniqueFamilies;
-}
-
-// ============================================
-// دوال زر القائمة للجوال
-// ============================================
-
-function initMobileMenu() {
-    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-    const sidebar = document.getElementById('sidebar');
-    
-    if (mobileMenuToggle && sidebar) {
-        // إزالة أي مستمعين سابقين
-        mobileMenuToggle.replaceWith(mobileMenuToggle.cloneNode(true));
-        const newToggle = document.getElementById('mobileMenuToggle');
-        
-        newToggle.addEventListener('click', function(event) {
-            event.stopPropagation();
-            sidebar.classList.toggle('active');
-            console.log('📱 القائمة الجانبية:', sidebar.classList.contains('active') ? 'مفتوحة' : 'مغلقة');
-        });
-        
-        // إغلاق القائمة عند النقر خارجها
-        document.addEventListener('click', function(event) {
-            if (sidebar.classList.contains('active') && 
-                !sidebar.contains(event.target) && 
-                !newToggle.contains(event.target)) {
-                sidebar.classList.remove('active');
-            }
-        });
-        
-        // منع إغلاق القائمة عند النقر داخلها
-        sidebar.addEventListener('click', function(event) {
-            event.stopPropagation();
-        });
-        
-        console.log('✅ تم تهيئة زر القائمة للجوال');
-    } else {
-        console.error('❌ لم يتم العثور على عناصر القائمة الجوالية');
-    }
-}
-
-// ============================================
-// دوال إضافية مفقودة
-// ============================================
-
-function applySmartSuggestions() {
-    showInfo('سيتم تطبيق الاقتراحات الذكية في النسخ القادمة');
-}
-
-function showWhySuggestion() {
-    showInfo('يقوم النظام باقتراح العلاقات بناءً على الأفراد الموجودين في نفس العمر والجيل');
-}
-
-function clearSmartSuggestions() {
-    const suggestBox = document.getElementById('relationSuggestBox');
-    if (suggestBox) {
-        suggestBox.style.display = 'none';
-    }
-    showInfo('تم مسح الاقتراحات');
-}
-
-function applyBrandingFromInput() {
-    const input = document.getElementById('familyBrandNameInput');
-    if (input && input.value.trim()) {
-        const brandName = input.value.trim();
-        const logoElement = document.querySelector('.logo h1');
-        if (logoElement) {
-            logoElement.textContent = `شجرة عائلة ${brandName}`;
-        }
-        showSuccess(`تم تطبيق هوية العائلة: ${brandName}`);
-    } else {
-        showError('يرجى إدخال اسم العائلة أولاً');
-    }
-}
-
-function toggleBookCompact() {
-    const bookGrid = document.querySelector('.book-grid');
-    if (bookGrid) {
-        bookGrid.classList.toggle('compact');
-        showInfo(bookGrid.classList.contains('compact') ? 'تم تفعيل العرض المضغوط' : 'تم تفعيل العرض الموسع');
-    }
-}
-
-// ============================================
-// دوال دعم الطباعة والتصدير
-// ============================================
-
-function printFamilyBook() {
-    window.print();
-}
-
-// ============================================
-// تهيئة النظام عند تحميل الصفحة
-// ============================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 تم تحميل الصفحة');
-    
-    // 1. تحديث اللغة
-    updateLanguage();
-    
-    // 2. إضافة مستمعين للأحداث الأساسية
-    document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('main-content').style.display = 'none';
-    
-    // 3. اختبار زر القائمة للجوال
-    setTimeout(() => {
-        initMobileMenu();
-    }, 500);
-    
-    // 4. إضافة CSS إضافي إذا لزم الأمر
-    const extraStyles = document.createElement('style');
-    extraStyles.textContent = `
-        /* تحسينات للقائمة الجوالية */
-        @media (max-width: 992px) {
-            .sidebar.active {
-                transform: translateX(0);
-                right: 0;
-                box-shadow: 5px 0 25px rgba(0,0,0,0.3);
-            }
-            
-            .mobile-menu-toggle {
-                z-index: 1003;
-                animation: pulse 2s infinite;
-            }
-            
-            @keyframes pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.1); }
-                100% { transform: scale(1); }
-            }
-        }
-        
-        /* تحسينات عامة */
-        .alert {
-            animation: slideDown 0.3s ease-out;
-        }
-        
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    `;
-    document.head.appendChild(extraStyles);
-    
-    console.log('✅ تم تهيئة الصفحة بنجاح');
-});
-
-// ============================================
-// اختبار النظام
-// ============================================
-
-// دالة اختبار يمكن استدعاؤها من console
-window.testSystem = function() {
-    console.log('🧪 اختبار النظام:');
-    console.log('- المستخدم الحالي:', currentUser);
-    console.log('- عدد الأفراد:', familyData.length);
-    console.log('- عدد الإعلانات:', familyEvents.length);
-    console.log('- قائمة الانتظار:', syncQueue.length);
-    console.log('- البيانات مشفرة:', isDataEncrypted);
-    console.log('- السحابة مفعلة:', cloudSyncEnabled);
-    console.log('- اتصال الإنترنت:', !isOffline);
-    
-    // اختبار زر القائمة
-    const mobileToggle = document.getElementById('mobileMenuToggle');
-    if (mobileToggle) {
-        console.log('- زر القائمة موجود:', true);
-        mobileToggle.click();
-        setTimeout(() => {
-            console.log('- القائمة الجانبية:', document.getElementById('sidebar').classList.contains('active'));
-            mobileToggle.click();
-        }, 1000);
-    }
-    
-    // اختبار الإحصائيات
-    updateStatisticsImmediately();
-    
-    return '✅ تم اختبار النظام بنجاح';
-};
-
-console.log('🌟 نظام شجرة العائلة جاهز للاستخدام');
     </script>
 </body>
 </html>
