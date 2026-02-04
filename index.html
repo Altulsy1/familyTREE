@@ -6,9 +6,9 @@
     <title>شجرة عائلة محمد عبدالرحمن ( أبا )</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
-    a
+    
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstaatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -3332,6 +3332,8 @@
         let database;
         let cloudSyncEnabled = false;
         let isOffline = false;
+        let firebaseConnected = false; // اتصال Firebase الحقيقي (.info/connected)
+        let permissionErrorShown = false; // لمنع تكرار رسالة الصلاحيات
         let lastSyncTime = null;
         let syncQueue = [];
 
@@ -3752,27 +3754,61 @@
 
         function initializeFirebase() {
             try {
+                // تأكد أن مكتبة Firebase تم تحميلها
+                if (typeof firebase === 'undefined') {
+                    throw new Error('Firebase SDK غير محمّل. تحقق من اتصال الإنترنت أو من روابط firebasejs.');
+                }
+
                 // التحقق من عدم تهيئة Firebase مسبقاً
                 if (!firebase.apps.length) {
                     firebaseApp = firebase.initializeApp(firebaseConfig);
                 } else {
                     firebaseApp = firebase.app();
                 }
-                
+
                 database = firebase.database();
-                
+
                 // تفعيل المزامنة مع السحابة
                 enableCloudSync();
-                
-                // مراقبة حالة الاتصال
+
+                // مراقبة حالة الاتصال بالإنترنت
                 monitorConnection();
-                
+
+                // مراقبة الاتصال الحقيقي بـ Firebase
+                monitorFirebaseConnection();
+
+                // محاولة تسجيل دخول مجهول (يساعد إذا كانت قواعد قاعدة البيانات تتطلب auth)
+                try {
+                    if (firebase.auth) {
+                        const auth = firebase.auth();
+
+                        auth.onAuthStateChanged(() => {
+                            // بعد تثبيت حالة تسجيل الدخول، أعد محاولة التحميل/المزامنة
+                            if (database && !isOffline) {
+                                loadDataFromCloud();
+                                if (syncQueue.length > 0) {
+                                    processSyncQueue();
+                                }
+                            }
+                        });
+
+                        if (!auth.currentUser) {
+                            auth.signInAnonymously()
+                                .then(() => console.log('✅ Signed in anonymously'))
+                                .catch((err) => console.warn('⚠️ Anonymous auth failed:', err));
+                        }
+                    }
+                } catch (e) {
+                    console.warn('⚠️ Firebase Auth not available:', e);
+                }
+
                 console.log('✅ Firebase initialized successfully');
                 updateSyncStatus();
                 return true;
             } catch (error) {
                 console.error('❌ Firebase initialization failed:', error);
-                showWarning('تعذر الاتصال بالسحابة. سيتم استخدام التخزين المحلي فقط.');
+                showWarning('تعذر الاتصال بالسحابة. سيتم استخدام التخزين المحلي فقط.' + (error && error.message ? `
+${error.message}` : ''));
                 return false;
             }
         }
@@ -3860,6 +3896,32 @@
         }
 
         // ============================================
+        // أدوات مساعدة للسحابة
+        // ============================================
+
+        function isPermissionDenied(error) {
+            try {
+                const code = (error && error.code) ? String(error.code) : '';
+                const msg = (error && error.message) ? String(error.message).toLowerCase() : '';
+                return code === 'PERMISSION_DENIED' || msg.includes('permission_denied') || msg.includes('permission denied');
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function showPermissionHelpOnce(error, action) {
+            if (permissionErrorShown) return;
+            permissionErrorShown = true;
+
+            const details = (error && error.message) ? `\n\nتفاصيل: ${error.message}` : '';
+            showError(
+                `تعذر ${action || 'الوصول'} إلى السحابة بسبب صلاحيات قاعدة البيانات (Permission Denied).` +
+                `\n\nالحل: افتح Firebase Console > Realtime Database > Rules، ثم اسمح بالقراءة/الكتابة (أو فعّل تسجيل الدخول ثم اجعل القواعد auth != null).` +
+                details
+            );
+        }
+
+        // ============================================
         // تحميل البيانات من السحابة
         // ============================================
 
@@ -3944,6 +4006,13 @@
                 })
                 .catch((error) => {
                     console.error('Error loading from cloud:', error);
+
+                    // معالجة أخطاء الصلاحيات بشكل واضح
+                    if (isPermissionDenied(error)) {
+                        showPermissionHelpOnce(error, 'تحميل البيانات من');
+                        return;
+                    }
+
                     showWarning('تعذر تحميل البيانات من السحابة. سيتم استخدام البيانات المحلية.');
                 })
                 .finally(() => {
@@ -3956,7 +4025,7 @@
         // ============================================
 
         function saveDataToCloud() {
-            if (!database || !cloudSyncEnabled || isOffline) return Promise.resolve(false);
+            if (!database || !cloudSyncEnabled || isOffline || !firebaseConnected) return Promise.resolve(false);
             
             try {
                 const dataToUpload = familyData; // فقط البيانات نفسها
@@ -3978,6 +4047,13 @@
                     })
                     .catch((error) => {
                         console.error('❌ Error saving to cloud:', error);
+
+                        // معالجة أخطاء الصلاحيات بشكل واضح
+                        if (isPermissionDenied(error)) {
+                            showPermissionHelpOnce(error, 'حفظ البيانات على');
+                            return false;
+                        }
+
                         queueForSync();
                         return false;
                     });
@@ -4116,6 +4192,25 @@
             updateSyncStatus();
         }
 
+        // مراقبة الاتصال الحقيقي بـ Firebase (ليس فقط الإنترنت)
+        function monitorFirebaseConnection() {
+            if (!database) return;
+
+            try {
+                database.ref('.info/connected').on('value', (snapshot) => {
+                    firebaseConnected = snapshot.val() === true;
+                    updateSyncStatus();
+
+                    // عند عودة الاتصال بـ Firebase حاول مزامنة ما في القائمة
+                    if (firebaseConnected && !isOffline && syncQueue.length > 0) {
+                        processSyncQueue();
+                    }
+                });
+            } catch (error) {
+                console.warn('⚠️ Unable to monitor Firebase connection:', error);
+            }
+        }
+
         // ============================================
         // تحديث حالة المزامنة
         // ============================================
@@ -4138,18 +4233,26 @@
                 statusText = 'غير متصل - التخزين محلي فقط';
                 statusClass = 'error';
                 icon = 'fa-wifi-slash';
+            } else if (!firebaseConnected) {
+                statusText = 'متصل بالإنترنت - جاري الاتصال بالسحابة...';
+                statusClass = 'warning';
+                icon = 'fa-cloud';
+
+                if (syncQueue.length > 0) {
+                    statusText += ` (${syncQueue.length} في قائمة الانتظار)`;
+                }
             } else {
                 statusText = `مزامن مع السحابة ${lastSyncTime ? formatTime(lastSyncTime) : ''}`;
                 statusClass = 'success';
                 icon = 'fa-cloud-check';
-                
+
                 if (syncQueue.length > 0) {
                     statusText += ` (${syncQueue.length} في قائمة الانتظار)`;
                     statusClass = 'warning';
                     icon = 'fa-cloud-upload-alt';
                 }
             }
-            
+
             syncStatusElement.innerHTML = `
                 <i class="fas ${icon}"></i>
                 <span>${statusText}</span>
@@ -4280,8 +4383,12 @@
 
         function updateCloudManagerStatus() {
             if (document.getElementById('cloudStatus')) {
-                document.getElementById('cloudStatus').textContent = cloudSyncEnabled ? '✓ نشطة' : '✗ معطلة';
-                document.getElementById('cloudStatus').className = cloudSyncEnabled ? 'status-badge success' : 'status-badge error';
+                const cloudOk = cloudSyncEnabled && firebaseConnected && !isOffline;
+                const cloudText = !cloudSyncEnabled ? '✗ معطلة' : (cloudOk ? '✓ متصل' : '⚠ غير متصل');
+                const cloudClass = !cloudSyncEnabled ? 'status-badge error' : (cloudOk ? 'status-badge success' : 'status-badge warning');
+
+                document.getElementById('cloudStatus').textContent = cloudText;
+                document.getElementById('cloudStatus').className = cloudClass;
                 
                 document.getElementById('lastSyncTime').textContent = lastSyncTime ? lastSyncTime.toLocaleString('ar-EG') : 'لم تتم المزامنة بعد';
                 document.getElementById('pendingSync').textContent = syncQueue.length;
