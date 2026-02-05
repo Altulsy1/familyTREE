@@ -6,9 +6,9 @@
     <title>شجرة عائلة محمد عبدالرحمن ( أبا )</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
-    a
+    
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstaatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -3310,6 +3310,20 @@
         // ============================================
         
         let familyData = [];
+        
+        // ===== Performance Indexes (fast lookup) =====
+        let __indexesDirty = true;
+        let __personById = new Map();
+        let __childrenByParentId = new Map();
+        let __spouseById = new Map();
+        let __generationCache = new Map();
+        
+        // ===== Debounce timers =====
+        let __treeSearchTimer = null;
+        let __bookSearchTimer = null;
+        
+        // ===== Audit Log =====
+        let auditLog = [];
         let currentUser = null;
         let nextPersonId = 1;
         let treeZoom = 100;
@@ -3339,6 +3353,113 @@
         let familyEvents = [];
         let eventsEditing = false;
         let currentEventsFilter = 'all';
+
+        
+        // ============================================
+        // Helpers: Index builder + Safe getters
+        // ============================================
+        function rebuildIndexes(force = false) {
+            if (!force && !__indexesDirty) return;
+            __personById = new Map();
+            __childrenByParentId = new Map();
+            __spouseById = new Map();
+            __generationCache = new Map();
+
+            for (const p of familyData) {
+                if (!p || typeof p !== 'object') continue;
+                __personById.set(p.PersonID, p);
+            }
+            for (const p of familyData) {
+                if (!p || typeof p !== 'object') continue;
+                const addChild = (parentId) => {
+                    if (!parentId) return;
+                    if (!__childrenByParentId.has(parentId)) __childrenByParentId.set(parentId, []);
+                    __childrenByParentId.get(parentId).push(p);
+                };
+                addChild(p.FatherID);
+                addChild(p.MotherID);
+            }
+            // Build spouse map (supports one-way and two-way linking)
+            for (const p of familyData) {
+                if (!p || typeof p !== 'object') continue;
+                const sid = Number(p.SpouseID) || 0;
+                if (sid) {
+                    __spouseById.set(p.PersonID, sid);
+                    if (!__spouseById.has(sid)) __spouseById.set(sid, p.PersonID);
+                }
+            }
+            __indexesDirty = false;
+        }
+
+        function getPersonById(personId) {
+            rebuildIndexes();
+            return __personById.get(Number(personId)) || null;
+        }
+
+        function getChildrenOf(parentId) {
+            rebuildIndexes();
+            return __childrenByParentId.get(Number(parentId)) || [];
+        }
+
+        function getSpouseId(personId) {
+            rebuildIndexes();
+            return __spouseById.get(Number(personId)) || 0;
+        }
+
+        function debounce(fn, waitMs) {
+            let t = null;
+            return function (...args) {
+                clearTimeout(t);
+                t = setTimeout(() => fn.apply(this, args), waitMs);
+            };
+        }
+
+        // ============================================
+        // Audit Log (local) + optional cloud push
+        // ============================================
+        function initAuditLog() {
+            try {
+                const saved = localStorage.getItem('familyAuditLog');
+                auditLog = saved ? JSON.parse(saved) : [];
+                if (!Array.isArray(auditLog)) auditLog = [];
+            } catch (e) {
+                auditLog = [];
+            }
+        }
+
+        function saveAuditLogLocal() {
+            try {
+                localStorage.setItem('familyAuditLog', JSON.stringify(auditLog));
+            } catch (e) {
+                // ignore
+            }
+        }
+
+        function logAudit(action, entity, entityId, beforeObj, afterObj, meta = {}) {
+            const entry = {
+                id: `${Date.now()}_${Math.random().toString(16).slice(2)}`,
+                ts: new Date().toISOString(),
+                user: currentUser || 'unknown',
+                action,
+                entity,
+                entityId: entityId ?? null,
+                before: beforeObj ?? null,
+                after: afterObj ?? null,
+                meta
+            };
+            auditLog.unshift(entry);
+            // keep last 2000 records
+            if (auditLog.length > 2000) auditLog.length = 2000;
+            saveAuditLogLocal();
+
+            // Optional: push to cloud if enabled and available (best-effort)
+            try {
+                if (cloudSyncEnabled && database) {
+                    database.ref('auditLog').child(entry.id).set(entry);
+                }
+            } catch (e) { /* ignore */ }
+        }
+
 
         // تكوين Firebase - ضع معلومات مشروعك هنا
         const firebaseConfig = {
@@ -3646,7 +3767,7 @@
                 PersonID: 1,
                 FullName: "محمد عبدالرحمن ادم",
                 Gender: "ذكر",
-                PlaceOfBirth: "تلس",
+                PlaceOfBirth: "",
                 BirthDate: "",
                 DeathDate: "",
                 FatherID: 0,
@@ -3658,7 +3779,7 @@
                 PersonID: 2,
                 FullName: "عائشة ابكر محمد",
                 Gender: "انثى",
-                PlaceOfBirth: "تلس",
+                PlaceOfBirth: "",
                 BirthDate: "",
                 DeathDate: "",
                 FatherID: 0,
@@ -3856,7 +3977,23 @@
                 }
             });
             
-            return true;
+            
+            // مراقبة التغييرات في الإعلانات/المناسبات
+            database.ref('events').on('value', (snapshot) => {
+                if (!snapshot.exists()) return;
+                const cloudObj = snapshot.val() || {};
+                const list = Object.values(cloudObj).filter(x => x && typeof x === 'object' && x.id);
+                // تجنب تكرار الإدخالات
+                const byId = new Map();
+                list.forEach(ev => byId.set(ev.id, ev));
+                familyEvents = Array.from(byId.values());
+                // حفظ نسخة محلية وتحديث الواجهة إن كانت مفتوحة
+                try { localStorage.setItem('familyEvents', JSON.stringify(familyEvents)); } catch (e) {}
+                if (document.getElementById('familyEventsModal')?.classList.contains('active')) {
+                    loadEvents();
+                }
+            });
+return true;
         }
 
         // ============================================
@@ -5317,8 +5454,8 @@
             
             const eventId = document.getElementById('eventId').value;
             const isEdit = !!eventId;
-            
-            const eventData = {
+            const beforeEvent = isEdit ? JSON.parse(JSON.stringify(familyEvents.find(e => String(e.id) === String(eventId)) || null)) : null;
+const eventData = {
                 id: isEdit ? eventId : generateEventId(),
                 type: document.getElementById('eventType').value,
                 title: document.getElementById('eventTitle').value,
@@ -5363,6 +5500,19 @@
             try {
                 localStorage.setItem('familyEvents', JSON.stringify(familyEvents));
                 console.log('✅ Events saved locally');
+
+                // Cloud sync (best effort) - store by id under events/{id}
+                if (cloudSyncEnabled && database) {
+                    const updates = {};
+                    (familyEvents || []).forEach(ev => {
+                        if (!ev || !ev.id) return;
+                        updates[`events/${ev.id}`] = ev;
+                    });
+                    // Also keep a lightweight index timestamp
+                    updates['events_meta/_lastUpdated'] = { ts: new Date().toISOString(), by: currentUser || 'unknown' };
+                    database.ref().update(updates);
+                }
+
                 return true;
             } catch (error) {
                 console.error('❌ Error saving events:', error);
@@ -5638,8 +5788,11 @@
             
             // تحميل الإعلانات
             initEventsSystem();
-            
-            if (familyData.length > 0) {
+            // تحميل سجل التدقيق
+            initAuditLog();
+            __indexesDirty = true;
+            rebuildIndexes(true);
+if (familyData.length > 0) {
                 const maxId = Math.max(...familyData.map(p => p.PersonID));
                 nextPersonId = maxId + 1;
             } else {
@@ -5742,8 +5895,8 @@
             
             const personId = parseInt(document.getElementById('personId').value);
             const isEdit = !!personId;
-            
-            if (!isEdit) {
+            const beforePerson = isEdit ? JSON.parse(JSON.stringify(familyData.find(p => p.PersonID === personId) || null)) : null;
+if (!isEdit) {
                 const maxId = familyData.length > 0 ? Math.max(...familyData.map(p => p.PersonID)) : 0;
                 nextPersonId = maxId + 1;
             }
@@ -5760,6 +5913,19 @@
                 SpouseID: parseInt(document.getElementById('spouseId').value) || 0,
                 Notes: document.getElementById('notes').value
             };
+
+            // Track created/updated metadata
+            const nowIso = new Date().toISOString();
+            if (isEdit && beforePerson) {
+                personData.CreatedAt = beforePerson.CreatedAt || beforePerson.createdAt || nowIso;
+                personData.CreatedBy = beforePerson.CreatedBy || beforePerson.createdBy || beforePerson.UpdatedBy || beforePerson.updatedBy || currentUser;
+            } else {
+                personData.CreatedAt = nowIso;
+                personData.CreatedBy = currentUser;
+            }
+            personData.UpdatedAt = nowIso;
+            personData.UpdatedBy = currentUser;
+
             
             if (!validatePersonData(personData)) {
                 return;
@@ -5774,7 +5940,25 @@
                 familyData.push(personData);
                 nextPersonId++;
             }
-            
+            // Ensure reciprocal spouse link (best-effort)
+            if (personData.SpouseID && personData.SpouseID !== 0) {
+                const spouseIndex = familyData.findIndex(p => p.PersonID === personData.SpouseID);
+                if (spouseIndex !== -1) {
+                    const spouseObj = familyData[spouseIndex];
+                    if (Number(spouseObj.SpouseID) !== Number(personData.PersonID)) {
+                        spouseObj.SpouseID = Number(personData.PersonID);
+                        spouseObj.UpdatedAt = nowIso;
+                        spouseObj.UpdatedBy = currentUser;
+                    }
+                }
+            }
+
+            __indexesDirty = true;
+            rebuildIndexes(true);
+
+            // Audit
+            logAudit(isEdit ? 'UPDATE' : 'CREATE', 'person', personData.PersonID, beforePerson, personData);
+
             if (saveData()) {
                 loadDashboard();
                 closePersonForm();
@@ -5860,6 +6044,10 @@
             }
             
             familyData = familyData.filter(p => p.PersonID !== personId);
+            __indexesDirty = true;
+            rebuildIndexes(true);
+            logAudit('DELETE', 'person', personId, beforePerson, null);
+
             if (saveData()) {
                 loadDashboard();
                 showSuccess('تم حذف الفرد بنجاح');
@@ -6038,7 +6226,7 @@ const detailHTML = `
                     </div>
                     <div class="book-badge">
                         <span style="font-size: 20px;">🌳</span>
-                        <span>شاملة لكل أفراد العائلة</span>
+                        <span>نسخة شاملة لكل الأفراد</span>
                     </div>
                 </div>
             `;
@@ -6359,6 +6547,11 @@ function clearBookSearch() {
         }
 
         function searchFamilyBook() {
+            clearTimeout(__bookSearchTimer);
+            __bookSearchTimer = setTimeout(__doSearchFamilyBook, 180);
+        }
+
+        function __doSearchFamilyBook() {
             const input = document.getElementById('bookSearchInput');
             const q = input ? input.value : '';
             const nq = normalizeArabic(q);
@@ -6636,6 +6829,7 @@ function clearBookSearch() {
         }
 
         function renderTree() {
+            rebuildIndexes(true);
             const container = document.getElementById('treeContainer');
             if (familyData.length === 0) {
                 container.innerHTML = `
@@ -6730,18 +6924,11 @@ function clearBookSearch() {
         // ============================================
 
         function getSpouseById(personId) {
-            const person = familyData.find(p => p.PersonID === personId);
-            if (!person) return null;
-
-            // دعم الاتجاهين: (SpouseID على الشخص) أو (SpouseID على الطرف الآخر)
-            let spouse = null;
-            if (person.SpouseID && person.SpouseID !== 0) {
-                spouse = familyData.find(p => p.PersonID === person.SpouseID) || null;
-            }
-            if (!spouse) {
-                spouse = familyData.find(p => p.SpouseID === personId) || null;
-            }
-            return spouse;
+            rebuildIndexes();
+            const pid = Number(personId) || 0;
+            if (!pid) return null;
+            const sid = getSpouseId(pid);
+            return sid ? getPersonById(sid) : null;
         }
 
         function isOutsideFamily(personId, visited = new Set()) {
@@ -6796,6 +6983,7 @@ function clearBookSearch() {
         }
 
         function organizeByGeneration() {
+            rebuildIndexes();
             const generations = {};
             const sortedData = [...familyData].sort((a, b) => {
                 return currentSortOrder === 'asc' ? a.PersonID - b.PersonID : b.PersonID - a.PersonID;
@@ -6816,7 +7004,7 @@ function clearBookSearch() {
         }
 
         function findChildren(personId) {
-            return familyData.filter(p => p.FatherID === personId || p.MotherID === personId);
+            return getChildrenOf(personId);
         }
 
         function findSpouse(personId) {
@@ -7084,6 +7272,12 @@ function clearBookSearch() {
         // ============================================
 
         function searchInTree() {
+            // Debounced to avoid freezing on large trees
+            clearTimeout(__treeSearchTimer);
+            __treeSearchTimer = setTimeout(__doSearchInTree, 220);
+        }
+
+        function __doSearchInTree() {
             const searchTerm = document.getElementById('treeSearch').value.trim().toLowerCase();
             currentTreeSearch = searchTerm;
             
@@ -7605,6 +7799,7 @@ function clearBookSearch() {
         }
 
         function showStatistics() {
+            rebuildIndexes();
             const total = familyData.length;
             const males = familyData.filter(p => p.Gender === 'ذكر').length;
             const females = familyData.filter(p => p.Gender === 'انثى').length;
@@ -7612,19 +7807,97 @@ function clearBookSearch() {
             const married = familyData.filter(p => p.SpouseID !== 0).length;
             const alive = familyData.filter(p => !p.DeathDate || p.DeathDate === '').length;
             const deceased = total - alive;
-            
+
+            const report = buildDataQualityReport();
+
             alert(`
                 إحصائيات العائلة:
-                
+
                 إجمالي الأفراد: ${total}
-                عدد الذكور: ${males} (${((males/total)*100).toFixed(1)}%)
-                عدد الإناث: ${females} (${((females/total)*100).toFixed(1)}%)
+                عدد الذكور: ${males} (${total ? ((males/total)*100).toFixed(1) : '0.0'}%)
+                عدد الإناث: ${females} (${total ? ((females/total)*100).toFixed(1) : '0.0'}%)
                 عدد العائلات: ${families}
-                عدد المتزوجين: ${married} (${((married/total)*100).toFixed(1)}%)
+                عدد المتزوجين: ${married} (${total ? ((married/total)*100).toFixed(1) : '0.0'}%)
                 عدد غير المتزوجين: ${total - married}
                 عدد الأحياء: ${alive}
                 عدد المتوفين: ${deceased}
+
+                -----------------------------
+                تقرير جودة البيانات:
+                ${report}
             `);
+        }
+
+        function buildDataQualityReport() {
+            const lines = [];
+            const idSet = new Set(familyData.map(p => p.PersonID));
+
+            // 1) Missing/invalid parents (excluding roots)
+            const invalidParents = familyData.filter(p => p.PersonID !== 1 && (
+                (p.FatherID && !idSet.has(p.FatherID)) || (p.MotherID && !idSet.has(p.MotherID))
+            ));
+            if (invalidParents.length) {
+                lines.push(`- أفراد لديهم أب/أم غير موجودين: ${invalidParents.length}`);
+                invalidParents.slice(0, 8).forEach(p => lines.push(`  • ${p.FullName} (#${p.PersonID})`));
+                if (invalidParents.length > 8) lines.push(`  • ... +${invalidParents.length - 8}`);
+            } else {
+                lines.push(`- أب/أم غير موجودين: 0`);
+            }
+
+            // 2) Spouse mismatch
+            const spouseMismatch = familyData.filter(p => {
+                const sid = Number(p.SpouseID) || 0;
+                if (!sid) return false;
+                const spouse = getPersonById(sid);
+                if (!spouse) return true;
+                return Number(spouse.SpouseID) !== Number(p.PersonID);
+            });
+            lines.push(`- عدم تطابق رابط الزوج/الزوجة: ${spouseMismatch.length}`);
+
+            // 3) Missing BirthDate
+            const missingDob = familyData.filter(p => !p.BirthDate || String(p.BirthDate).trim() === '');
+            lines.push(`- بدون تاريخ ميلاد: ${missingDob.length}`);
+
+            // 4) Illogical dates (born after death)
+            const illogical = familyData.filter(p => p.BirthDate && p.DeathDate && (new Date(p.BirthDate) > new Date(p.DeathDate)));
+            lines.push(`- تواريخ غير منطقية (ميلاد بعد وفاة): ${illogical.length}`);
+
+            // 5) Possible duplicates (same normalized name + same parents)
+            const dupKey = (p) => `${normalizeArabic(p.FullName)}|${Number(p.FatherID)||0}|${Number(p.MotherID)||0}`;
+            const seen = new Map();
+            const dups = [];
+            familyData.forEach(p => {
+                const k = dupKey(p);
+                if (seen.has(k)) dups.push([seen.get(k), p]);
+                else seen.set(k, p);
+            });
+            lines.push(`- تكرارات محتملة: ${dups.length}`);
+
+            // 6) Lineage loops (ancestor to self) - via parent edges
+            const hasLoop = (startId) => {
+                const visiting = new Set();
+                const dfs = (id) => {
+                    if (!id) return false;
+                    if (visiting.has(id)) return true;
+                    visiting.add(id);
+                    const person = getPersonById(id);
+                    if (!person) { visiting.delete(id); return false; }
+                    const f = Number(person.FatherID)||0;
+                    const m = Number(person.MotherID)||0;
+                    const res = (f && dfs(f)) || (m && dfs(m));
+                    visiting.delete(id);
+                    return res;
+                };
+                return dfs(startId);
+            };
+            let loopCount = 0;
+            for (const p of familyData) {
+                if (hasLoop(p.PersonID)) loopCount++;
+                if (loopCount > 50) break;
+            }
+            lines.push(`- حلقات نسب محتملة (Loops): ${loopCount}${loopCount > 50 ? '+' : ''}`);
+
+            return lines.join('\n');
         }
 
         function showBackup() {
