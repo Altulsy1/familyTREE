@@ -19,7 +19,7 @@
     <style>
         :root { 
             --male-color: #2196F3; 
-            --female-color: #E91E63; 
+            --female-color: #eb5d8c; 
             --highlight: #FFC107; 
             --header-bg: #2E7D32;
             --login-bg: #1B5E20;
@@ -33,7 +33,7 @@
             --generation-1: #1B5E20;
             --generation-2: #2E7D32;
             --generation-3: #43A047;
-            --generation-4: #66BB6A;
+            --generation-4: #7d84ad;
             --generation-5: #81C784;
             --generation-1-bg: #E8F5E9;
             --generation-2-bg: #E3F2FD;
@@ -2273,6 +2273,18 @@
         /* =========================
            أنماط إضافية لكتاب العائلة المحسن
            ========================= */
+        /*
+           تقييد عرض كتاب العائلة للمضيف: أسماء فقط
+           */
+        body.role-host .book-card-header,
+        body.role-host .book-card-details{
+            display: none !important;
+        }
+        body.role-host .book-card-name{
+            margin-bottom: 0 !important;
+            text-align: center;
+        }
+
         .book-card-header {
             display: flex;
             justify-content: space-between;
@@ -2372,7 +2384,35 @@
                 display: none !important;
             }
         }
-</style>
+
+        /* === قيود عرض المضيف (أسماء فقط) + إخفاء مواليد الأحياء === */
+        body.role-host #personsTable th:not(:nth-child(2)),
+        body.role-host #personsTable td:not(:nth-child(2)) {
+            display: none !important;
+        }
+        body.role-host #personsTable th:nth-child(2),
+        body.role-host #personsTable td:nth-child(2) {
+            display: table-cell !important;
+        }
+
+        .tree-node.host-only {
+            background: #ffffff;
+            border: 2px solid #cfd8dc;
+        }
+        .tree-node.host-only .node-header,
+        .tree-node.host-only .node-details,
+        .tree-node.host-only .node-place,
+        .tree-node.host-only .generation-badge,
+        .tree-node.host-only .outsider-badge {
+            display: none !important;
+        }
+        .tree-node.host-only .node-name {
+            font-size: 14px;
+            font-weight: 700;
+            padding: 8px 6px;
+        }
+
+    </style>
 </head>
 <body>
     <button class="mobile-menu-toggle" id="mobileMenuToggle">
@@ -5320,10 +5360,30 @@ return true;
             return permissions.includes(action);
         }
 
+
+        function isHostUser() {
+            return !!(currentUser && users[currentUser]?.role === 'host');
+        }
+
+        function isLivingPerson(person) {
+            return !(person?.DeathDate && String(person.DeathDate).trim() !== '');
+        }
+
+        // إخفاء تاريخ الميلاد للأحياء (مع إبقاءه محفوظاً في البيانات)
+        function safeBirthDateForDisplay(person) {
+            if (!person?.BirthDate) return '';
+            if (isLivingPerson(person)) return ''; // مخفي للأحياء
+            return formatDate(person.BirthDate) || '';
+        }
+
+
         function updateUIByPermissions() {
             const userRole = currentUser ? users[currentUser]?.role : null;
             
-            document.querySelectorAll('[data-permission]').forEach(element => {
+            
+            // إضافة وسم للـ CSS حسب الدور
+            document.body.classList.toggle('role-host', userRole === 'host');
+document.querySelectorAll('[data-permission]').forEach(element => {
                 const requiredPermission = element.getAttribute('data-permission');
                 const hasPermission = checkPermission(requiredPermission);
                 element.style.display = hasPermission ? '' : 'none';
@@ -6065,7 +6125,24 @@ if (!isEdit) {
             currentDetailPersonId = personId;
             document.getElementById('detailTitle').textContent = `${translations[currentLanguage].personInfo}: ${person.FullName}`;
             
-            const father = familyData.find(p => p.PersonID === person.FatherID);
+            
+
+            // قيود المضيف: عرض الاسم فقط دون أي بيانات أخرى
+            if (isHostUser()) {
+                const hostHTML = `
+                    <div class="person-header">
+                        <h2 class="person-name">${person.FullName}</h2>
+                    </div>
+                    <div class="detail-section" style="margin-top: 10px;">
+                        <p style="color:#777; text-align:center;">عرض المضيف يقتصر على الأسماء فقط.</p>
+                    </div>
+                `;
+                document.getElementById('personDetailContent').innerHTML = hostHTML;
+                document.getElementById('personDetailModal').classList.add('active');
+                return;
+            }
+
+const father = familyData.find(p => p.PersonID === person.FatherID);
             const mother = familyData.find(p => p.PersonID === person.MotherID);
             const spouse = familyData.find(p => p.PersonID === person.SpouseID);
             const children = familyData.filter(p => p.FatherID === personId || p.MotherID === personId);
@@ -6097,7 +6174,7 @@ const detailHTML = `
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">تاريخ الميلاد:</span>
-                            <span class="detail-value">${formatDate(person.BirthDate) || 'غير محدد'}</span>
+                            <span class="detail-value">${safeBirthDateForDisplay(person) || (person.BirthDate ? 'مخفي' : 'غير محدد')}</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">تاريخ الوفاة:</span>
@@ -6327,7 +6404,7 @@ const detailHTML = `
                                        style="color: ${person.Gender === 'ذكر' ? '#2196F3' : '#E91E63'}; text-decoration: none;"
                                        onclick="scrollToGenerationInBook(${person.PersonID})">
                                         <i class="fas fa-${person.Gender === 'ذكر' ? 'male' : 'female'}"></i>
-                                        ${person.FullName} (رقم: ${person.PersonID})
+                                        ${person.FullName}${isHostUser() ? '' : ' (رقم: ' + person.PersonID + ')'}
                                     </a>
                                 </div>
                             `).join('')}
@@ -6364,10 +6441,10 @@ const detailHTML = `
                     <h3 class="book-card-name">${person.FullName}</h3>
                     
                     <div class="book-card-details">
-                        ${person.BirthDate ? `
+                        ${safeBirthDateForDisplay(person) ? `
                             <div class="book-card-detail">
                                 <i class="fas fa-star-and-crescent"></i>
-                                <span>المولد: ${formatDateDisplay(person.BirthDate)} ${age ? `(${age} سنة)` : ''}</span>
+                                <span>المولد: ${safeBirthDateForDisplay(person)} ${age ? `(${age} سنة)` : ''}</span>
                             </div>
                         ` : ''}
                         
@@ -7021,7 +7098,19 @@ function clearBookSearch() {
             
             const nodeId = `tree-node-${person.PersonID}`;
             
-            return `
+            
+
+            // قيود المضيف: عرض الاسم فقط
+            if (isHostUser()) {
+                return `
+                    <div class="tree-node host-only" 
+                         id="${nodeId}" onclick="onTreeNodeClick(event, ${person.PersonID})" data-person-id="${person.PersonID}">
+                        <div class="node-name" id="node-name-${person.PersonID}">${person.FullName}</div>
+                    </div>
+                `;
+            }
+
+return `
                 <div class="tree-node ${person.Gender === 'ذكر' ? 'male' : 'female'} ${isMarried} ${genClass} ${outsiderClass}" 
                      id="${nodeId}" onclick="onTreeNodeClick(event, ${person.PersonID})" data-person-id="${person.PersonID}">
                     ${outsiderBadge}
@@ -7034,7 +7123,7 @@ function clearBookSearch() {
                     </div>
                     <div class="node-name" id="node-name-${person.PersonID}">${person.FullName}</div>
                     <div class="node-details">
-                        ${person.BirthDate ? `<div>👶 مولد: ${formatDate(person.BirthDate)}</div>` : ''}
+                        ${(person.BirthDate && person.DeathDate) ? `<div>👶 مولد: ${formatDate(person.BirthDate)}</div>` : ''}
                         ${person.DeathDate ? `<div>☪️ وفاة: ${formatDate(person.DeathDate)}</div>` : ''}
                     </div>
                     ${person.PlaceOfBirth ? `<div class="node-place"><i class="fas fa-map-marker-alt"></i> ${person.PlaceOfBirth}</div>` : ''}
