@@ -1,3 +1,5 @@
+[file name]: index_fixed2.html
+[file content begin]
 <!DOCTYPE html>
 
 <html dir="rtl" lang="ar">
@@ -1452,59 +1454,6 @@
             font-size: 20px;
         }
         
-        @media (max-width: 992px) {
-            .mobile-menu-toggle {
-                display: flex;
-            }
-        }
-        
-        /* تحسينات لعرض الموبايل */
-        .mobile-optimized .tree-node {
-            width: 120px;
-            padding: 8px;
-            margin: 3px;
-        }
-        
-        .mobile-optimized .tree-node-container {
-            min-width: 120px;
-        }
-        
-        .mobile-optimized .tree-level {
-            gap: 8px;
-            padding: 8px;
-        }
-        
-        .mobile-optimized .node-name {
-            font-size: 13px;
-            height: 2.4em;
-        }
-        
-        .mobile-optimized .node-details {
-            font-size: 10px;
-        }
-        
-        .mobile-optimized .generation-label {
-            padding: 6px 15px;
-            font-size: 13px;
-        }
-        
-        /* تنسيقات محسنة لجدول الموبايل */
-        @media (max-width: 768px) {
-            .table-responsive {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            .data-table {
-                min-width: 600px;
-            }
-        }
-        
-        /* تحسين أداء التمرير على الموبايل */
-        .tree-content, .form-body, .backup-list {
-            -webkit-overflow-scrolling: touch;
-        }
-    
         /* =========================
            تحسينات الهوية + الخطوط + الخلفية
            ========================= */
@@ -1891,130 +1840,984 @@
         .event-type-تذكير { background: linear-gradient(135deg, #009688 0%, #00695C 100%); }
         .event-type-أخرى { background: linear-gradient(135deg, #607D8B 0%, #37474F 100%); }
         .event-date {
+            font-size: 14px;
+        }
         .event-body {
+            padding: 15px;
+        }
         .event-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #1B5E20;
+        }
         .event-description {
+            color: #555;
             line-height: 1.6;
             max-height: 100px;
+            overflow: hidden;
+        }
         .event-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+        }
         .event-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             color: #666;
+        }
         .event-detail i {
             width: 16px;
+            color: #4CAF50;
+        }
         .event-status {
+            position: absolute;
+            top: 15px;
             left: 10px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
         .status-نشط { background: #E8F5E9; color: #2E7D32; }
         .status-منتهي { background: #F5F5F5; color: #757575; }
         .status-ملغى { background: #FFEBEE; color: #C62828; }
         .status-مؤجل { background: #FFF3E0; color: #EF6C00; }
         .event-footer {
+            padding: 12px 15px;
             border-top: 1px solid #e8f5e9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
         .event-organizer {
+            font-size: 14px;
+            color: #666;
+        }
         .event-action-btn {
             width: 32px;
             height: 32px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
         .event-action-btn.edit { 
+            background: #FF9800; 
+            color: white; 
+        }
         .event-action-btn.delete { 
             background: #F44336; 
+            color: white; 
+        }
         .event-action-btn.view { 
             background: #2196F3; 
+            color: white; 
+        }
         .event-action-btn:hover {
             transform: scale(1.1);
+        }
         .upcoming-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
             background: #FFC107;
             color: #212121;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
             animation: pulse 2s infinite;
+        }
         /* تحديث الأنماط للشاشات الصغيرة */
+        @media (max-width: 992px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            .sidebar {
                 transform: translateX(100%);
                 width: 280px;
                 right: -280px;
+            }
             .sidebar.active {
                 transform: translateX(0);
+            }
+            .main-content-area {
                 margin-right: 0;
+                width: 100%;
+            }
+            .logo h1 {
                 font-size: 1.1rem;
+            }
             .logout-btn span {
+                display: none;
+            }
+        }
+        
+        /* تحسينات لعرض الموبايل */
+        .mobile-optimized .tree-node {
+            width: 120px;
+            padding: 8px;
+            margin: 3px;
+        }
+        
+        .mobile-optimized .tree-node-container {
+            min-width: 120px;
+        }
+        
+        .mobile-optimized .tree-level {
+            gap: 8px;
+            padding: 8px;
+        }
+        
+        .mobile-optimized .node-name {
+            font-size: 13px;
+            height: 2.4em;
+        }
+        
+        .mobile-optimized .node-details {
+            font-size: 10px;
+        }
+        
+        .mobile-optimized .generation-label {
+            padding: 6px 15px;
+            font-size: 13px;
+        }
+        
+        /* ============================================
+           تحسينات عرض الموبايل - شاملة
+           ============================================ */
+
+        @media (max-width: 768px) {
+            /* شريط العنوان العلوي */
+            .top-bar {
+                padding: 12px 15px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .logo h1 {
+                font-size: 1rem;
+            }
+            
+            .user-info {
+                gap: 8px;
+                font-size: 0.9rem;
+            }
+            
+            .logout-btn span,
+            .language-toggle span {
+                display: none;
+            }
+            
+            .logout-btn,
+            .language-toggle {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+            
+            /* إحصائيات */
+            .stats-cards {
                 grid-template-columns: repeat(2, 1fr);
-                width: 140px;
-                padding: 10px;
-                margin: 0 10px 10px;
-                padding: 10px;
-                border-radius: 0;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                transform: translateY(-100%);
+                gap: 10px;
+            }
+            
+            .stat-card {
+                padding: 15px;
+            }
+            
+            .stat-info h3 {
+                font-size: 1.2rem;
+            }
+            
+            /* القائمة الجانبية */
+            .sidebar {
+                width: 280px;
+                transform: translateX(100%);
                 transition: transform 0.3s ease;
-            .tree-filter.active {
-                padding: 5px 8px;
-                margin-left: 5px;
-            .data-table th, .data-table td {
+                right: 0;
+                top: 60px;
+                height: calc(100vh - 60px);
+                z-index: 2000;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content-area {
+                margin-right: 0;
+                width: 100%;
+                padding: 15px;
+            }
+            
+            /* أزرار التحكم */
+            .action-buttons {
+                gap: 6px;
+            }
+            
+            .btn {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+            
+            .btn i {
+                margin-right: 4px;
+            }
+            
+            .btn span {
+                display: none;
+            }
+            
+            /* الجداول */
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .data-table {
+                min-width: 600px;
+                font-size: 0.85rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px 6px;
+            }
+            
+            /* النماذج */
+            .form-container {
+                width: 95%;
+                max-width: 95%;
+                margin: 10px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            /* شجرة العائلة */
+            .tree-view {
+                padding: 0;
+            }
+            
+            .tree-header {
+                padding: 12px 15px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .tree-header h2 {
+                font-size: 1.1rem;
+                margin-bottom: 8px;
+            }
+            
+            .tree-toolbar {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .tree-controls {
+                gap: 6px;
+            }
+            
+            .tree-zoom {
+                padding: 4px 8px;
+                font-size: 0.85rem;
+            }
+            
+            .tree-filter {
+                padding: 10px;
+                margin: 10px;
+                flex-wrap: wrap;
+            }
+            
+            .tree-filter input {
+                min-width: 100%;
+                margin-bottom: 8px;
+            }
+            
+            .tree-content {
+                padding: 10px;
+            }
+            
+            /* بطاقات كتاب العائلة */
+            .book-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .book-card {
+                padding: 12px;
+            }
+            
+            .book-card .name {
+                font-size: 1.1rem;
+            }
+            
+            /* الأحداث */
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .event-card {
+                margin-bottom: 15px;
+            }
+            
+            /* بطاقات الأفراد في الشجرة - تحسين خاص */
+            .tree-node-container {
+                min-width: 130px;
+                margin: 3px;
+            }
+            
+            .tree-node {
+                width: 130px;
+                padding: 10px 8px;
+                margin: 3px;
+            }
+            
+            .node-name {
+                font-size: 0.95rem;
+                height: 2.2em;
+                margin-bottom: 6px;
+            }
+            
+            .node-details {
+                font-size: 0.8rem;
+                max-height: 40px;
+            }
+            
+            .node-place {
+                font-size: 0.75rem;
+            }
+            
+            .tree-level {
+                gap: 8px;
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .generation-label {
+                padding: 6px 15px;
+                font-size: 0.9rem;
+                position: relative;
+                top: 0;
+                margin-bottom: 10px;
+                align-self: flex-start;
+            }
+            
+            /* وصلات الشجرة */
+            .tree-connector {
+                display: none; /* إخفاء الوصلات المعقدة على الموبايل */
+            }
+            
+            .married-couple::before {
+                display: none; /* إخفاء رمز الزواج على الموبايل */
+            }
+            
+            /* زر عرض الشجرة */
+            .tree-view-btn {
+                width: 50px;
+                height: 50px;
                 bottom: 15px;
                 left: 15px;
+                font-size: 20px;
+            }
+            
+            /* زر القائمة للجوال */
+            .mobile-menu-toggle {
+                display: flex;
+                position: fixed;
+                top: 15px;
+                right: 15px;
+                background: var(--button-primary);
+                color: white;
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                align-items: center;
+                justify-content: center;
+                z-index: 1002;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                border: none;
+                font-size: 20px;
+            }
+            
+            /* ============================================
+               تحسينات خاصة لبطاقات الأفراد في الشجرة للموبايل
+               ============================================ */
+            .tree-node {
+                transform: scale(0.95);
+                transition: transform 0.2s ease;
+            }
+            
+            .tree-node:active {
+                transform: scale(0.9);
+            }
+            
+            .tree-node:hover {
+                transform: scale(0.95);
+            }
+            
+            /* تحسين النصوص للشاشات الصغيرة */
+            .tree-node .node-name {
+                font-size: 0.9rem;
+                line-height: 1.3;
+                height: auto;
+                min-height: 2.4em;
+                overflow: visible;
+                display: block;
+            }
+            
+            .tree-node .node-details {
+                display: none; /* إخفاء التفاصيل على الموبايل لتوفير المساحة */
+            }
+            
+            .tree-node .node-place {
+                font-size: 0.7rem;
+                margin-top: 2px;
+            }
+            
+            .tree-node .node-id {
+                font-size: 0.7rem;
+                padding: 1px 4px;
+            }
+            
+            /* تحسين بطاقات الجيل */
+            .generation-badge {
+                font-size: 0.7rem;
+                padding: 1px 4px;
+                top: 2px;
+                left: 2px;
+            }
+            
+            /* تحسين حجم الشجرة على الموبايل */
+            .tree-wrapper {
+                padding: 5px;
+            }
+            
+            .tree-generation {
+                margin-bottom: 20px;
+            }
+            
+            /* تحسين شريط البحث في الشجرة */
+            .tree-filter {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                margin: 5px;
+                padding: 8px 10px;
+            }
+            
+            .tree-filter input {
+                font-size: 0.9rem;
+                padding: 8px 10px;
+            }
+            
+            .tree-filter button {
+                padding: 8px 10px;
+                font-size: 0.8rem;
+            }
+            
+            /* تحسين شريط الأدوات في الشجرة */
+            .tree-header {
+                padding: 10px;
+            }
+            
+            .tree-toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .tree-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            /* ============================================
+               تحسينات إضافية للموبايل
+               ============================================ */
+            .form-modal {
+                padding: 10px;
+            }
+            
+            .form-body {
+                padding: 15px;
+                max-height: 80vh;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .form-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            /* تحسين أزرار الإجراءات في الجداول */
+            .table-actions {
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            .action-btn {
+                width: 35px;
+                height: 35px;
+            }
+            
+            /* تحسين بطاقات الإحصائيات */
+            .stat-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .stat-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            
+            /* تحسين التنبيهات */
+            .alert {
+                padding: 12px;
+                font-size: 0.9rem;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            /* تحسين كتاب العائلة */
+            .book-page {
+                padding: 20px;
+            }
+            
+            .book-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .book-search {
+                width: 100%;
+            }
+            
+            .book-search input {
+                width: 100%;
+            }
+            
+            /* تحسين نافذة الإعلانات */
+            #eventsControlPanel {
+                margin-bottom: 15px;
+            }
+            
+            .event-details {
+                flex-direction: column;
+            }
+        }
+        
         @media (max-width: 480px) {
+            /* تحسينات إضافية للشاشات الصغيرة جداً */
+            .stats-cards {
                 grid-template-columns: 1fr;
-                width: 130px;
-                min-width: 130px;
+            }
+            
+            .tree-node {
+                width: 120px;
+                min-width: 120px;
                 padding: 7px 12px;
+            }
+            
+            .tree-node-container {
+                min-width: 120px;
+            }
+            
+            .book-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .logo h1 {
                 font-size: 1rem;
+            }
+            
+            .tree-header h2 {
                 font-size: 1.1rem;
+            }
+        }
+        
         /* شاشة تحميل لتصدير الصور */
         .export-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
             z-index: 3000;
             font-size: 1rem;
+        }
+        
         .export-loading.active {
+            display: flex;
+        }
+        
         .export-loading i {
+            font-size: 3rem;
+            margin-bottom: 20px;
             animation: spin 1s linear infinite;
+        }
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        
         /* أنماط صفحة الفرد التفصيلية */
         .person-detail-container {
+            padding: 20px;
+        }
+        
         .person-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
         .person-avatar {
             width: 100px;
             height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
             margin: 0 auto 15px;
+        }
+        
         .person-name {
+            font-size: 1.8rem;
+            color: #1B5E20;
+            margin-bottom: 8px;
+        }
+        
         .person-id {
+            color: #7cb342;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        
         .detail-sections {
+            display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
         .detail-section {
+            background: #f8faf8;
+            padding: 20px;
+            border-radius: 12px;
             border-right: 4px solid var(--button-primary);
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
         .section-title {
+            font-size: 1.2rem;
+            color: #2E7D32;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
         .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e8f5e9;
+        }
+        
         .detail-label {
+            font-weight: 600;
             color: #388e3c;
+        }
+        
         .detail-value {
+            color: #555;
+            text-align: left;
+        }
+        
         /* نافذة إدارة السحابة */
         .status-card {
+            background: #f8faf8;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e8f5e9;
+        }
+        
         .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e8f5e9;
+        }
+        
         .status-item:last-child {
             margin-bottom: 0;
             padding-bottom: 0;
+            border-bottom: none;
+        }
+        
         .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        
         .status-badge.success {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        
         .status-badge.warning {
+            background: #FFF3E0;
+            color: #EF6C00;
+        }
+        
         .status-badge.error {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+        
         .backup-list {
             max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #e8f5e9;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
         .backup-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #e8f5e9;
+            transition: all 0.3s;
+        }
+        
         .backup-item:hover {
+            background: #f8faf8;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
         .backup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
         .backup-user {
+            font-size: 0.85rem;
+            color: #7cb342;
+        }
+        
         .backup-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        
         .backup-stats span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
         .backup-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
         .btn-sm {
+            padding: 4px 10px;
+            font-size: 0.8rem;
+        }
+        
         /* زر العودة السريع */
         .quick-back-btn {
+            position: fixed;
+            top: 15px;
             left: 15px;
             background: rgba(255,255,255,0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             z-index: 1001;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
         .quick-back-btn:hover {
             transform: scale(1.1);
+        }
+        
         /* زر القائمة للجوال */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: var(--button-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            align-items: center;
+            justify-content: center;
+            z-index: 1002;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-size: 20px;
+        }
+        
+        /* ============================================
+           تحسينات إضافية للواجهة
+           ============================================ */
+        
+        /* تحسين أزرار الجداول على الموبايل */
+        @media (max-width: 768px) {
+            .data-table .btn-sm {
+                padding: 4px 8px;
+                font-size: 0.75rem;
+                min-width: 60px;
+            }
+            
+            .data-table .btn-sm i {
+                margin-right: 3px;
+            }
+        }
+        
+        /* تحسين التمرير على الأجهزة المحمولة */
+        .tree-content, .form-body, .backup-list {
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+        
+        /* تحسين ظهور العناصر عند التمرير */
+        .tree-node, .book-card, .event-card {
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* تحسين العناوين على الموبايل */
+        @media (max-width: 768px) {
+            .panel-header h2 {
+                font-size: 1.1rem;
+            }
+            
+            .book-generation-title {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* تحسين أشكال بطاقات الأفراد في الشجرة للموبايل */
+        @media (max-width: 768px) {
+            .tree-node {
+                position: relative;
+            }
+            
+            .tree-node::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80%;
+                height: 3px;
+                background: linear-gradient(90deg, transparent, var(--male-color), transparent);
+                opacity: 0.5;
+                border-radius: 3px;
+            }
+            
+            .tree-node.female::after {
+                background: linear-gradient(90deg, transparent, var(--female-color), transparent);
+            }
+            
+            /* تأثير اللمس على الموبايل */
+            .tree-node:active {
+                background: rgba(76, 175, 80, 0.1);
+            }
+        }
+        
+        /* تحسين حجم الخطوط للشاشات الصغيرة */
+        @media (max-width: 480px) {
+            :root {
+                font-size: 14px;
+            }
+            
+            .tree-node .node-name {
+                font-size: 0.85rem;
+            }
+            
+            .generation-label {
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* تحسين الفجوات والمساحات */
+        @media (max-width: 768px) {
+            .main-content-area {
+                padding: 10px;
+            }
+            
+            .control-panel {
+                padding: 15px;
+            }
+            
+            .tree-wrapper {
+                padding: 5px;
+            }
+        }
 </style>
 </head>
 <body>
@@ -6878,14 +7681,124 @@ updateUIByPermissions();
         }
 
         function isOutsideFamily(personId) {
-            // دالة للتحقق إذا كان الشخص خارج العائلة
-            return false; // يجب تعديلها حسب منطق التطبيق
+            // تحديد هل الشخص "من خارج العائلة" (غالباً زوج/زوجة من خارج خط النسب)
+            // المنطق:
+            // - نحدد جذر/جذور خط الدم (الأفراد الذين لا يملكون أب/أم مسجلين أو غير موجودين)
+            // - نختار الجذر الأكثر امتداداً (أكبر عدد من الأحفاد) كخط أساسي
+            // - نحسب مجموعة خط الدم (جميع المنحدرين من هذا الجذر عبر الأب/الأم)
+            // - نعتبر الشخص "خارج العائلة" إذا كان زوج/زوجة لشخص داخل خط الدم بينما هو نفسه خارج خط الدم
+            rebuildIndexes();
+            const pid = Number(personId) || 0;
+            if (!pid) return false;
+
+            // كاش داخلي
+            if (!window.__bloodlineCache) window.__bloodlineCache = { rootId: 0, set: null, dirty: true };
+            if (__indexesDirty) window.__bloodlineCache.dirty = true;
+
+            const computeBloodline = () => {
+                const idMap = __personById || new Map();
+                const childrenMap = __childrenByParentId || new Map();
+
+                // الجذور: من لا يملك أب/أم أو أب/أم غير موجودين
+                const roots = [];
+                for (const p of familyData) {
+                    if (!p) continue;
+                    const fid = Number(p.FatherID) || 0;
+                    const mid = Number(p.MotherID) || 0;
+                    const fatherMissing = !fid || !idMap.has(fid);
+                    const motherMissing = !mid || !idMap.has(mid);
+                    if (fatherMissing && motherMissing) roots.push(p.PersonID);
+                }
+                if (roots.length === 0) return { rootId: 0, set: new Set() };
+
+                // احسب حجم نسل كل جذر واختَر الأكبر
+                const descCount = (rootId) => {
+                    const seen = new Set();
+                    const stack = [rootId];
+                    while (stack.length) {
+                        const cur = stack.pop();
+                        if (seen.has(cur)) continue;
+                        seen.add(cur);
+                        const kids = childrenMap.get(cur) || [];
+                        for (const ch of kids) stack.push(Number(ch.PersonID) || 0);
+                    }
+                    return seen.size;
+                };
+                let bestRoot = roots[0];
+                let bestSize = -1;
+                for (const r of roots) {
+                    const size = descCount(r);
+                    if (size > bestSize) { bestSize = size; bestRoot = r; }
+                }
+
+                // مجموعة خط الدم = الجذر + كل نسله
+                const blood = new Set();
+                const st = [bestRoot];
+                while (st.length) {
+                    const cur = st.pop();
+                    if (blood.has(cur)) continue;
+                    blood.add(cur);
+                    const kids = childrenMap.get(cur) || [];
+                    for (const ch of kids) st.push(Number(ch.PersonID) || 0);
+                }
+                return { rootId: bestRoot, set: blood };
+            };
+
+            if (!window.__bloodlineCache.set || window.__bloodlineCache.dirty) {
+                window.__bloodlineCache = { ...computeBloodline(), dirty: false };
+            }
+
+            const spouseId = getSpouseId(pid);
+            if (!spouseId) return false;
+
+            const blood = window.__bloodlineCache.set || new Set();
+            const spouseInBlood = blood.has(Number(spouseId) || 0);
+            const selfInBlood = blood.has(pid);
+
+            return spouseInBlood && !selfInBlood;
         }
 
         function calculateGeneration(personId) {
-            // دالة لحساب الجيل
-            // يجب تنفيذها حسب منطق التطبيق
-            return 1;
+            // حساب الجيل اعتماداً على الأب/الأم (الجيل 1 = الجذور)
+            rebuildIndexes();
+            const pid = Number(personId) || 0;
+            if (!pid) return 1;
+
+            if (__generationCache && __generationCache.has(pid)) return __generationCache.get(pid);
+
+            const visiting = new Set();
+            const dfs = (id) => {
+                const nid = Number(id) || 0;
+                if (!nid) return 1;
+                if (__generationCache && __generationCache.has(nid)) return __generationCache.get(nid);
+                if (visiting.has(nid)) return 1; // كسر الحلقات
+
+                visiting.add(nid);
+                const p = getPersonById(nid);
+                if (!p) { visiting.delete(nid); return 1; }
+
+                const fid = Number(p.FatherID) || 0;
+                const mid = Number(p.MotherID) || 0;
+                const father = fid ? getPersonById(fid) : null;
+                const mother = mid ? getPersonById(mid) : null;
+
+                // إذا لا يوجد أب/أم معروفين (أو غير موجودين في البيانات) => جيل 1
+                if (!father && !mother) {
+                    visiting.delete(nid);
+                    if (__generationCache) __generationCache.set(nid, 1);
+                    return 1;
+                }
+
+                const gf = father ? dfs(fid) : 0;
+                const gm = mother ? dfs(mid) : 0;
+                const gen = Math.max(gf, gm, 0) + 1;
+
+                visiting.delete(nid);
+                if (__generationCache) __generationCache.set(nid, gen);
+                return gen;
+            };
+
+            return dfs(pid);
         }
 
         function organizeByGeneration() {
@@ -6973,7 +7886,7 @@ updateUIByPermissions();
         }
 
         function showSuccess(message) {
-            // دالة لعرض رسالة نجاح
+             // دالة لعرض رسالة نجاح
             const alert = document.getElementById('successAlert');
             const messageEl = document.getElementById('successMessage');
             if (messageEl) messageEl.textContent = message;
@@ -7136,19 +8049,29 @@ updateUIByPermissions();
         }
 
         function searchInTree() {
-            // دالة للبحث في الشجرة
-            const searchTerm = document.getElementById('treeSearch').value.toLowerCase();
-            currentTreeSearch = searchTerm;
-            renderTree();
+            // بحث فوري في الشجرة بدون إعادة رسم (لمنع مشاكل العرض)
+            clearTimeout(__treeSearchTimer);
+            __treeSearchTimer = setTimeout(() => {
+                if (typeof __doSearchInTree === 'function') {
+                    __doSearchInTree();
+                } else {
+                    // fallback: إعادة الرسم مع حفظ النص
+                    currentTreeSearch = (document.getElementById('treeSearch')?.value || '').toLowerCase();
+                    renderTree();
+                }
+            }, 150);
         }
 
         function clearTreeSearch() {
-            // دالة لمسح البحث في الشجرة
-            document.getElementById('treeSearch').value = '';
+            // مسح البحث بدون إعادة رسم (إعادة الرسم عند الحاجة فقط)
+            const inp = document.getElementById('treeSearch');
+            if (inp) inp.value = '';
             currentTreeSearch = '';
-            renderTree();
+            document.querySelectorAll('.tree-node').forEach(node => {
+                node.classList.remove('search-match', 'search-no-match');
+            });
+            updateSearchMatchCount(0);
         }
-
         function scrollToGeneration(gen) {
             // دالة للتمرير إلى جيل معين
             const element = document.querySelector(`.generation-${gen}`);
@@ -7158,7 +8081,7 @@ updateUIByPermissions();
         }
 
         function renderTree() {
-            // دالة لعرض شجرة العائلة
+            // دالة لعرض شجرة العائلة بالشكل المتوافق مع CSS (tree-node-container / node-children / connectors)
             const container = document.getElementById('treeContainer');
             if (!container) return;
 
@@ -7166,134 +8089,74 @@ updateUIByPermissions();
             const personCountEl = document.getElementById('treePersonCount');
             if (personCountEl) personCountEl.textContent = (familyData || []).length;
 
-            // في حال لا توجد بيانات
             if (!familyData || familyData.length === 0) {
                 container.innerHTML = '<div class="empty-message"><i class="fas fa-tree"></i><h3>لا توجد بيانات</h3><p>قم بإضافة أفراد لعرض شجرة العائلة</p></div>';
+                updateTreeZoom();
                 return;
             }
 
-            // تجهيز الخرائط
-            const idMap = new Map();
-            familyData.forEach(p => idMap.set(Number(p.PersonID), p));
+            rebuildIndexes();
 
-            const childrenMap = new Map(); // parentId -> [child]
-            function pushChild(parentId, child) {
-                const pid = Number(parentId);
-                if (!pid) return;
-                if (!childrenMap.has(pid)) childrenMap.set(pid, []);
-                childrenMap.get(pid).push(child);
-            }
-
-            familyData.forEach(p => {
-                if (p.FatherID) pushChild(p.FatherID, p);
-                if (p.MotherID) pushChild(p.MotherID, p);
-            });
-
-            // تحديد الجذور (من لا يملك أب/أم أو الأب/الأم غير موجودين)
-            const roots = familyData.filter(p => {
+            // الجذور: من لا يملك أب/أم أو أب/أم غير موجودين
+            const roots = [];
+            for (const p of familyData) {
+                if (!p) continue;
                 const fid = Number(p.FatherID) || 0;
                 const mid = Number(p.MotherID) || 0;
-                const fatherMissing = fid === 0 || !idMap.has(fid);
-                const motherMissing = mid === 0 || !idMap.has(mid);
-                return fatherMissing && motherMissing;
-            });
-
-            // ترتيب الجذور بالاسم
-            roots.sort((a, b) => (a.FullName || '').localeCompare((b.FullName || ''), 'ar'));
-
-            // البحث: إظهار المطابق + أسلافه/نسله
-            const q = (currentTreeSearch || '').trim().toLowerCase();
-            let matchCount = 0;
-
-            function personMatches(p) {
-                if (!q) return true;
-                const name = (p.FullName || '').toLowerCase();
-                const idStr = String(p.PersonID || '');
-                return name.includes(q) || idStr.includes(q);
+                const father = fid ? getPersonById(fid) : null;
+                const mother = mid ? getPersonById(mid) : null;
+                if (!father && !mother) roots.push(p);
             }
 
-            // تحقق هل هناك مطابق في هذا الفرع
-            function branchHasMatch(p, visited = new Set()) {
-                const pid = Number(p.PersonID) || 0;
-                if (visited.has(pid)) return false;
-                visited.add(pid);
-
-                if (personMatches(p)) return true;
-                const kids = childrenMap.get(pid) || [];
-                return kids.some(ch => branchHasMatch(ch, visited));
-            }
-
-            // شكل بطاقة الشخص
-            function personCard(p) {
-                const pid = Number(p.PersonID) || 0;
-                const name = p.FullName || '(بدون اسم)';
-                const genderIcon = p.Gender === 'ذكر' ? 'male' : 'female';
-                const genderColor = p.Gender === 'ذكر' ? 'color:#2196F3;' : 'color:#E91E63;';
-                const highlight = q && personMatches(p) ? ' style="outline: 3px solid #FFC107; border-radius: 10px;"' : '';
-                if (q && personMatches(p)) matchCount++;
-
-                return `
-                    <div class="tree-person ${treeCompactMode ? 'compact' : ''}" ${highlight}>
-                        <div class="tree-person-name">
-                            <i class="fas fa-${genderIcon}" style="${genderColor}"></i>
-                            <span>${name}</span>
-                        </div>
-                        <div class="tree-person-meta">
-                            <span class="badge">#${pid}</span>
-                            <button class="btn btn-info btn-sm" onclick="showPersonDetail(${pid})" title="عرض التفاصيل">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // إنشاء عقدة (HTML) بشكل هرمي
-            function renderNode(p, depth = 0, stack = new Set()) {
-                const pid = Number(p.PersonID) || 0;
-                if (stack.has(pid)) return ''; // تجنب الحلقات
-                const nextStack = new Set(stack);
-                nextStack.add(pid);
-
-                // عند البحث: أخفِ الفروع غير المطابقة
-                if (q && !branchHasMatch(p)) return '';
-
-                const kids = (childrenMap.get(pid) || []).slice().sort((a, b) => (a.FullName || '').localeCompare((b.FullName || ''), 'ar'));
-                const childrenHtml = kids.map(ch => renderNode(ch, depth + 1, nextStack)).join('');
-
-                return `
-                    <li class="tree-node generation-${depth + 1}">
-                        ${personCard(p)}
-                        ${childrenHtml ? `<ul class="tree-children">${childrenHtml}</ul>` : ''}
-                    </li>
-                `;
-            }
-
-            // بناء الشجرة
-            const forestHtml = roots.map(r => renderNode(r, 0)).join('');
-            container.innerHTML = `
-                <div class="tree-root">
-                    <ul class="tree-children">
-                        ${forestHtml || '<div class="empty-message"><i class="fas fa-search"></i><h3>لا توجد نتائج</h3><p>جرّب تغيير كلمة البحث</p></div>'}
-                    </ul>
-                </div>
-            `;
-
-            // تحديث عدّاد نتائج البحث
-            const matchEl = document.getElementById('searchMatchCount');
-            if (matchEl) {
-                if (q) {
-                    matchEl.style.display = 'inline-flex';
-                    matchEl.textContent = matchCount;
-                } else {
-                    matchEl.style.display = 'none';
+            // في حال لم نجد جذور (بيانات ناقصة) اختر أقل جيل حسب calculateGeneration
+            if (roots.length === 0) {
+                let minGen = Infinity;
+                for (const p of familyData) {
+                    const g = calculateGeneration(p.PersonID);
+                    if (g < minGen) minGen = g;
+                }
+                for (const p of familyData) {
+                    if (calculateGeneration(p.PersonID) === minGen) roots.push(p);
                 }
             }
 
-            // إعادة ضبط الزوم بعد إعادة الرسم
+            roots.sort((a, b) => (a.FullName || '').localeCompare((b.FullName || ''), 'ar'));
+
+            const rootsHtml = roots.map(root => {
+                const spouse = findSpouse(root.PersonID);
+                const children = findChildren(root.PersonID);
+
+                return `
+                    <div class="tree-node-container">
+                        ${spouse ? `
+                            <div class="married-couple">
+                                ${renderPersonCard(root)}
+                                ${renderPersonCard(spouse)}
+                            </div>
+                        ` : renderPersonCard(root)}
+                        ${renderChildren(children, 2)}
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = `<div class="tree-wrapper">${rootsHtml}</div>`;
+
+            // إضافة خطوط الربط بعد بناء DOM
+            try { addTreeConnectors(); } catch(e) {}
+
+            // تطبيق البحث (إن وجد) بدون إعادة رسم
+            try {
+                const val = (document.getElementById('treeSearch')?.value || '').trim();
+                if (val) {
+                    // اعتمد على الدالة المتقدمة المدمجة أسفل الملف
+                    if (typeof __doSearchInTree === 'function') __doSearchInTree();
+                } else {
+                    updateSearchMatchCount(0);
+                }
+            } catch(e) {}
+
             updateTreeZoom();
         }
-
 
         function showEncryptionSettings() {
             // دالة لعرض إعدادات التشفير
