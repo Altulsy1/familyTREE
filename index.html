@@ -44,6 +44,669 @@
             --dark-green: #388E3C;
             --accent-green: #4CAF50;
             
+           --male-color: #2196F3; 
+            --female-color: #eb5d8c; 
+            --highlight: #FFC107; 
+            --header-bg: #2E7D32;
+            --login-bg: #1B5E20;
+            --panel-bg: #ffffff;
+            --button-primary: #4CAF50;
+            --button-success: #388E3C;
+            --button-danger: #F44336;
+            --button-warning: #FF9800;
+            --button-info: #0097A7;
+            --sidebar-bg: #388E3C;
+            --generation-1: #1B5E20;
+            --generation-2: #2E7D32;
+            --generation-3: #43A047;
+            --generation-4: #7d84ad;
+            --generation-5: #81C784;
+            --generation-1-bg: #E8F5E9;
+            --generation-2-bg: #E3F2FD;
+            --generation-3-bg: #FFF8E1;
+            --generation-4-bg: #F3E5F5;
+            --generation-5-bg: #E0F7FA;
+            
+            --light-green: #C8E6C9;
+            --medium-green: #A5D6A7;
+            --dark-green: #388E3C;
+            --accent-green: #4CAF50;
+            
+            --card-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            --card-hover-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            --border-radius-lg: 16px;
+            --border-radius-md: 12px;
+            --border-radius-sm: 8px;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+        
+        body { 
+            background-color: #f8faf8; 
+            direction: rtl; 
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* ============================================
+           تحسينات شجرة العائلة المتقدمة
+           عرض الأزواج معاً + بيانات غنية
+           ============================================ */
+        
+        /* الحاوية الرئيسية للشجرة */
+        .tree-content {
+            padding: 20px;
+            background: linear-gradient(145deg, #f0f7f0 0%, #e8f3e8 100%);
+            min-height: 100%;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+        
+        /* تخطيط الأجيال */
+        .tree-generations {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            position: relative;
+        }
+        
+        /* خطوط الربط بين الأجيال */
+        .generation-connector {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+            left: 50%;
+            transform: translateX(-50%);
+            height: 40px;
+            bottom: -40px;
+            opacity: 0.3;
+        }
+        
+        /* الجيل الواحد */
+        .tree-generation {
+            position: relative;
+            padding: 20px;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(5px);
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(46, 125, 50, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+        
+        /* عنوان الجيل */
+        .generation-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed rgba(76, 175, 80, 0.3);
+        }
+        
+        .generation-badge {
+            background: linear-gradient(135deg, #2E7D32, #1B5E20);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 6px 15px rgba(46, 125, 50, 0.3);
+        }
+        
+        .generation-stats {
+            background: rgba(255,255,255,0.9);
+            padding: 8px 20px;
+            border-radius: 30px;
+            color: #2E7D32;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #A5D6A7;
+        }
+        
+        /* شبكة العائلات */
+        .families-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        
+        /* بطاقة العائلة (الزوج + الزوجة) */
+        .family-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(76, 175, 80, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .family-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover-shadow);
+            border-color: #4CAF50;
+        }
+        
+        /* تأثير الخلفية */
+        .family-card::before {
+            content: "👪";
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 60px;
+            opacity: 0.05;
+            transform: rotate(-5deg);
+        }
+        
+        /* رأس بطاقة العائلة */
+        .family-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #E8F5E9;
+        }
+        
+        .family-id {
+            background: #E8F5E9;
+            color: #2E7D32;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .family-relation {
+            background: #FFF3E0;
+            color: #EF6C00;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* تخطيط الزوجين */
+        .couple-row {
+            display: flex;
+            align-items: stretch;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        /* بطاقة الفرد */
+        .person-card {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+        }
+        
+        .person-card.husband {
+            background: linear-gradient(145deg, #E3F2FD, #F5F9FF);
+            border-color: #2196F3;
+        }
+        
+        .person-card.wife {
+            background: linear-gradient(145deg, #FCE4EC, #FFF0F5);
+            border-color: #E91E63;
+        }
+        
+        .person-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.2);
+        }
+        
+        /* الصورة الرمزية */
+        .person-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: white;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+        
+        .person-avatar.male {
+            background: linear-gradient(145deg, #2196F3, #1976D2);
+        }
+        
+        .person-avatar.female {
+            background: linear-gradient(145deg, #E91E63, #C2185B);
+        }
+        
+        /* معلومات الفرد */
+        .person-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .person-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1B5E20;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .person-badge {
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 30px;
+            background: #FFE082;
+            color: #5D4037;
+            font-weight: 600;
+        }
+        
+        .person-details {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #546E7A;
+        }
+        
+        .detail-row i {
+            width: 18px;
+            color: #689F38;
+            font-size: 0.9rem;
+        }
+        
+        /* رمز الزواج */
+        .marriage-symbol {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            color: #FF9800;
+            font-size: 1.2rem;
+            position: relative;
+        }
+        
+        .marriage-symbol i {
+            background: white;
+            padding: 8px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+            color: #FF9800;
+        }
+        
+        .marriage-date {
+            font-size: 0.7rem;
+            margin-top: 5px;
+            color: #795548;
+            white-space: nowrap;
+        }
+        
+        /* قائمة الأبناء */
+        .children-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #E8F5E9;
+        }
+        
+        .children-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #2E7D32;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .children-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        
+        .child-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #F5F9F5;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid #E0F2E0;
+        }
+        
+        .child-item:hover {
+            background: white;
+            border-color: #4CAF50;
+            transform: translateX(-3px);
+        }
+        
+        .child-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .child-avatar.male {
+            background: #2196F3;
+        }
+        
+        .child-avatar.female {
+            background: #E91E63;
+        }
+        
+        .child-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .child-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1B5E20;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .child-age {
+            font-size: 0.7rem;
+            color: #689F38;
+        }
+        
+        /* أفراد بدون عائلة */
+        .single-persons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .single-person-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 16px;
+            border-right: 6px solid #9E9E9E;
+            box-shadow: var(--card-shadow);
+        }
+        
+        /* تحسينات للموبايل */
+        @media (max-width: 768px) {
+            .tree-content {
+                padding: 12px;
+            }
+            
+            .families-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .couple-row {
+                flex-direction: column;
+            }
+            
+            .person-card {
+                width: 100%;
+            }
+            
+            .marriage-symbol {
+                flex-direction: row;
+                gap: 10px;
+                padding: 10px 0;
+            }
+            
+            .marriage-symbol i {
+                transform: rotate(90deg);
+            }
+            
+            .children-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .generation-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .person-avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .person-name {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .person-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .person-avatar {
+                margin-bottom: 5px;
+            }
+            
+            .detail-row {
+                justify-content: center;
+            }
+            
+            .child-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* أنماط إضافية للمعلومات الغنية */
+        .life-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .status-alive {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        
+        .status-deceased {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+        
+        .generation-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(46, 125, 50, 0.9);
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            backdrop-filter: blur(2px);
+        }
+        
+        /* نافذة معلومات الفرد التفصيلية */
+        .person-detail-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            max-height: 85vh;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            z-index: 21000;
+            overflow: hidden;
+            animation: modalSlideUp 0.3s ease;
+        }
+        
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 30%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+        
+        .person-detail-header {
+            background: linear-gradient(135deg, #2E7D32, #1B5E20);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .person-detail-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            border: 3px solid white;
+        }
+        
+        .person-detail-title {
+            flex: 1;
+        }
+        
+        .person-detail-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .person-detail-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        
+        .person-detail-body {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(85vh - 120px);
+        }
+        
+        .info-section {
+            background: #F5F9F5;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .info-section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #2E7D32;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #C8E6C9;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .info-label {
+            font-size: 0.7rem;
+            color: #689F38;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .info-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1B5E20;
+        }
+        
+        .family-relation-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #E8F5E9;
+        }
+        
+        .family-relation-item:last-child {
+            border-bottom: none;
+        }
+
             /* متغيرات متقدمة للموبايل */
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -8137,6 +8800,681 @@ updateUIByPermissions();
                 }
             }
         }
+
+ // ============================================
+        // دوال عرض الشجرة المتقدمة - مع الأزواج وبيانات غنية
+        // ============================================
+        
+        /**
+         * دالة محسنة لعرض شجرة العائلة
+         * تعرض كل زوجين معاً في بطاقة عائلة واحدة
+         * تعرض بيانات غنية لكل فرد
+         */
+        function renderAdvancedTree() {
+            const treeContainer = document.getElementById('treeContainer');
+            if (!treeContainer) return;
+            
+            treeContainer.innerHTML = '';
+            
+            // تنظيم الأفراد حسب الأجيال
+            const generations = organizeByGeneration();
+            const sortedGenerations = Object.keys(generations)
+                .sort((a, b) => parseInt(a) - parseInt(b));
+            
+            // إنشاء هيكل الشجرة
+            const treeGenerations = document.createElement('div');
+            treeGenerations.className = 'tree-generations';
+            
+            sortedGenerations.forEach((genKey, index) => {
+                const generationDiv = document.createElement('div');
+                generationDiv.className = 'tree-generation';
+                generationDiv.setAttribute('data-generation', genKey);
+                
+                // عنوان الجيل مع الإحصائيات
+                const genHeader = document.createElement('div');
+                genHeader.className = 'generation-header';
+                
+                const genBadge = document.createElement('div');
+                genBadge.className = 'generation-badge';
+                genBadge.innerHTML = `<i class="fas fa-layer-group"></i> الجيل ${genKey}`;
+                
+                const genStats = document.createElement('div');
+                genStats.className = 'generation-stats';
+                const personsInGen = generations[genKey];
+                const malesInGen = personsInGen.filter(p => p.Gender === 'ذكر').length;
+                const femalesInGen = personsInGen.filter(p => p.Gender === 'انثى').length;
+                genStats.innerHTML = `
+                    <span><i class="fas fa-users"></i> ${personsInGen.length}</span>
+                    <span><i class="fas fa-male"></i> ${malesInGen}</span>
+                    <span><i class="fas fa-female"></i> ${femalesInGen}</span>
+                `;
+                
+                genHeader.appendChild(genBadge);
+                genHeader.appendChild(genStats);
+                generationDiv.appendChild(genHeader);
+                
+                // تنظيم العائلات في هذا الجيل
+                const families = organizeFamiliesInGeneration(personsInGen);
+                
+                // عرض العائلات
+                const familiesGrid = document.createElement('div');
+                familiesGrid.className = 'families-grid';
+                
+                // عرض كل عائلة
+                families.forEach(family => {
+                    const familyCard = createFamilyCard(family);
+                    familiesGrid.appendChild(familyCard);
+                });
+                
+                // عرض الأفراد غير المرتبطين (بدون زواج)
+                const singles = personsInGen.filter(p => 
+                    !p.SpouseID || p.SpouseID === 0 || 
+                    !personsInGen.some(sp => sp.PersonID === p.SpouseID)
+                );
+                
+                if (singles.length > 0) {
+                    const singlesSection = document.createElement('div');
+                    singlesSection.className = 'single-persons';
+                    
+                    singles.forEach(person => {
+                        const singleCard = createSinglePersonCard(person);
+                        singlesSection.appendChild(singleCard);
+                    });
+                    
+                    familiesGrid.appendChild(singlesSection);
+                }
+                
+                generationDiv.appendChild(familiesGrid);
+                treeGenerations.appendChild(generationDiv);
+                
+                // إضافة رابط بين الأجيال (ليس للجيل الأخير)
+                if (index < sortedGenerations.length - 1) {
+                    const connector = document.createElement('div');
+                    connector.className = 'generation-connector';
+                    generationDiv.appendChild(connector);
+                }
+            });
+            
+            treeContainer.appendChild(treeGenerations);
+        }
+        
+        /**
+         * تنظيم العائلات داخل الجيل
+         * تجميع الأزواج معاً
+         */
+        function organizeFamiliesInGeneration(persons) {
+            const families = [];
+            const processedIds = new Set();
+            
+            // أولاً: تجميع الأزواج
+            persons.forEach(person => {
+                if (processedIds.has(person.PersonID)) return;
+                
+                if (person.SpouseID && person.SpouseID !== 0) {
+                    const spouse = getPersonById(person.SpouseID);
+                    
+                    // التأكد أن الزوج/الزوجة في نفس الجيل (تقريباً)
+                    if (spouse && Math.abs(calculateGeneration(person.PersonID) - calculateGeneration(spouse.PersonID)) <= 1) {
+                        
+                        // تحديد من هو الزوج ومن هي الزوجة
+                        const husband = person.Gender === 'ذكر' ? person : spouse;
+                        const wife = person.Gender === 'انثى' ? person : spouse;
+                        
+                        // الحصول على الأبناء المشتركين
+                        const children = getChildrenOfCouple(husband.PersonID, wife.PersonID);
+                        
+                        families.push({
+                            husband,
+                            wife,
+                            children,
+                            generation: calculateGeneration(person.PersonID)
+                        });
+                        
+                        processedIds.add(husband.PersonID);
+                        processedIds.add(wife.PersonID);
+                    }
+                }
+            });
+            
+            // إضافة الأفراد الذين لم يتم تضمينهم في أي عائلة
+            persons.forEach(person => {
+                if (!processedIds.has(person.PersonID)) {
+                    families.push({
+                        single: person,
+                        generation: calculateGeneration(person.PersonID)
+                    });
+                    processedIds.add(person.PersonID);
+                }
+            });
+            
+            return families;
+        }
+        
+        /**
+         * الحصول على أبناء الزوجين
+         */
+        function getChildrenOfCouple(fatherId, motherId) {
+            return familyData.filter(p => 
+                (p.FatherID === fatherId && p.MotherID === motherId) ||
+                (p.FatherID === motherId && p.MotherID === fatherId) // للتأكد
+            ).sort((a, b) => {
+                // ترتيب الأبناء حسب العمر (إذا وجد تاريخ ميلاد)
+                if (a.BirthDate && b.BirthDate) {
+                    return new Date(a.BirthDate) - new Date(b.BirthDate);
+                }
+                return 0;
+            });
+        }
+        
+        /**
+         * إنشاء بطاقة عائلة (زوج + زوجة + أبناء)
+         */
+        function createFamilyCard(family) {
+            const card = document.createElement('div');
+            card.className = 'family-card';
+            
+            // رأس البطاقة
+            const header = document.createElement('div');
+            header.className = 'family-header';
+            header.innerHTML = `
+                <span class="family-id">
+                    <i class="fas fa-hashtag"></i> عائلة #${family.husband?.PersonID || family.wife?.PersonID}
+                </span>
+                <span class="family-relation">
+                    <i class="fas fa-heart"></i> متزوجون
+                </span>
+            `;
+            card.appendChild(header);
+            
+            // صف الزوجين
+            const coupleRow = document.createElement('div');
+            coupleRow.className = 'couple-row';
+            
+            // بطاقة الزوج
+            if (family.husband) {
+                coupleRow.appendChild(createPersonCard(family.husband, 'husband'));
+            }
+            
+            // رمز الزواج
+            const marriageSymbol = document.createElement('div');
+            marriageSymbol.className = 'marriage-symbol';
+            marriageSymbol.innerHTML = `
+                <i class="fas fa-ring"></i>
+                <span class="marriage-date">${getMarriageDate(family.husband, family.wife)}</span>
+            `;
+            coupleRow.appendChild(marriageSymbol);
+            
+            // بطاقة الزوجة
+            if (family.wife) {
+                coupleRow.appendChild(createPersonCard(family.wife, 'wife'));
+            }
+            
+            card.appendChild(coupleRow);
+            
+            // قسم الأبناء
+            if (family.children && family.children.length > 0) {
+                const childrenSection = document.createElement('div');
+                childrenSection.className = 'children-section';
+                
+                const childrenTitle = document.createElement('div');
+                childrenTitle.className = 'children-title';
+                childrenTitle.innerHTML = `
+                    <i class="fas fa-child"></i>
+                    <span>الأبناء (${family.children.length})</span>
+                    <span style="margin-right: auto; font-size: 0.8rem; color: #689F38;">
+                        <i class="fas fa-male"></i> ${family.children.filter(c => c.Gender === 'ذكر').length}
+                        <i class="fas fa-female" style="margin-right: 8px;"></i> ${family.children.filter(c => c.Gender === 'انثى').length}
+                    </span>
+                `;
+                childrenSection.appendChild(childrenTitle);
+                
+                const childrenGrid = document.createElement('div');
+                childrenGrid.className = 'children-grid';
+                
+                family.children.forEach(child => {
+                    childrenGrid.appendChild(createChildCard(child));
+                });
+                
+                childrenSection.appendChild(childrenGrid);
+                card.appendChild(childrenSection);
+            }
+            
+            return card;
+        }
+        
+        /**
+         * إنشاء بطاقة فرد (زوج أو زوجة)
+         */
+        function createPersonCard(person, type) {
+            const card = document.createElement('div');
+            card.className = `person-card ${type}`;
+            card.onclick = (e) => {
+                e.stopPropagation();
+                showRichPersonDetail(person.PersonID);
+            };
+            
+            // حساب العمر
+            const age = computeAge(person.BirthDate);
+            const isDeceased = person.DeathDate && person.DeathDate.trim() !== '';
+            
+            // الصورة الرمزية
+            const avatar = document.createElement('div');
+            avatar.className = `person-avatar ${person.Gender === 'ذكر' ? 'male' : 'female'}`;
+            avatar.innerHTML = `<i class="fas fa-${person.Gender === 'ذكر' ? 'male' : 'female'}"></i>`;
+            
+            // معلومات الفرد
+            const info = document.createElement('div');
+            info.className = 'person-info';
+            
+            // الاسم مع الشارة
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'person-name';
+            nameDiv.innerHTML = `
+                ${person.FullName}
+                <span class="person-badge">#${person.PersonID}</span>
+            `;
+            
+            // التفاصيل
+            const details = document.createElement('div');
+            details.className = 'person-details';
+            
+            // حالة الحياة
+            const lifeStatus = document.createElement('span');
+            lifeStatus.className = `life-status ${isDeceased ? 'status-deceased' : 'status-alive'}`;
+            lifeStatus.innerHTML = isDeceased ? 
+                `<i class="fas fa-kaaba"></i> متوفى ${person.DeathDate ? formatDate(person.DeathDate) : ''}` : 
+                `<i class="fas fa-heartbeat"></i> على قيد الحياة`;
+            
+            // مكان الميلاد
+            let detailsHTML = '';
+            if (person.PlaceOfBirth) {
+                detailsHTML += `<div class="detail-row"><i class="fas fa-map-marker-alt"></i> ${person.PlaceOfBirth}</div>`;
+            }
+            
+            // تاريخ الميلاد (للأحياء يظهر مخفياً)
+            if (person.BirthDate) {
+                if (isDeceased) {
+                    detailsHTML += `<div class="detail-row"><i class="fas fa-birthday-cake"></i> ${formatDate(person.BirthDate)}</div>`;
+                }
+            }
+            
+            // الوالدين
+            if (person.FatherID && person.FatherID !== 0) {
+                const father = getPersonById(person.FatherID);
+                if (father) {
+                    detailsHTML += `<div class="detail-row"><i class="fas fa-male"></i> الأب: ${father.FullName}</div>`;
+                }
+            }
+            
+            if (person.MotherID && person.MotherID !== 0) {
+                const mother = getPersonById(person.MotherID);
+                if (mother) {
+                    detailsHTML += `<div class="detail-row"><i class="fas fa-female"></i> الأم: ${mother.FullName}</div>`;
+                }
+            }
+            
+            details.innerHTML = detailsHTML;
+            
+            info.appendChild(nameDiv);
+            info.appendChild(lifeStatus);
+            info.appendChild(details);
+            
+            card.appendChild(avatar);
+            card.appendChild(info);
+            
+            return card;
+        }
+        
+        /**
+         * إنشاء بطاقة ابن/ابنة
+         */
+        function createChildCard(child) {
+            const card = document.createElement('div');
+            card.className = 'child-item';
+            card.onclick = (e) => {
+                e.stopPropagation();
+                showRichPersonDetail(child.PersonID);
+            };
+            
+            const age = computeAge(child.BirthDate);
+            
+            card.innerHTML = `
+                <div class="child-avatar ${child.Gender === 'ذكر' ? 'male' : 'female'}">
+                    <i class="fas fa-${child.Gender === 'ذكر' ? 'male' : 'female'}"></i>
+                </div>
+                <div class="child-info">
+                    <div class="child-name">${child.FullName}</div>
+                    <div class="child-age">
+                        ${age ? `${age} سنة` : ''}
+                        ${child.BirthDate && !isLivingPerson(child) ? '🕊️' : ''}
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        /**
+         * إنشاء بطاقة فرد غير متزوج
+         */
+        function createSinglePersonCard(person) {
+            const card = document.createElement('div');
+            card.className = 'single-person-card';
+            card.onclick = () => showRichPersonDetail(person.PersonID);
+            
+            card.innerHTML = `
+                <div class="person-avatar ${person.Gender === 'ذكر' ? 'male' : 'female'}" style="width: 50px; height: 50px; font-size: 20px;">
+                    <i class="fas fa-${person.Gender === 'ذكر' ? 'male' : 'female'}"></i>
+                </div>
+                <div class="person-info">
+                    <div class="person-name" style="font-size: 0.95rem;">
+                        ${person.FullName}
+                        <span class="person-badge">#${person.PersonID}</span>
+                    </div>
+                    <div class="detail-row">
+                        <i class="fas fa-${person.Gender === 'ذكر' ? 'mars' : 'venus'}"></i>
+                        ${person.Gender === 'ذكر' ? 'ذكر' : 'أنثى'}
+                    </div>
+                    ${person.BirthDate ? `
+                        <div class="detail-row">
+                            <i class="fas fa-calendar"></i>
+                            ${formatDate(person.BirthDate)}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        /**
+         * عرض نافذة معلومات الفرد التفصيلية
+         */
+        function showRichPersonDetail(personId) {
+            const person = getPersonById(personId);
+            if (!person) return;
+            
+            // إزالة أي نافذة موجودة
+            const existingModal = document.querySelector('.person-detail-modal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            const modal = document.createElement('div');
+            modal.className = 'person-detail-modal';
+            
+            // الحصول على العلاقات
+            const father = getPersonById(person.FatherID);
+            const mother = getPersonById(person.MotherID);
+            const spouse = getPersonById(person.SpouseID);
+            const children = getChildrenOf(person.PersonID);
+            const siblings = getSiblings(person.PersonID);
+            
+            const isDeceased = person.DeathDate && person.DeathDate.trim() !== '';
+            const age = computeAge(person.BirthDate);
+            
+            modal.innerHTML = `
+                <div class="person-detail-header">
+                    <div class="person-detail-avatar">
+                        <i class="fas fa-${person.Gender === 'ذكر' ? 'male' : 'female'}"></i>
+                    </div>
+                    <div class="person-detail-title">
+                        <div class="person-detail-name">${person.FullName}</div>
+                        <div class="person-detail-meta">
+                            <span>#${person.PersonID}</span>
+                            <span>•</span>
+                            <span>${person.Gender === 'ذكر' ? 'ذكر' : 'أنثى'}</span>
+                            <span>•</span>
+                            <span>الجيل ${calculateGeneration(person.PersonID)}</span>
+                        </div>
+                    </div>
+                    <button onclick="this.closest('.person-detail-modal').remove()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="person-detail-body">
+                    <!-- المعلومات الشخصية -->
+                    <div class="info-section">
+                        <div class="info-section-title">
+                            <i class="fas fa-id-card"></i>
+                            <span>المعلومات الشخصية</span>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">الحالة</span>
+                                <span class="info-value">
+                                    <span class="life-status ${isDeceased ? 'status-deceased' : 'status-alive'}">
+                                        ${isDeceased ? 'متوفى' : 'على قيد الحياة'}
+                                    </span>
+                                </span>
+                            </div>
+                            ${person.BirthDate ? `
+                                <div class="info-item">
+                                    <span class="info-label">تاريخ الميلاد</span>
+                                    <span class="info-value">${formatDate(person.BirthDate)}${age ? ` (${age} سنة)` : ''}</span>
+                                </div>
+                            ` : ''}
+                            ${person.DeathDate ? `
+                                <div class="info-item">
+                                    <span class="info-label">تاريخ الوفاة</span>
+                                    <span class="info-value">${formatDate(person.DeathDate)}</span>
+                                </div>
+                            ` : ''}
+                            ${person.PlaceOfBirth ? `
+                                <div class="info-item">
+                                    <span class="info-label">مكان الميلاد</span>
+                                    <span class="info-value">${person.PlaceOfBirth}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    
+                    <!-- العلاقات العائلية -->
+                    <div class="info-section">
+                        <div class="info-section-title">
+                            <i class="fas fa-family"></i>
+                            <span>العلاقات العائلية</span>
+                        </div>
+                        ${father ? `
+                            <div class="family-relation-item" onclick="showRichPersonDetail(${father.PersonID})">
+                                <i class="fas fa-male" style="color: #2196F3; width: 24px;"></i>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 0.8rem; color: #689F38;">الأب</div>
+                                    <div style="font-weight: 600;">${father.FullName}</div>
+                                </div>
+                                <i class="fas fa-chevron-left" style="color: #B0BEC5;"></i>
+                            </div>
+                        ` : ''}
+                        ${mother ? `
+                            <div class="family-relation-item" onclick="showRichPersonDetail(${mother.PersonID})">
+                                <i class="fas fa-female" style="color: #E91E63; width: 24px;"></i>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 0.8rem; color: #689F38;">الأم</div>
+                                    <div style="font-weight: 600;">${mother.FullName}</div>
+                                </div>
+                                <i class="fas fa-chevron-left" style="color: #B0BEC5;"></i>
+                            </div>
+                        ` : ''}
+                        ${spouse ? `
+                            <div class="family-relation-item" onclick="showRichPersonDetail(${spouse.PersonID})">
+                                <i class="fas fa-heart" style="color: #FF9800; width: 24px;"></i>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 0.8rem; color: #689F38;">الزوج/الزوجة</div>
+                                    <div style="font-weight: 600;">${spouse.FullName}</div>
+                                </div>
+                                <i class="fas fa-chevron-left" style="color: #B0BEC5;"></i>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <!-- الأبناء -->
+                    ${children.length > 0 ? `
+                        <div class="info-section">
+                            <div class="info-section-title">
+                                <i class="fas fa-child"></i>
+                                <span>الأبناء (${children.length})</span>
+                            </div>
+                            ${children.map(child => `
+                                <div class="family-relation-item" onclick="showRichPersonDetail(${child.PersonID})">
+                                    <i class="fas fa-${child.Gender === 'ذكر' ? 'male' : 'female'}" 
+                                       style="color: ${child.Gender === 'ذكر' ? '#2196F3' : '#E91E63'}; width: 24px;"></i>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600;">${child.FullName}</div>
+                                        <div style="font-size: 0.75rem; color: #689F38;">
+                                            ${computeAge(child.BirthDate) ? `${computeAge(child.BirthDate)} سنة` : ''}
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-chevron-left" style="color: #B0BEC5;"></i>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    <!-- الأخوة -->
+                    ${siblings.length > 0 ? `
+                        <div class="info-section">
+                            <div class="info-section-title">
+                                <i class="fas fa-user-friends"></i>
+                                <span>الأخوة (${siblings.length})</span>
+                            </div>
+                            ${siblings.slice(0, 5).map(sibling => `
+                                <div class="family-relation-item" onclick="showRichPersonDetail(${sibling.PersonID})">
+                                    <i class="fas fa-${sibling.Gender === 'ذكر' ? 'male' : 'female'}" 
+                                       style="color: ${sibling.Gender === 'ذكر' ? '#2196F3' : '#E91E63'}; width: 24px;"></i>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600;">${sibling.FullName}</div>
+                                    </div>
+                                    <i class="fas fa-chevron-left" style="color: #B0BEC5;"></i>
+                                </div>
+                            `).join('')}
+                            ${siblings.length > 5 ? `
+                                <div style="text-align: center; margin-top: 10px; color: #689F38; font-size: 0.8rem;">
+                                    و ${siblings.length - 5} آخرون
+                                </div>
+                            ` : ''}
+                        </div>
+                    ` : ''}
+                    
+                    <!-- ملاحظات -->
+                    ${person.Notes ? `
+                        <div class="info-section">
+                            <div class="info-section-title">
+                                <i class="fas fa-sticky-note"></i>
+                                <span>ملاحظات</span>
+                            </div>
+                            <p style="color: #546E7A; line-height: 1.6; font-size: 0.9rem;">
+                                ${person.Notes}
+                            </p>
+                        </div>
+                    ` : ''}
+                    
+                    <!-- أزرار الإجراءات -->
+                    <div style="display: flex; gap: 12px; margin-top: 20px;">
+                        ${checkPermission('edit') ? `
+                            <button onclick="editPerson(${person.PersonID}); this.closest('.person-detail-modal').remove();" 
+                                    style="flex: 1; padding: 12px; background: #FF9800; color: white; border: none; border-radius: 12px; font-weight: 600;">
+                                <i class="fas fa-edit"></i> تعديل
+                            </button>
+                        ` : ''}
+                        <button onclick="this.closest('.person-detail-modal').remove()" 
+                                style="flex: 1; padding: 12px; background: #f5f5f5; color: #666; border: none; border-radius: 12px; font-weight: 600;">
+                            <i class="fas fa-times"></i> إغلاق
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // إغلاق النافذة عند النقر خارجها
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+        
+        /**
+         * الحصول على أخوة الفرد
+         */
+        function getSiblings(personId) {
+            const person = getPersonById(personId);
+            if (!person) return [];
+            
+            return familyData.filter(p => 
+                p.PersonID !== personId && 
+                ((person.FatherID && p.FatherID === person.FatherID) ||
+                 (person.MotherID && p.MotherID === person.MotherID))
+            );
+        }
+        
+        /**
+         * الحصول على تاريخ الزواج (محاكاة - يمكن تخزينه في البيانات لاحقاً)
+         */
+        function getMarriageDate(husband, wife) {
+            // يمكن إضافة حقل MarriageDate للشخص في المستقبل
+            return ''; // تاريخ الزواج
+        }
+        
+        /**
+         * التحقق إذا كان الفرد على قيد الحياة
+         */
+        function isLivingPerson(person) {
+            return !(person?.DeathDate && String(person.DeathDate).trim() !== '');
+        }
+        
+        /**
+         * حساب العمر
+         */
+        function computeAge(birthDate) {
+            if (!birthDate) return null;
+            try {
+                const birth = new Date(birthDate);
+                const today = new Date();
+                let age = today.getFullYear() - birth.getFullYear();
+                const monthDiff = today.getMonth() - birth.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                    age--;
+                }
+                return age;
+            } catch (e) {
+                return null;
+            }
+        }
+        
+        /**
+         * تنسيق التاريخ
+         */
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('ar-EG', {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric'
+                });
+            } catch (e) {
+                return dateString;
+            }
+        }
+        
+        // ============================================
+        // تعديل دالة showTreeView لاستخدام العرض المتقدم
+        // ============================================
+        
+        // حفظ الدالة الأصلية
+        const originalShowTreeView = window.showTreeView;
+        
+        // استبدالها بالنسخة المحسنة
+        window.showTreeView = function() {
+            document.getElementById('treeView').classList.add('active');
+            renderAdvancedTree(); // استخدام العرض المتقدم بدلاً من العادي
+            document.getElementById('treePersonCount').textContent = familyData.length;
+            updateTreeZoom();
+        };
+        
+        console.log('✅ تم تفعيل عرض الشجرة المتقدم مع الأزواج والبيانات الغنية');
 
         function renderTree() {
             // دالة لعرض الشجرة
