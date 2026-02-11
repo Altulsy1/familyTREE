@@ -43,6 +43,15 @@
             --medium-green: #A5D6A7;
             --dark-green: #388E3C;
             --accent-green: #4CAF50;
+            
+            /* متغيرات متقدمة للموبايل */
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+            --bottom-nav-height: 70px;
+            --card-radius: 16px;
+            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         * { 
@@ -191,6 +200,7 @@
             background: linear-gradient(135deg, var(--header-bg) 0%, #1B5E20 100%);
             color: white;
             padding: 15px 20px;
+            padding-top: calc(15px + var(--safe-top));
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -365,6 +375,7 @@
         .main-content-area {
             margin-right: 250px;
             padding: 20px;
+            padding-bottom: calc(20px + var(--bottom-nav-height));
             transition: margin-right 0.3s;
             min-height: calc(100vh - 70px);
             width: calc(100% - 250px);
@@ -846,6 +857,7 @@
             background: linear-gradient(135deg, var(--header-bg) 0%, #1B5E20 100%);
             color: white;
             padding: 15px 20px;
+            padding-top: calc(15px + var(--safe-top));
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1957,55 +1969,56 @@
             }
         }
         
-        /* تحسينات لعرض الموبايل */
-        .mobile-optimized .tree-node {
-            width: 120px;
-            padding: 8px;
-            margin: 3px;
-        }
-        
-        .mobile-optimized .tree-node-container {
-            min-width: 120px;
-        }
-        
-        .mobile-optimized .tree-level {
-            gap: 8px;
-            padding: 8px;
-        }
-        
-        .mobile-optimized .node-name {
-            font-size: 13px;
-            height: 2.4em;
-        }
-        
-        .mobile-optimized .node-details {
-            font-size: 10px;
-        }
-        
-        .mobile-optimized .generation-label {
-            padding: 6px 15px;
-            font-size: 13px;
-        }
-        
         /* ============================================
-           تحسينات عرض الموبايل - شاملة
+           تحسينات العرض المتقدم للشاشات الصغيرة - نسخة 2024
+           إعادة تصميم كاملة لتجربة موبايل سلسة وعصرية
            ============================================ */
 
         @media (max-width: 768px) {
-            /* شريط العنوان العلوي */
+            /* متغيرات مخصصة للموبايل */
+            :root {
+                --bottom-nav-height: 70px;
+                --card-radius: 16px;
+                --safe-bottom: env(safe-area-inset-bottom, 16px);
+            }
+            
+            /* تحسين التمرير العام */
+            body {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                overscroll-behavior-y: contain;
+            }
+            
+            /* شريط علوي أكثر أناقة */
             .top-bar {
-                padding: 12px 15px;
-                flex-wrap: wrap;
-                gap: 10px;
+                padding: 12px 16px;
+                padding-top: calc(12px + var(--safe-top));
+                background: linear-gradient(165deg, #1B5E20 0%, #2E7D32 100%);
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                position: relative;
+                z-index: 1100;
             }
             
             .logo h1 {
                 font-size: 1rem;
+                font-weight: 600;
+                letter-spacing: -0.3px;
             }
             
             .user-info {
-                gap: 8px;
-                font-size: 0.9rem;
+                gap: 6px;
+            }
+            
+            .logout-btn {
+                padding: 8px 12px;
+                border-radius: 30px;
+                background: rgba(244, 67, 54, 0.9);
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+            }
+            
+            .logout-btn i {
+                margin-left: 0;
             }
             
             .logout-btn span,
@@ -2013,101 +2026,283 @@
                 display: none;
             }
             
-            .logout-btn,
             .language-toggle {
-                padding: 6px 10px;
-                font-size: 0.85rem;
+                padding: 8px 12px;
+                border-radius: 30px;
+                background: rgba(255,255,255,0.15);
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
             }
             
-            /* إحصائيات */
+            /* منطقة المحتوى الرئيسية مع مساحة للشريط السفلي */
+            .main-content-area {
+                margin-right: 0 !important;
+                width: 100%;
+                padding: 16px;
+                padding-bottom: calc(16px + var(--bottom-nav-height) + var(--safe-bottom));
+                min-height: calc(100vh - 60px);
+            }
+            
+            /* إحصائيات بشكل أفقي أنيق */
             .stats-cards {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 12px;
+                padding-bottom: 8px;
+                margin-bottom: 20px;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
             }
             
             .stat-card {
-                padding: 15px;
+                flex: 0 0 140px;
+                min-width: 140px;
+                padding: 16px 12px;
+                border-radius: var(--card-radius);
+                scroll-snap-align: start;
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+                background: white;
+                border-top: none;
+                border-right: 4px solid var(--accent-green);
+                box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            }
+            
+            .stat-card:hover {
+                transform: translateY(-3px);
+            }
+            
+            .stat-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
             }
             
             .stat-info h3 {
-                font-size: 1.2rem;
+                font-size: 1.3rem;
+                margin-bottom: 2px;
             }
             
-            /* القائمة الجانبية */
-            .sidebar {
-                width: 280px;
-                transform: translateX(100%);
-                transition: transform 0.3s ease;
-                right: 0;
-                top: 60px;
-                height: calc(100vh - 60px);
-                z-index: 2000;
+            .stat-info p {
+                font-size: 11px;
+                white-space: nowrap;
             }
             
-            .sidebar.active {
-                transform: translateX(0);
+            /* لوحة التحكم - تصميم متراص */
+            .control-panel {
+                padding: 16px;
+                border-radius: 20px;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+                margin-bottom: 20px;
             }
             
-            .main-content-area {
-                margin-right: 0;
-                width: 100%;
-                padding: 15px;
+            .panel-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding-bottom: 12px;
             }
             
-            /* أزرار التحكم */
+            .panel-header h2 {
+                font-size: 1rem;
+            }
+            
             .action-buttons {
-                gap: 6px;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+                width: 100%;
             }
             
             .btn {
-                padding: 6px 10px;
-                font-size: 0.85rem;
+                padding: 12px 6px;
+                font-size: 11px;
+                justify-content: center;
+                border-radius: 12px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             }
             
             .btn i {
-                margin-right: 4px;
+                margin-left: 0;
+                margin-right: 0;
+                font-size: 14px;
             }
             
             .btn span {
                 display: none;
             }
             
-            /* الجداول */
+            /* زر الإضافة المميز */
+            .btn-primary {
+                background: linear-gradient(145deg, #4CAF50, #388E3C);
+            }
+            
+            .btn-primary i {
+                font-size: 16px;
+            }
+            
+            /* الجدول - تحويل إلى بطاقات */
             .table-responsive {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
+                overflow-x: visible;
+                margin-top: 8px;
             }
             
             .data-table {
-                min-width: 600px;
-                font-size: 0.85rem;
+                display: block;
+                width: 100%;
+                border: none;
+                background: transparent;
+                box-shadow: none;
             }
             
-            .data-table th,
+            .data-table thead {
+                display: none;
+            }
+            
+            .data-table tbody {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .data-table tr {
+                display: block;
+                background: white;
+                border-radius: 20px;
+                padding: 18px 16px;
+                box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+                border: 1px solid #f0f7f0;
+                transition: var(--transition-smooth);
+            }
+            
+            .data-table tr:active {
+                transform: scale(0.98);
+                background: #f8fff8;
+            }
+            
             .data-table td {
-                padding: 8px 6px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 0;
+                border-bottom: 1px solid #edf7ed;
+                border-bottom-color: #e8f5e9;
+                text-align: right;
+                border: none;
+                font-size: 14px;
             }
             
-            /* النماذج */
-            .form-container {
-                width: 95%;
-                max-width: 95%;
-                margin: 10px;
+            .data-table td:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
             }
             
-            .form-grid {
-                grid-template-columns: 1fr;
+            .data-table td:first-child {
+                padding-top: 0;
             }
             
-            /* شجرة العائلة */
+            .data-table td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                color: #2E7D32;
+                margin-left: 12px;
+                font-size: 13px;
+                background: #e8f5e9;
+                padding: 4px 12px;
+                border-radius: 30px;
+            }
+            
+            /* بطاقة الأفراد */
+            .person-card {
+                background: white;
+                border-radius: 20px;
+                padding: 18px;
+                margin-bottom: 12px;
+                box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+                border-right: 6px solid #4CAF50;
+            }
+            
+            /* أزرار الإجراءات */
+            .table-actions {
+                display: flex;
+                gap: 12px;
+                justify-content: flex-end;
+                margin-top: 8px;
+            }
+            
+            .action-btn {
+                width: 44px;
+                height: 44px;
+                border-radius: 14px;
+                box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            }
+            
+            .action-btn i {
+                font-size: 18px;
+            }
+            
+            /* شريط التنقل السفلي (Bottom Navigation) */
+            .mobile-bottom-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                padding: 8px 12px;
+                padding-bottom: max(8px, var(--safe-bottom));
+                box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+                z-index: 2000;
+                border-top: 1px solid rgba(76, 175, 80, 0.2);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                background: rgba(255,255,255,0.95);
+            }
+            
+            .nav-item {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 8px 4px;
+                color: #558b2f;
+                font-size: 11px;
+                border-radius: 12px;
+                transition: var(--transition-smooth);
+            }
+            
+            .nav-item i {
+                font-size: 22px;
+                margin-bottom: 4px;
+                color: #689f38;
+            }
+            
+            .nav-item.active {
+                background: #e8f5e9;
+                color: #1B5E20;
+            }
+            
+            .nav-item.active i {
+                color: #2E7D32;
+            }
+            
+            .nav-item:active {
+                background: #c8e6c9;
+                transform: scale(0.96);
+            }
+            
+            /* تحسين شجرة العائلة للموبايل */
             .tree-view {
-                padding: 0;
+                background: linear-gradient(145deg, #f5fbf5 0%, #eef6ee 100%);
             }
             
             .tree-header {
-                padding: 12px 15px;
-                flex-wrap: wrap;
-                gap: 8px;
+                padding: 12px 16px;
+                padding-top: calc(12px + var(--safe-top));
+                flex-direction: column;
+                align-items: flex-start;
             }
             
             .tree-header h2 {
@@ -2118,219 +2313,8 @@
             .tree-toolbar {
                 width: 100%;
                 justify-content: space-between;
-            }
-            
-            .tree-controls {
-                gap: 6px;
-            }
-            
-            .tree-zoom {
-                padding: 4px 8px;
-                font-size: 0.85rem;
-            }
-            
-            .tree-filter {
-                padding: 10px;
-                margin: 10px;
                 flex-wrap: wrap;
-            }
-            
-            .tree-filter input {
-                min-width: 100%;
-                margin-bottom: 8px;
-            }
-            
-            .tree-content {
-                padding: 10px;
-            }
-            
-            /* بطاقات كتاب العائلة */
-            .book-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-            
-            .book-card {
-                padding: 12px;
-            }
-            
-            .book-card .name {
-                font-size: 1.1rem;
-            }
-            
-            /* الأحداث */
-            .events-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .event-card {
-                margin-bottom: 15px;
-            }
-            
-            /* بطاقات الأفراد في الشجرة - تحسين خاص */
-            .tree-node-container {
-                min-width: 130px;
-                margin: 3px;
-            }
-            
-            .tree-node {
-                width: 130px;
-                padding: 10px 8px;
-                margin: 3px;
-            }
-            
-            .node-name {
-                font-size: 0.95rem;
-                height: 2.2em;
-                margin-bottom: 6px;
-            }
-            
-            .node-details {
-                font-size: 0.8rem;
-                max-height: 40px;
-            }
-            
-            .node-place {
-                font-size: 0.75rem;
-            }
-            
-            .tree-level {
                 gap: 8px;
-                padding: 10px;
-                margin-bottom: 10px;
-            }
-            
-            .generation-label {
-                padding: 6px 15px;
-                font-size: 0.9rem;
-                position: relative;
-                top: 0;
-                margin-bottom: 10px;
-                align-self: flex-start;
-            }
-            
-            /* وصلات الشجرة */
-            .tree-connector {
-                display: none; /* إخفاء الوصلات المعقدة على الموبايل */
-            }
-            
-            .married-couple::before {
-                display: none; /* إخفاء رمز الزواج على الموبايل */
-            }
-            
-            /* زر عرض الشجرة */
-            .tree-view-btn {
-                width: 50px;
-                height: 50px;
-                bottom: 15px;
-                left: 15px;
-                font-size: 20px;
-            }
-            
-            /* زر القائمة للجوال */
-            .mobile-menu-toggle {
-                display: flex;
-                position: fixed;
-                top: 15px;
-                right: 15px;
-                background: var(--button-primary);
-                color: white;
-                width: 45px;
-                height: 45px;
-                border-radius: 50%;
-                align-items: center;
-                justify-content: center;
-                z-index: 1002;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-                border: none;
-                font-size: 20px;
-            }
-            
-            /* ============================================
-               تحسينات خاصة لبطاقات الأفراد في الشجرة للموبايل
-               ============================================ */
-            .tree-node {
-                transform: scale(0.95);
-                transition: transform 0.2s ease;
-            }
-            
-            .tree-node:active {
-                transform: scale(0.9);
-            }
-            
-            .tree-node:hover {
-                transform: scale(0.95);
-            }
-            
-            /* تحسين النصوص للشاشات الصغيرة */
-            .tree-node .node-name {
-                font-size: 0.9rem;
-                line-height: 1.3;
-                height: auto;
-                min-height: 2.4em;
-                overflow: visible;
-                display: block;
-            }
-            
-            .tree-node .node-details {
-                display: none; /* إخفاء التفاصيل على الموبايل لتوفير المساحة */
-            }
-            
-            .tree-node .node-place {
-                font-size: 0.7rem;
-                margin-top: 2px;
-            }
-            
-            .tree-node .node-id {
-                font-size: 0.7rem;
-                padding: 1px 4px;
-            }
-            
-            /* تحسين بطاقات الجيل */
-            .generation-badge {
-                font-size: 0.7rem;
-                padding: 1px 4px;
-                top: 2px;
-                left: 2px;
-            }
-            
-            /* تحسين حجم الشجرة على الموبايل */
-            .tree-wrapper {
-                padding: 5px;
-            }
-            
-            .tree-generation {
-                margin-bottom: 20px;
-            }
-            
-            /* تحسين شريط البحث في الشجرة */
-            .tree-filter {
-                position: sticky;
-                top: 0;
-                z-index: 100;
-                margin: 5px;
-                padding: 8px 10px;
-            }
-            
-            .tree-filter input {
-                font-size: 0.9rem;
-                padding: 8px 10px;
-            }
-            
-            .tree-filter button {
-                padding: 8px 10px;
-                font-size: 0.8rem;
-            }
-            
-            /* تحسين شريط الأدوات في الشجرة */
-            .tree-header {
-                padding: 10px;
-            }
-            
-            .tree-toolbar {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
             }
             
             .tree-controls {
@@ -2338,68 +2322,143 @@
                 justify-content: space-between;
             }
             
-            /* ============================================
-               تحسينات إضافية للموبايل
-               ============================================ */
-            .form-modal {
-                padding: 10px;
+            .tree-zoom {
+                padding: 6px 12px;
+                background: rgba(255,255,255,0.2);
+                border-radius: 30px;
+            }
+            
+            .tree-zoom-btn {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .tree-filter {
+                margin: 10px;
+                padding: 12px;
+                border-radius: 16px;
+                flex-wrap: nowrap;
+                background: rgba(255,255,255,0.9);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(76,175,80,0.3);
+            }
+            
+            .tree-filter input {
+                min-width: 0;
+                flex: 1;
+                padding: 12px 14px;
+                border-radius: 30px;
+                border: 1px solid #c8e6c9;
+            }
+            
+            .tree-filter button {
+                padding: 12px 18px;
+                border-radius: 30px;
+                white-space: nowrap;
+            }
+            
+            /* بطاقات الشجرة - تصميم محسن للموبايل */
+            .tree-node-container {
+                min-width: 130px;
+                margin: 4px 2px;
+            }
+            
+            .tree-node {
+                width: 130px;
+                padding: 12px 8px;
+                border-radius: 16px;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+                transition: var(--transition-smooth);
+            }
+            
+            .tree-node:active {
+                transform: scale(0.95);
+                background: #f0fff0;
+            }
+            
+            .node-name {
+                font-size: 0.9rem;
+                height: auto;
+                min-height: 2.2em;
+                -webkit-line-clamp: 2;
+                margin-bottom: 4px;
+            }
+            
+            .node-details {
+                display: block;
+                font-size: 0.75rem;
+                max-height: 32px;
+            }
+            
+            .generation-label {
+                padding: 6px 16px;
+                font-size: 0.85rem;
+                border-radius: 30px;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            
+            /* تحسين النماذج */
+            .form-modal .form-container {
+                max-width: 100%;
+                height: 90vh;
+                margin: 0;
+                border-radius: 24px 24px 0 0;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                animation: slideUp 0.3s ease;
+            }
+            
+            @keyframes slideUp {
+                from {
+                    transform: translateY(100%);
+                }
+                to {
+                    transform: translateY(0);
+                }
             }
             
             .form-body {
-                padding: 15px;
-                max-height: 80vh;
+                padding: 20px;
+                max-height: calc(90vh - 70px);
             }
             
             .form-actions {
-                flex-direction: column;
-                gap: 8px;
+                flex-direction: row;
+                gap: 12px;
             }
             
             .form-actions .btn {
-                width: 100%;
-                justify-content: center;
+                flex: 1;
+                padding: 14px;
+                font-size: 14px;
             }
             
-            /* تحسين أزرار الإجراءات في الجداول */
-            .table-actions {
-                flex-direction: column;
-                gap: 4px;
-            }
-            
-            .action-btn {
-                width: 35px;
-                height: 35px;
-            }
-            
-            /* تحسين بطاقات الإحصائيات */
-            .stat-card {
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-            }
-            
-            .stat-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-            }
-            
-            /* تحسين التنبيهات */
-            .alert {
-                padding: 12px;
-                font-size: 0.9rem;
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            /* تحسين كتاب العائلة */
+            /* كتاب العائلة */
             .book-page {
-                padding: 20px;
+                padding: 20px 16px;
+                border-radius: 24px;
+            }
+            
+            .book-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .book-card {
+                padding: 16px;
+            }
+            
+            .book-card-name {
+                font-size: 1.1rem;
             }
             
             .book-controls {
                 flex-direction: column;
-                gap: 10px;
+                align-items: stretch;
             }
             
             .book-search {
@@ -2410,42 +2469,68 @@
                 width: 100%;
             }
             
-            /* تحسين نافذة الإعلانات */
-            #eventsControlPanel {
-                margin-bottom: 15px;
+            /* زر العودة */
+            .quick-back-btn {
+                width: 48px;
+                height: 48px;
+                background: rgba(255,255,255,0.9);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+                top: 12px;
+                left: 12px;
             }
             
-            .event-details {
-                flex-direction: column;
+            /* تحسين التحميل */
+            .export-loading {
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
             }
         }
         
+        /* تحسينات للشاشات الصغيرة جداً */
         @media (max-width: 480px) {
-            /* تحسينات إضافية للشاشات الصغيرة جداً */
             .stats-cards {
-                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .stat-card {
+                flex: 0 0 130px;
+                min-width: 130px;
+                padding: 14px 10px;
             }
             
             .tree-node {
                 width: 120px;
-                min-width: 120px;
-                padding: 7px 12px;
+                padding: 10px 6px;
             }
             
-            .tree-node-container {
-                min-width: 120px;
+            .node-name {
+                font-size: 0.85rem;
             }
             
-            .book-grid {
-                grid-template-columns: 1fr;
+            .action-buttons {
+                grid-template-columns: repeat(2, 1fr);
             }
             
-            .logo h1 {
-                font-size: 1rem;
+            .btn {
+                padding: 10px 4px;
             }
             
-            .tree-header h2 {
-                font-size: 1.1rem;
+            .nav-item span {
+                font-size: 10px;
+            }
+            
+            .nav-item i {
+                font-size: 20px;
+            }
+        }
+        
+        /* دعم أجهزة iPhone 12+ والحواف */
+        @supports (padding: max(0px)) {
+            .top-bar, .tree-header, .mobile-bottom-nav {
+                padding-left: max(16px, var(--safe-left));
+                padding-right: max(16px, var(--safe-right));
             }
         }
         
@@ -2819,6 +2904,30 @@
 </style>
 </head>
 <body>
+<!-- شريط التنقل السفلي للجوال - عنصر ديناميكي سيتم إنشاؤه بواسطة JavaScript -->
+<div class="mobile-bottom-nav" id="mobileBottomNav" style="display: none;">
+    <div class="nav-item active" onclick="showDashboard(); setActiveNav(this);">
+        <i class="fas fa-home"></i>
+        <span>الرئيسية</span>
+    </div>
+    <div class="nav-item" onclick="showAllPersons(); setActiveNav(this);">
+        <i class="fas fa-users"></i>
+        <span>الأفراد</span>
+    </div>
+    <div class="nav-item" onclick="showAddPersonForm(); setActiveNav(this);">
+        <i class="fas fa-user-plus"></i>
+        <span>إضافة</span>
+    </div>
+    <div class="nav-item" onclick="showTreeView(); setActiveNav(this);">
+        <i class="fas fa-project-diagram"></i>
+        <span>الشجرة</span>
+    </div>
+    <div class="nav-item" onclick="showFamilyBook(); setActiveNav(this);">
+        <i class="fas fa-book"></i>
+        <span>الكتاب</span>
+    </div>
+</div>
+
 <button class="mobile-menu-toggle" id="mobileMenuToggle">
 <i class="fas fa-bars"></i>
 </button>
@@ -6359,6 +6468,9 @@ updateUIByPermissions();
             
             // تهيئة القائمة الجوالية
             initMobileMenu();
+            
+            // تهيئة شريط التنقل السفلي للموبايل
+            initMobileBottomNav();
         }
 
         function initMobileMenu() {
@@ -6376,6 +6488,43 @@ updateUIByPermissions();
                         sidebar.classList.remove('active');
                     }
                 });
+            }
+        }
+        
+        // ============================================
+        // شريط التنقل السفلي للموبايل - تحسينات متقدمة
+        // ============================================
+        
+        function initMobileBottomNav() {
+            const bottomNav = document.getElementById('mobileBottomNav');
+            if (!bottomNav) return;
+            
+            // إظهار شريط التنقل السفلي فقط على الشاشات الصغيرة
+            if (window.innerWidth <= 768) {
+                bottomNav.style.display = 'flex';
+            } else {
+                bottomNav.style.display = 'none';
+            }
+            
+            // مراقبة تغيير حجم الشاشة
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 768) {
+                    bottomNav.style.display = 'flex';
+                } else {
+                    bottomNav.style.display = 'none';
+                }
+            });
+        }
+        
+        function setActiveNav(element) {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            
+            // إغلاق القائمة الجانبية إذا كانت مفتوحة
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
             }
         }
 
@@ -7646,22 +7795,24 @@ updateUIByPermissions();
 
                 return `
                     <tr>
-                        <td>${p.PersonID ?? ''}</td>
-                        <td>${p.FullName ?? ''}</td>
-                        <td>${p.Gender ?? ''}</td>
-                        <td>${p.PlaceOfBirth ?? ''}</td>
-                        <td>${fatherName}</td>
-                        <td>${motherName}</td>
-                        <td>
-                            <button class="btn btn-info btn-sm" onclick="showPersonDetail(${Number(p.PersonID) || 0})">
-                                <i class="fas fa-eye"></i> عرض
-                            </button>
-                            <button class="btn btn-warning btn-sm" onclick="editPerson(${Number(p.PersonID) || 0})">
-                                <i class="fas fa-edit"></i> تعديل
-                            </button>
-                            <button class="btn btn-danger btn-sm" onclick="deletePerson(${Number(p.PersonID) || 0})">
-                                <i class="fas fa-trash"></i> حذف
-                            </button>
+                        <td data-label="الرقم">${p.PersonID ?? ''}</td>
+                        <td data-label="الاسم الكامل">${p.FullName ?? ''}</td>
+                        <td data-label="الجنس">${p.Gender ?? ''}</td>
+                        <td data-label="مكان الميلاد">${p.PlaceOfBirth ?? ''}</td>
+                        <td data-label="الأب">${fatherName}</td>
+                        <td data-label="الأم">${motherName}</td>
+                        <td data-label="الإجراءات">
+                            <div class="table-actions">
+                                <button class="action-btn view" onclick="showPersonDetail(${Number(p.PersonID) || 0})" title="عرض">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn edit" onclick="editPerson(${Number(p.PersonID) || 0})" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete" onclick="deletePerson(${Number(p.PersonID) || 0})" title="حذف">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -7862,6 +8013,17 @@ updateUIByPermissions();
             // دالة لعرض الشجرة
             document.getElementById('treeView').classList.add('active');
             renderTree();
+            
+            // تحديث النشاط في شريط التنقل السفلي
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                const icon = item.querySelector('i');
+                if (icon && icon.classList.contains('fa-project-diagram')) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
         }
 
         function closeTreeView() {
@@ -8141,6 +8303,17 @@ updateUIByPermissions();
             loadDashboard();
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
             document.querySelector('.sidebar-menu li:nth-child(2)').classList.add('active');
+            
+            // تحديث النشاط في شريط التنقل السفلي
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                const icon = item.querySelector('i');
+                if (icon && icon.classList.contains('fa-users')) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
         }
 
         function handleFileImport(event) {
